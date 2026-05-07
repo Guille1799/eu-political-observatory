@@ -1,0 +1,20 @@
+# Entorno virtual
+venv/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# Datos crudos — demasiado pesados para GitHub
+data/raw/
+data/processed/
+
+# Cursor y VS Code
+.cursor/
+.vscode/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
