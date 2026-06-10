@@ -12,7 +12,9 @@ data/raw/
 data/processed/
 
 # Cursor y VS Code
-.cursor/
+.cursor/*
+!.cursor/rules/
+!.cursor/rules/*.mdc
 .vscode/
 
 # Sistema operativo

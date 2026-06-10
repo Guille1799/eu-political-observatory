@@ -1,7 +1,9 @@
-# EU Political Observatory — Cursor Rules
+# EU Political Risk Observatory — Cursor Rules
 
 ## Identidad del proyecto
-Este es un proyecto de Behavioral Data Science para analizar los factores socioeconómicos y emocionales del auge de partidos nacionalistas en 7 países de la UE (España, Francia, Alemania, Italia, Polonia, Hungría, Suecia) entre 2008 y 2025.
+Proyecto de Behavioral Data Science para analizar los factores socioeconómicos y emocionales del auge de partidos nacionalistas en 7 países de la UE (España, Francia, Alemania, Italia, Polonia, Hungría, Suecia) entre 2008 y 2024.
+
+Dashboard educativo, interactivo y neutral: muestra datos, no argumenta. Marco teórico: Manifiesto BIT (Hallsworth, 2023), con foco en complejidad sistémica y outputs accionables para policy makers.
 
 ## Reglas de trabajo con Guille — MUY IMPORTANTE
 - Ir siempre muy despacio, paso a paso
@@ -11,31 +13,46 @@ Este es un proyecto de Behavioral Data Science para analizar los factores socioe
 - Hacer UNA sola cosa cada vez
 - Si Guille hace una pregunta conceptual, responderla completamente antes de continuar con código
 - Nunca asumir que algo está claro — preguntar siempre
+- Nunca mandar scripts completos sin explicarlos por bloques primero
+- Cuando haya un error, explicar primero QUÉ significa y luego cómo arreglarlo
+- Usar siempre paleta Okabe-Ito para visualizaciones
 
 ## Stack técnico
 - Backend: Python, FastAPI, PostgreSQL
-- Librerías: pandas, geopandas, transformers (HuggingFace), scikit-learn, scipy
+- Librerías: pandas, geopandas, transformers (HuggingFace), psycopg2, scikit-learn, scipy, matplotlib, jupyter
 - Frontend: Next.js, Recharts, react-leaflet
 - Infraestructura: Docker, Railway/Render para deploy
-- Entorno: venv activado siempre antes de cualquier comando Python
+- Entorno: Python 3.13 con venv activado siempre antes de cualquier comando Python
+- Terminal recomendada para Guille: Git Bash en Cursor, no PowerShell
 
 ## Estructura del proyecto
 - data/raw/ — datos originales descargados, nunca modificar
-- data/processed/ — datos limpios listos para análisis
-- data/exports/ — outputs para el dashboard
-- src/ingestion/ — scripts de descarga y carga
+- data/processed/ — datos limpios intermedios, no subir a GitHub
+- data/exports/ — outputs para el dashboard, sí se pueden subir
+- src/ingestion/ — scripts de carga
 - src/processing/ — limpieza y transformación
 - src/analysis/ — modelos, correlaciones, NLP
 - src/api/ — FastAPI
 - notebooks/ — exploración y prototipado
 - tests/ — tests unitarios
 
+## Estado actual (Mayo 2026)
+- PostgreSQL local: base de datos eu_observatory
+- Tablas existentes: ardeco_unemployment, ardeco_gdp, ardeco_education, nationalist_vote, nationalist_vote_national
+- Scripts completados: load_ardeco.py, load_euned.py, load_parlgov.py
+- Notebooks: exploracion_missing_values.ipynb (completo), visualizacion_datos.ipynb (completo), exploracion_ess.ipynb (celdas 1-6 ejecutadas), Untitled.ipynb (sesión activa EFA)
+- ESS CSV en data/raw/. Cobertura guardada en data/processed/ess_full_coverage_from_sav.csv
+- Sesión ESS: 76 variables candidatas para EFA identificadas. Grupos pendientes de decisión: satisfacción vida, religión, discriminación, participación política, bienestar social, redistribución, valores liberales
+- NOTA 20 — principio fundamental: NO usar deducción ni intuición para elegir variables ESS. Dejar que EFA (rotación Varimax) decida la estructura. Solo excluir lo claramente irrelevante.
+
 ## Fuentes de datos
-- ARDECO — datos socioeconómicos NUTS 2 (desempleo, PIB, educación) 1995-2024
-- EU-NED — resultados electorales NUTS 2, 1990-2020
-- POPPA — scores de populismo y nativismo por partido, 2018 y 2023
-- PopuList — clasificación binaria far-right/populist, 1989-2022
-- ESS — actitudes ciudadanas individuales, cada 2 años
+- ARDECO — datos socioeconómicos NUTS2 (desempleo, PIB, educación), 2008-2024 para el proyecto
+- EU-NED — resultados electorales NUTS2, hasta 2020
+- ParlGov 2024 — cobertura nacional ampliada hasta 2024
+- POPPA v2 — scores de populismo y nativismo por partido
+- PopuList 3.0 — clasificación far-right/populist
+- Crosswalk PartyFacts-ParlGov — cruce para ampliar cobertura electoral nacional
+- ESS integrado — actitudes ciudadanas ESS1-ESS11, 2002-2023. CSV en data/raw/. EFA en progreso en Untitled.ipynb.
 - Eurobarometer — bienestar subjetivo y percepción de amenaza
 - Manifesto Project — discurso político de partidos
 - POLAT Panel — panel longitudinal España 2010-2020
@@ -43,7 +60,7 @@ Este es un proyecto de Behavioral Data Science para analizar los factores socioe
 - ELIPSS — panel longitudinal Francia
 
 ## Preguntas de investigación
-Pregunta central: ¿Qué factores socioeconómicos y emocionales explican el auge de partidos nacionalistas en la UE entre 2008 y 2025, y qué intervenciones pueden reducir la vulnerabilidad de las comunidades más afectadas?
+Pregunta central: ¿Qué factores socioeconómicos y emocionales explican el auge de partidos nacionalistas en la UE entre 2008 y 2024, y qué intervenciones pueden reducir la vulnerabilidad de las comunidades más afectadas?
 
 Niveles:
 1. Analítico principal: correlaciones socioeconómicas, emociones ciudadanas, discurso de partidos
@@ -52,6 +69,8 @@ Niveles:
 4. Intervención: qué intervenciones funcionan, qué factores protegen
 
 ## Metodología
+- Partido nacionalista si cumple AMBAS condiciones: nativism >= 7.0 en POPPA y far-right en PopuList
+- Índice ponderado: nationalist_weighted_index = sum(vote_share_partido * nativism_partido) / 10
 - Panel data con efectos fijos regionales
 - Análisis multinivel (individuo + región)
 - Series temporales para causalidad
@@ -59,6 +78,13 @@ Niveles:
 - Variable continua de apoyo nacionalista via interpolación bayesiana
 - Variables de control: educación, densidad, demografía
 - Heterogeneidad de efectos por edad, género, zona rural/urbana
+- Limitaciones documentadas: cobertura NUTS2 irregular, EU-NED hasta 2020, España regional desde 2019, Alemania 2013/2017, Hungría con cambio histórico de Fidesz
+
+## Próximo paso inmediato
+1. Decidir qué grupos pendientes entran en EFA (satisfacción vida, religión, discriminación, participación política, bienestar social, redistribución, valores liberales). Regla: justificación teórica con actitudes nacionalistas → EFA. Si no → control o descartada.
+2. Ejecutar EFA en Untitled.ipynb: instalar factor_analyzer, cargar df_7 con variables finales, estandarizar 0-1, EFA Varimax, scree plot + parallel analysis, interpretar factores.
+3. Construir índice núcleo (11 rondas) e índice extendido (10 rondas). Validar con lrscale y prtvt*.
+4. Crear src/ingestion/load_ess.py para guardar en PostgreSQL tabla ess_nationalist_attitudes.
 
 ## Dashboard
 - Dos modos: Modo Historia (scrollytelling) y Modo Exploración
