@@ -20,4 +20,5 @@ data/processed/
 Thumbs.db
 
 # Jupyter
-.ipynb_checkpoints/.cursorrules
+.ipynb_checkpoints/
+.cursorrules
