@@ -22,7 +22,7 @@ Dashboard educativo sobre factores del auge de partidos nacionalistas en 7 país
 
 ## Rutas clave
 - Notebook activo España: `notebooks/ess/spain/ESS_Spain.ipynb`
-- Scripts R España: `data/processed/ess/spain/spain_efa.R`, `spain_mice_imputation.R`, `spain_mcar_robust.R`
+- Scripts R España (árbol canónico, versionado): `R/ess_spain/spain_efa.R`, `spain_mice_imputation.R`, `spain_mcar_robust.R` — se ejecutan como `Rscript R/ess_spain/<script>.R` y localizan los datos en `data/processed/ess/spain/` a partir de su propia ubicación
 - Datos raw ESS: `data/raw/ESS*.sav` (nunca modificar, nunca subir a GitHub)
 - Checkpoints: `C:\Users\Guille\proyectos\Contexto\eu-political-observatory\`
 - Referencia metodológica completa: `docs/EU_REFERENCIA.md`

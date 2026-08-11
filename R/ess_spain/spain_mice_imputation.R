@@ -14,7 +14,11 @@
 #   spain_core_imputed.csv         — alias de pooled (compatibilidad / EFA)
 #
 # Uso (desde la raiz del repo):
-#   Rscript data/processed/ess/spain/spain_mice_imputation.R
+#   Rscript R/ess_spain/spain_mice_imputation.R
+#
+#   El script es el arbol canonico (versionado). Los datos viven fuera del
+#   control de versiones, en data/processed/ess/spain/, y se localizan a
+#   partir de la ubicacion del propio script (no del directorio de trabajo).
 #
 # Requisitos:
 #   install.packages(c("readr", "mice"))
@@ -43,12 +47,19 @@ file_arg <- grep("^--file=", args, value = TRUE)
 if (length(file_arg) != 1L) {
   stop(
     "Ejecuta desde la raiz del repo:\n",
-    "  Rscript data/processed/ess/spain/spain_mice_imputation.R"
+    "  Rscript R/ess_spain/spain_mice_imputation.R"
   )
 }
 
+# El script vive en <repo>/R/ess_spain/; los datos en
+# <repo>/data/processed/ess/spain/ (ignorado por git).
 this_script <- normalizePath(sub("^--file=", "", file_arg), winslash = "/")
-spain_dir   <- dirname(this_script)
+script_dir  <- dirname(this_script)
+repo_root   <- normalizePath(file.path(script_dir, "..", ".."), winslash = "/")
+spain_dir   <- file.path(repo_root, "data", "processed", "ess", "spain")
+if (!dir.exists(spain_dir)) {
+  stop("No existe el directorio de datos: ", spain_dir)
+}
 path_in     <- file.path(spain_dir, "spain_core_data.csv")
 path_pooled <- file.path(spain_dir, "spain_core_imputed_pooled.csv")
 path_efa    <- file.path(spain_dir, "spain_core_imputed.csv")
