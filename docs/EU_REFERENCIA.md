@@ -62,6 +62,15 @@
 ## Metodología de clasificación de partidos nacionalistas
 
 - **Umbral**: `nativism >= 7.0` en POPPA **Y** `far-right` en PopuList 3.0 (ambas condiciones).
+- **Un solo sitio** (2026-08-11): el valor vive en `src/ingestion/parameters.py`
+  (`NATIVISM_THRESHOLD`), con su procedencia al lado. `load_euned.py` y `load_parlgov.py`
+  lo importan como valor por defecto — ya no lo redeclaran. Antes estaba duplicado como
+  literal `7.0` en los dos scripts.
+- **Procedencia del 7.0**: convención del proyecto, decidida en la sesión de diseño del
+  2026-05-05 con la justificación "un score de 7+ se considera alto" — **sin cita**. No hay
+  en el repo ninguna referencia (autor/año) que fije 7.0 como umbral canónico de POPPA. Su
+  mitigación declarada es la doble condición con PopuList, adoptada precisamente para no
+  depender de un corte numérico arbitrario. Nunca se ha corrido análisis de sensibilidad.
 - **Índice ponderado**: `nationalist_weighted_index = sum(vote_share * nativism) / 10`
 - **Futuro**: sustituir threshold fijo por análisis factorial sobre POPPA; validar con Vox, AfD, RN, FdI, Fidesz, SD.
 

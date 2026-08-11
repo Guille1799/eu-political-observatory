@@ -4,6 +4,10 @@ import os
 import io
 from dotenv import load_dotenv
 
+# Ver la nota del mismo import en load_euned.py: sin paquete, el vecino se resuelve por
+# el directorio del script.
+from parameters import NATIVISM_THRESHOLD
+
 load_dotenv()
 
 DB_HOST = os.getenv("DB_HOST")
@@ -71,10 +75,14 @@ def load_populist(filepath):
     return df
 
 
-def calculate_nationalist_vote_parlgov(df_parlgov, df_poppa, df_populist, nativism_threshold=7.0):
+def calculate_nationalist_vote_parlgov(df_parlgov, df_poppa, df_populist,
+                                       nativism_threshold=NATIVISM_THRESHOLD):
     """
     Cruza ParlGov con POPPA y PopuList para calcular el índice
     ponderado de voto nacionalista por país y año.
+
+    Misma doble condición que en load_euned: nativismo >= NATIVISM_THRESHOLD en POPPA
+    (procedencia: parameters.py) Y far-right en PopuList.
     """
     df = df_parlgov.merge(df_poppa, on='partyfacts_id', how='left')
     far_right_ids = set(df_populist['partyfacts_id'].tolist())

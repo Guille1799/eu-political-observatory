@@ -150,4 +150,4 @@ if __name__ == "__main__":
     save_to_postgres(df_gdp, 'ardeco_gdp')
     save_to_postgres(df_education, 'ardeco_education')
 
-    print("✓ Proceso completado")sii
+    print("✓ Proceso completado")

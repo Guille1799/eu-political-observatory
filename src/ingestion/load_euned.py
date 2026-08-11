@@ -4,6 +4,11 @@ import os
 import io
 from dotenv import load_dotenv
 
+# El repo no tiene estructura de paquete y estos scripts se ejecutan como
+# `python src/ingestion/load_euned.py` desde la raíz — el import del vecino se resuelve
+# por el directorio del propio script, que Python pone en sys.path.
+from parameters import NATIVISM_THRESHOLD
+
 load_dotenv()
 
 DB_HOST = os.getenv("DB_HOST")
@@ -66,13 +71,14 @@ def load_populist(filepath):
     return df
 
 
-def calculate_nationalist_vote(df_euned, df_poppa, df_populist, nativism_threshold=7.0):
+def calculate_nationalist_vote(df_euned, df_poppa, df_populist,
+                               nativism_threshold=NATIVISM_THRESHOLD):
     """
     Cruza EU-NED con POPPA y PopuList para calcular el índice
     ponderado de voto nacionalista por región y año.
 
     Un partido es nacionalista si cumple AMBAS condiciones:
-    1. Score de nativismo >= 7 en POPPA
+    1. Score de nativismo >= NATIVISM_THRESHOLD en POPPA (procedencia: parameters.py)
     2. Clasificado como far-right en PopuList
 
     El índice pondera el voto por el score de nativismo
