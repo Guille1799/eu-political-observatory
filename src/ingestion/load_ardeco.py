@@ -23,19 +23,38 @@ EXCLUDE_REGIONS = ['FRY1', 'FRY2', 'FRY3', 'FRY4']
 YEAR_START = 2008
 YEAR_END = 2024
 
+# Unidad del PIB — ver la nota en __main__
+GDP_UNIT = "PPS_EU27_2020"
 
-def load_ardeco_file(filepath, variable_name, education_level=None):
+
+def load_ardeco_file(filepath, variable_name, education_level=None, unit=None):
     """
     Lee un CSV de ARDECO y lo transforma al formato largo.
 
     filepath: ruta al archivo CSV
     variable_name: nombre de la variable (ej: 'unemployment', 'gdp', 'education')
     education_level: si es el dataset de educación, filtrar por nivel (ej: 'ED5-8')
+    unit: si el fichero trae varias unidades, quedarse solo con esta (ej: 'PPS_EU27_2020')
+
+    Un mismo fichero de ARDECO puede traer la misma serie repetida en varias
+    unidades o desagregaciones. Si no se filtran, cada región-año entra más de
+    una vez con valores distintos, y la duplicación es invisible aguas abajo.
+    Por eso al final se comprueba que (nuts2_id, year) sea único.
     """
     df = pd.read_csv(filepath)
 
     # Filtrar solo NUTS 2
     df = df[df['LEVEL_ID'] == 2]
+
+    # Quedarse con una sola unidad si el fichero trae varias
+    if unit is not None:
+        unidades = sorted(df['UNIT'].dropna().unique())
+        if unit not in unidades:
+            raise ValueError(
+                f"{filepath}: unidad '{unit}' no está en el fichero. "
+                f"Disponibles: {unidades}"
+            )
+        df = df[df['UNIT'] == unit]
 
     # Filtrar solo nuestros 7 países
     df = df[df['TERRITORY_ID'].str[:2].isin(COUNTRIES)]
@@ -78,6 +97,18 @@ def load_ardeco_file(filepath, variable_name, education_level=None):
 
     # Convertir año a número entero
     df['year'] = df['year'].astype(int)
+
+    # Cada región-año tiene que aparecer una sola vez. Si no, el fichero mezcla
+    # series (unidades, niveles ISCED...) que faltaba filtrar: mejor romper aquí
+    # que cargar duplicados silenciosos en PostgreSQL.
+    duplicados = df.duplicated(subset=['nuts2_id', 'year'], keep=False)
+    if duplicados.any():
+        ejemplo = df[duplicados].sort_values(['nuts2_id', 'year']).head(4)
+        raise ValueError(
+            f"{filepath}: {duplicados.sum()} filas con (nuts2_id, year) repetido "
+            f"sobre {len(df)}. El fichero mezcla varias series y falta filtrarlas "
+            f"(argumento `unit` o `education_level`).\n{ejemplo.to_string(index=False)}"
+        )
 
     return df
 
@@ -138,8 +169,13 @@ if __name__ == "__main__":
 
     # Cargar y limpiar cada archivo
     df_unemployment = load_ardeco_file(unemployment_file, 'unemployment')
-    df_gdp = load_ardeco_file(gdp_file, 'gdp')
-    
+
+    # El fichero de PIB trae la misma serie en EUR y en PPS_EU27_2020. Nos
+    # quedamos con PPS: corrige diferencias de nivel de precios, que es lo único
+    # que permite comparar regiones de países distintos — justo lo que hace el
+    # proyecto. Poner "EUR" aquí si alguna vez se quiere la serie nominal.
+    df_gdp = load_ardeco_file(gdp_file, 'gdp', unit=GDP_UNIT)
+
     # Para educación solo cargamos nivel universitario ED5-8
     df_education = load_ardeco_file(education_file, 'education', education_level='ED5-8')
 
