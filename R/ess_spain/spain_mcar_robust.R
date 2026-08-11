@@ -18,7 +18,11 @@
 #   PKLM         → spain_core_data.csv                 (dataset completo)
 #
 # Uso (desde la raíz del repo):
-#   Rscript data/processed/ess/spain/spain_mcar_robust.R
+#   Rscript R/ess_spain/spain_mcar_robust.R
+#
+#   El script es el árbol canónico (versionado). Los datos viven fuera del
+#   control de versiones, en data/processed/ess/spain/, y se localizan a
+#   partir de la ubicación del propio script (no del directorio de trabajo).
 #
 # Requisitos:
 #   install.packages(c("readr", "misty", "PKLMtest"))
@@ -36,21 +40,25 @@ suppressPackageStartupMessages({
   library(PKLMtest)
 })
 
-# --- Localizar raíz del repo -------------------------------------------------
+# --- Localizar raíz del repo y directorio de datos ---------------------------
+# El script vive en <repo>/R/ess_spain/; los datos en
+# <repo>/data/processed/ess/spain/ (ignorado por git).
 args      <- commandArgs(trailingOnly = FALSE)
 file_arg  <- grep("^--file=", args, value = TRUE)
 if (length(file_arg) != 1L) {
   stop(
     "Ejecuta desde la raíz del repo:\n",
-    "  Rscript data/processed/ess/spain/spain_mcar_robust.R"
+    "  Rscript R/ess_spain/spain_mcar_robust.R"
   )
 }
 this_script <- normalizePath(sub("^--file=", "", file_arg), winslash = "/")
-spain_dir   <- dirname(this_script)
-ess_dir     <- normalizePath(file.path(spain_dir, ".."), winslash = "/")
-repo_root   <- normalizePath(
-  file.path(spain_dir, "..", "..", "..", ".."), winslash = "/"
-)
+script_dir  <- dirname(this_script)
+repo_root   <- normalizePath(file.path(script_dir, "..", ".."), winslash = "/")
+ess_dir     <- file.path(repo_root, "data", "processed", "ess")
+spain_dir   <- file.path(ess_dir, "spain")
+if (!dir.exists(spain_dir)) {
+  stop("No existe el directorio de datos: ", spain_dir)
+}
 
 cat("=================================================================\n")
 cat("MCAR TEST BATTERY — ESS Spain core (45 variables)\n")

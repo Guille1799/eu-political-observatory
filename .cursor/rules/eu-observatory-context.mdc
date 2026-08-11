@@ -22,12 +22,12 @@ Dashboard educativo sobre factores del auge de partidos nacionalistas en 7 país
 
 ## Rutas clave
 - Notebook activo España: `notebooks/ess/spain/ESS_Spain.ipynb`
-- Scripts R España: `data/processed/ess/spain/spain_efa.R`, `spain_mice_imputation.R`, `spain_mcar_robust.R`
+- Scripts R España (árbol canónico, versionado): `R/ess_spain/spain_efa.R`, `spain_mice_imputation.R`, `spain_mcar_robust.R` — se ejecutan como `Rscript R/ess_spain/<script>.R` y localizan los datos en `data/processed/ess/spain/` a partir de su propia ubicación
 - Datos raw ESS: `data/raw/ESS*.sav` (nunca modificar, nunca subir a GitHub)
 - Checkpoints: `C:\Users\Guille\proyectos\Contexto\eu-political-observatory\`
 - Referencia metodológica completa: `docs/EU_REFERENCIA.md`
 
-## Trabajar con Guille — CRÍTICO, seguir siempre
+## Ritmo de trabajo — CRÍTICO, seguir siempre
 - Ir MUY DESPACIO. Un concepto cada vez. Explicar ANTES de ejecutar, bloque por bloque.
 - NO avanzar al siguiente paso sin preguntar "¿lo entiendes? ¿tienes alguna duda?" y esperar respuesta afirmativa.
 - Cuando hay un error: explicar QUÉ significa antes de cómo arreglarlo.
