@@ -31,3 +31,8 @@ obs-fix
 
 # Copias generadas por el checkpoint — se regeneran, no versionar
 docs/backups/
+
+# Experimento del norte (registro de energia) — retirado el 2026-08-12.
+# Seguimiento personal de carrera, no documentacion del proyecto. El repo es publico.
+CLAUDE.md
+docs/energy-log.md
