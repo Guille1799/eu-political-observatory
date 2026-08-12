@@ -1,0 +1,4 @@
+# Los hooks son scripts que ejecuta bash. Con core.autocrlf=true (Windows) saldrían del
+# checkout con finales CRLF, y bash falla con "\r: command not found" o un shebang inválido.
+# Se fuerzan a LF para que el hook versionado funcione en cualquier clon.
+hooks/** text eol=lf
