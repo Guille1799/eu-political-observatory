@@ -54,7 +54,7 @@ notebooks/ess/     — análisis por país
 src/ingestion/     — descarga de datos
 src/processing/    — limpieza y transformación
 src/analysis/      — modelos, correlaciones
-docs/              — EU_REFERENCIA.md, onboarding.md
+docs/              — EU_REFERENCIA_CORE.md (get_session_context), EU_REFERENCIA.md (metodología completa), onboarding.md
 ```
 
 ## Variables ESS — cómo encontrarlas
@@ -89,5 +89,6 @@ git add . && git commit -m "descripción" && git push
 
 ## Rutas críticas
 - Raíz: `C:\Users\Guille\proyectos\eu-political-observatory\`
-- Referencia: `docs/EU_REFERENCIA.md` (via get_session_context)
+- Referencia CORE: `docs/EU_REFERENCIA_CORE.md` (cargada por get_session_context)
+- Referencia completa: `docs/EU_REFERENCIA.md` (metodología ESS, leer bajo demanda)
 - Checkpoints: `C:\Users\Guille\proyectos\Contexto\eu-political-observatory\`

@@ -43,3 +43,4 @@ Razón: <por qué es correcto o incorrecto>
 Si el veredicto es FALLO, indica también:
 - En qué rank aparece el chunk correcto (si aparece en top-5).
 - Qué tipo de chunk ocupa el rank=1 en su lugar.
+

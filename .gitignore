@@ -25,3 +25,9 @@ Thumbs.db
 .ipynb_checkpoints/
 .cursorrules
 obs-fix
+
+# Memoria de trabajo de los subagentes — local de cada maquina, no del proyecto
+.claude/agent-memory/
+
+# Copias generadas por el checkpoint — se regeneran, no versionar
+docs/backups/

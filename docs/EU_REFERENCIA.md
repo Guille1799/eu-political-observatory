@@ -1,7 +1,7 @@
 # EU Political Observatory — Referencia Metodológica Completa
 
-> Este archivo NO se carga automáticamente. Cargarlo bajo demanda cuando se trabaja en metodología, EFA, invarianza o diseño del dashboard.
-> Para contexto de sesión, ver los checkpoints en `C:\Users\Guille\proyectos\Contexto\eu-political-observatory\`.
+> Cargado automáticamente por `get_session_context(project="eu_observatory")`.
+> Contiene metodología ESS completa + estado del proyecto.
 
 ---
 
@@ -131,3 +131,14 @@ Eurobarometer, Manifesto Project, elecciones España 2023, paneles longitudinale
 - Hungría: cambio histórico Fidesz requiere manejo especial
 - ESS sin NUTS2 (inferir por domicil es aproximación)
 - Italia: solo 6 rondas ESS (umbral 8+ no alcanzado) — decisión pendiente sobre tratamiento
+
+---
+
+## ESTADO ACTUAL
+
+Proyecto pausado desde 2026-06. Pipeline ESS España: MCAR test completado (MAR confirmado), imputación múltiple mice PMM m=20 lista, 20 datasets generados.
+EFA pooled sobre matrices pendiente. Clasificación de partidos implementada (POPPA + PopuList).
+
+## PRÓXIMO PASO EXACTO
+
+Retomar pipeline ESS España: ejecutar `spain_efa.R` con `fa.pooled` sobre 20 matrices imputadas → test invarianza configural/métrica/escalar → índice comparativo por país.
