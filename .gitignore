@@ -11,10 +11,8 @@ __pycache__/
 data/raw/
 data/processed/
 
-# Cursor y VS Code
-.cursor/*
-!.cursor/rules/
-!.cursor/rules/*.mdc
+# Cursor y VS Code — configuracion local del editor, no del proyecto
+.cursor/
 .vscode/
 
 # Sistema operativo
@@ -32,7 +30,11 @@ obs-fix
 # Copias generadas por el checkpoint — se regeneran, no versionar
 docs/backups/
 
-# Experimento del norte (registro de energia) — retirado el 2026-08-12.
-# Seguimiento personal de carrera, no documentacion del proyecto. El repo es publico.
+# Notas de trabajo locales, no documentacion del proyecto
 CLAUDE.md
 docs/energy-log.md
+docs/claude-conversations/
+
+# Salidas sueltas y binarios generados
+Rplots.pdf
+*.docx
