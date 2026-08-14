@@ -13,7 +13,9 @@ into one traceable dataset — to study the rise of nationalist and populist pol
   rather than dropping rows or naively filling them.
 - **Builds toward cross-country-comparable measures** — a factor-analytic measurement model with
   **measurement-invariance** testing, so comparisons between countries are defensible rather than
-  assumed.
+  assumed. ⚠️ **Not there yet, and the reason is documented:** an exploratory EFA returned an
+  improper solution (a **Heywood case**), so the measurement model is *not* settled. See
+  [`R/README.md`](R/README.md) for what that means and what it blocks.
 
 ## Why
 
@@ -23,9 +25,13 @@ data every time — and without losing track of where each number came from.
 
 ## Status
 
-**Active work in progress.** The data-integration and missing-data foundation is in place; the
-measurement model and cross-country invariance are being finalised. Next on the roadmap: a thin,
-provenance-aware legibility layer on top of the validated indices.
+**Active work in progress.** The data-integration and missing-data foundation is in place. The
+measurement model is **blocked on an improper EFA solution (Heywood case)** — not "being finalised":
+it needs a decision before invariance testing is meaningful ([`R/README.md`](R/README.md)).
+
+The current line of work is deliberately **upstream of that block**: an economic–electoral layer at
+NUTS2/NUTS3 that does not depend on the ESS measurement model. The provenance-aware legibility layer
+sits on top of validated indices, so it waits.
 
 ## Stack
 
