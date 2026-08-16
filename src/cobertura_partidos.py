@@ -3,8 +3,8 @@ DIA 2 — Cobertura de la clasificacion de partidos (riesgo R1).
 
 Que hace y por que
 ------------------
-El diseno del observatorio (`JobHunter/docs/fundamentos/observatorio-nacionalismo-regional.md`,
-seccion R1) senala la clasificacion de partidos como el unico riesgo de medida que
+El documento de diseno del observatorio (riesgo R1) senala la clasificacion de
+partidos como el unico riesgo de medida que
 *demostrablemente invierte signos* en la literatura publicada, y exige reportar el
 resultado bajo **>= 2 clasificaciones independientes**. Antes de poder cumplir esa regla
 hay que saber **sobre cuanto voto existen realmente dos veredictos**. Eso es lo unico que
@@ -640,8 +640,7 @@ def escribir_informe(ctx):
 > escribe el script**: no hay ningun numero tecleado a mano. Para regenerarlo:
 > `python src/cobertura_partidos.py` desde la raiz del repo.
 >
-> **Que responde:** el riesgo **R1** del diseno
-> (`JobHunter/docs/fundamentos/observatorio-nacionalismo-regional.md`) exige reportar el voto
+> **Que responde:** el riesgo **R1** del diseno exige reportar el voto
 > nacionalista bajo **>= 2 clasificaciones independientes**. Antes hay que saber sobre cuanto
 > voto existen de verdad dos veredictos. Eso es lo unico que se mide aqui: **cobertura y
 > desacuerdos**. Ni modelos, ni regresiones, ni clustering.

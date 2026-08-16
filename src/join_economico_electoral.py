@@ -7,7 +7,7 @@ Qué hace y qué NO hace
 ----------------------
 Hace UNA cosa: construir el join económico-electoral a dos escalas y medir su
 cobertura. No hace dashboard, ni clustering, ni invarianza, ni "preparar todos
-los datos". Diseño: JobHunter/docs/fundamentos/observatorio-nacionalismo-regional.md §9.
+los datos". Sigue el §9 del documento de diseño del observatorio.
 
 La corrección de partida (rompe el §9 tal y como está escrito)
 --------------------------------------------------------------
