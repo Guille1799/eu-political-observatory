@@ -14,9 +14,22 @@ Esa segunda mitad **es el producto**, no un chequeo: el mismo dato puede contar 
 por municipios y otra por provincias (*modifiable areal unit problem*). Junto a ella va la **capa de
 honestidad**: un mapa que **se niega a pintar** donde no hay base y lo dice.
 
-**Fuentes de v2:** resultados oficiales de **Infoelectoral** (Ministerio del Interior), que publica
-desde 1977 **a nivel de municipio y de mesa**. La parte socioeconómica municipal está **por resolver**
-(ARDECO no baja de NUTS3 → hay que ir al INE). 📄 Alcance completo: [`docs/v2_alcance.md`](v2_alcance.md).
+**Fuentes de v2, ambas verificadas el 17-ago:** electoral, **Infoelectoral** (Mº Interior, desde 1976,
+hasta mesa); socioeconómica, **INE — Atlas de Distribución de Renta de los Hogares (ADRH)**, operación
+353, **hasta sección censal, 2015-2023**, con renta, Gini y P80/P20, y **cubriendo País Vasco y
+Navarra** vía haciendas forales.
+
+**Escalera de escalas (CORREGIDA):** `sección censal → distrito → municipio → provincia → CCAA`.
+⚫ **La mesa queda fuera**: hay dato electoral pero **no hay socioeconómico** a ese nivel.
+🔝 El frente vivo es **sección censal vs municipio** — no los mapas provinciales, que son de reparto
+de escaños y ahí la provincia **es** la circunscripción legal.
+
+🔴 **Riesgo que mata el diseño si se ignora:** el ADRH omite unidades de <100 habitantes → **la muestra
+cambia con la escala**, y el sesgo apunta a los municipios diminutos del rural interior, que es donde
+vive el voto PANE. **Obligatorio: fijar la muestra a las unidades presentes en todas las escalas y
+reportar la selección por separado.** Es el mismo error que E0 ya cazó con las capitales.
+
+📄 Alcance completo, antecedentes y quién actúa distinto: [`docs/v2_alcance.md`](v2_alcance.md).
 
 ### 🔴 Por qué murió v1, en una línea, para no repetirlo
 El diseño europeo anterior (EU-NED × ARDECO × PopuList/POPPA) se ejecutó en E0 y **no era viable**:
@@ -94,9 +107,16 @@ verificable, añadirla a un bundle propio del repo, y volver a correr
 `python src/v2/descarga_infoelectoral.py`. Hasta que eso funcione **no se ha comprobado el patrón de
 nombre de fichero** y no se da por bueno.
 
-Después, en este orden: (1) leer la especificación oficial de los ficheros de ancho fijo y
-transcribirla a un esquema — **no suponer el layout**; (2) escribir **antes de mirar los datos** el
-umbral operativo que define PANE; (3) resolver la fuente socioeconómica municipal (INE).
+🟢 **Atajo verificado:** los paquetes de R `infoelectoral` (Héctor Meleiro) y `pollspain` (Javier
+Álvarez-Liébana) **ya descargan de Infoelectoral** → han resuelto lo de la FNMT. Mirar cómo lo hacen
+antes que buscar la raíz a ciegas.
+
+Después, en este orden: (1) **revisar el SEA (Spanish Electoral Archive, Harvard Dataverse)** y el
+dataset `renta` del paquete `infoelectoral` (>34.000 filas ya cruzando renta INE × sección censal) —
+**antes de escribir una línea de fontanería**: puede ahorrar semanas o mostrar que parte ya está
+hecha; (2) leer la especificación oficial de los ficheros de ancho fijo — **no suponer el layout**;
+(3) escribir **antes de mirar los datos** el umbral operativo que define PANE **y** la regla de
+muestra fija entre escalas.
 
 ⚫ ~~*Retomar el EFA*~~ — era el próximo paso desde junio y **ya no lo es**. Ver el bloque congelado.
 
