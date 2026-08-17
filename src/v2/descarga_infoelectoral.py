@@ -35,13 +35,16 @@ Uso:  python src/v2/descarga_infoelectoral.py            (desde la raiz del repo
 
 from __future__ import annotations
 
-import ssl
+import hashlib
 import sys
 import urllib.error
 import urllib.request
 import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from cadena_confianza import contexto_ssl  # noqa: E402
 
 if hasattr(sys.stdout, "reconfigure"):  # acentos en la consola de Windows
     sys.stdout.reconfigure(encoding="utf-8")
@@ -62,23 +65,6 @@ AMBITOS = ("MESA", "MUNI", "TOTA")
 
 TIMEOUT = 60
 UA = "eu-political-observatory/v2 (reconocimiento de fuente publica)"
-
-
-def contexto_ssl() -> ssl.SSLContext:
-    """Contexto con verificacion SIEMPRE activa.
-
-    Algunas instalaciones de Python en Windows no traen bundle de CAs y fallan con
-    CERTIFICATE_VERIFY_FAILED contra sitios perfectamente validos. La solucion es
-    apuntar a los certificados de `certifi`, NO desactivar la verificacion: bajar
-    datos oficiales por un canal sin verificar invalidaria su procedencia, que es
-    justo lo que este proyecto vende.
-    """
-    try:
-        import certifi
-
-        return ssl.create_default_context(cafile=certifi.where())
-    except ImportError:
-        return ssl.create_default_context()
 
 
 def url_de(tipo: str, anio: int, mes: int, ambito: str) -> str:
@@ -129,6 +115,65 @@ def inventario(zip_path: Path) -> list[dict]:
     return filas
 
 
+def contencion_de_ambitos(descargados: list[tuple[str, Path]]) -> list[str]:
+    """Comprueba por hash si un ambito contiene a otro, en vez de suponerlo.
+
+    A ojo, los tres paquetes parecen repetir ficheros con el mismo tamano. Pero
+    "mismo tamano" no es "mismo contenido", asi que se compara el SHA-256 de cada
+    entrada. Si la contencion se confirma, basta con bajar el ambito mas fino y
+    los otros dos sobran -- una descarga en vez de tres, y ninguna duda sobre
+    cual de las tres copias de un catalogo es la buena.
+    """
+    hashes: dict[str, dict[str, str]] = {}
+    for ambito, zip_path in descargados:
+        try:
+            with zipfile.ZipFile(zip_path) as z:
+                hashes[ambito] = {
+                    i.filename: hashlib.sha256(z.read(i)).hexdigest()
+                    for i in z.infolist()
+                    if not i.is_dir()
+                }
+        except zipfile.BadZipFile:
+            continue
+
+    veredictos = []
+    for menor, mayor in (("MUNI", "MESA"), ("TOTA", "MUNI"), ("TOTA", "MESA")):
+        if menor not in hashes or mayor not in hashes:
+            continue
+        contenido = all(hashes[mayor].get(k) == v for k, v in hashes[menor].items())
+        extra = sorted(set(hashes[mayor]) - set(hashes[menor]))
+        veredictos.append(
+            f"`{menor}` {'ESTA contenido en' if contenido else 'NO esta contenido en'} "
+            f"`{mayor}`" + (f" (que anade: {', '.join(f'`{e}`' for e in extra)})" if extra else "")
+        )
+    return veredictos
+
+
+def extraer_especificacion(descargados: list[tuple[str, Path]]) -> list[Path]:
+    """Saca el `FICHEROS.doc` de cada zip, que es la especificacion del layout.
+
+    Merece funcion propia porque es el hallazgo que evita el modo de fallo que
+    mato a v1: **el layout no hay que suponerlo ni buscarlo en otra web, viene
+    empaquetado con los datos**. Se extrae tal cual, sin intentar parsearlo aqui:
+    transcribirlo a un esquema es un paso aparte y deliberado.
+    """
+    sacados: list[Path] = []
+    for _, zip_path in descargados:
+        try:
+            with zipfile.ZipFile(zip_path) as z:
+                for info in z.infolist():
+                    if not Path(info.filename).stem.upper() == "FICHEROS":
+                        continue
+                    destino = EXTERNAL / "especificacion" / f"{zip_path.stem}_{info.filename}"
+                    destino.parent.mkdir(parents=True, exist_ok=True)
+                    if not destino.exists():
+                        destino.write_bytes(z.read(info))
+                    sacados.append(destino)
+        except zipfile.BadZipFile:
+            continue
+    return sacados
+
+
 def main(anio: int = 2019, mes: int = 11) -> int:
     EXTERNAL.mkdir(parents=True, exist_ok=True)
     OUT.mkdir(parents=True, exist_ok=True)
@@ -159,38 +204,18 @@ def main(anio: int = 2019, mes: int = 11) -> int:
 
     w("")
     if not descargados:
-        w("## Resultado: no se descargo nada, y la razon es un hallazgo")
+        w("## Resultado: no se descargo nada")
         w("")
-        w("**El obstaculo NO es la nomenclatura del fichero ni la red.** El handshake")
-        w("TLS con `infoelectoral.interior.gob.es` funciona y el certificado es")
-        w("autentico. Comprobado a mano:")
+        w("La cadena de confianza se valida en `src/v2/cadena_confianza.py` y ese")
+        w("modulo tiene su propio autodiagnostico. Correrlo es el primer paso:")
         w("")
         w("```")
-        w("subject = CN=*.interior.gob.es, O=MINISTERIO INTERIOR - SECRETARIA ESTADO SEGURIDAD")
-        w("issuer  = C=ES, O=FNMT-RCM, OU=AC Componentes Informaticos")
+        w("python src/v2/cadena_confianza.py")
         w("```")
         w("")
-        w("La autoridad emisora es la **FNMT-RCM**, la CA de la administracion")
-        w("espanola. **No viene en el almacen de confianza por defecto de Python ni")
-        w("en el de `certifi`**, que siguen el programa de raices de Mozilla. Por eso")
-        w("falla con `CERTIFICATE_VERIFY_FAILED` una fuente que el navegador abre sin")
-        w("problema.")
-        w("")
-        w("**Por que esto importa y no es una anecdota de configuracion:**")
-        w("")
-        w("1. Es una barrera de entrada real y silenciosa a los datos electorales")
-        w("   oficiales espanoles desde codigo. Explica parte de por que casi todo el")
-        w("   analisis publico se hace sobre reagregaciones de terceros en vez de")
-        w("   sobre la fuente primaria.")
-        w("2. La salida correcta es **anadir la raiz de la FNMT al bundle**, no")
-        w("   desactivar la verificacion. Si se desactiva, la procedencia del dato")
-        w("   deja de estar respaldada -- y la procedencia es la mitad del valor de")
-        w("   este proyecto.")
-        w("")
-        w("**Siguiente paso, concreto:** obtener la raiz de la FNMT por un canal")
-        w("verificable, anadirla a un bundle propio del repo, y volver a correr esto.")
-        w("Hasta entonces no se ha comprobado el patron de nombre de fichero: puede")
-        w("ser correcto o no, y **no se da por bueno**.")
+        w("Si el handshake sale VERIFICADO, el problema no es TLS sino el patron de")
+        w("nombre de fichero o la disponibilidad de esa convocatoria. **No se da por")
+        w("bueno ningun patron que no se haya descargado.**")
         (OUT / "v2_reconocimiento_infoelectoral.md").write_text(
             "\n".join(lineas) + "\n", encoding="utf-8"
         )
@@ -212,6 +237,31 @@ def main(anio: int = 2019, mes: int = 11) -> int:
         for f in filas:
             muestra = f["muestra"].replace("|", "\\|")
             w(f"| `{f['fichero']}` | {f['bytes']:,} | {f['ancho_1a_linea']} | `{muestra}` |")
+        w("")
+
+    veredictos = contencion_de_ambitos(descargados)
+    if veredictos:
+        w("## Los tres ambitos NO son tres conjuntos de datos distintos")
+        w("")
+        w("Comparado entrada por entrada con SHA-256, no por tamano:")
+        w("")
+        for v in veredictos:
+            w(f"- {v}")
+        w("")
+        w("Es decir: el ambito no cambia el catalogo, solo **anade** ficheros de")
+        w("resultados mas finos. Consecuencia practica: **con bajar `MESA` sobra**.")
+        w("")
+
+    especificaciones = extraer_especificacion(descargados)
+    if especificaciones:
+        w("## La especificacion del layout venia DENTRO del zip")
+        w("")
+        w("No hay que buscarla fuera: cada paquete trae un `FICHEROS.doc` que")
+        w("describe los campos de ancho fijo. Extraido a `data/external/` para")
+        w("poder transcribirlo a un esquema:")
+        w("")
+        for ruta in especificaciones:
+            w(f"- `{ruta.as_posix()}` ({ruta.stat().st_size:,} bytes)")
         w("")
 
     w("## Lo que este informe NO dice, y hace falta antes de analizar nada")

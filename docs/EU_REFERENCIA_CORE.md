@@ -45,11 +45,18 @@ EU-NED no baja de NUTS2, el 22,9 % del voto español se quedaba sin veredicto de
 fuentes, no la pregunta.** Cambiándolas, los tres motivos desaparecen por construcción.
 
 ### Estado de v2
-- ✅ **Día 1 hecho** (`deaa81e`): `src/v2/descarga_infoelectoral.py` — reconocimiento de la fuente.
-- 🔴 **Bloqueo activo:** el certificado de `infoelectoral.interior.gob.es` es auténtico pero lo emite
-  la **FNMT-RCM**, que no está en el almacén de raíces de Mozilla → ni en Python ni en `certifi`.
-  **La fuente oficial no se baja desde código sin añadir esa raíz.** Se dejó fallando a propósito:
-  **no desactivar la verificación TLS** — eso invalidaría la procedencia, que es medio proyecto.
+- ✅ **Día 1** (`deaa81e`): `src/v2/descarga_infoelectoral.py` — reconocimiento de la fuente.
+- ✅ **Día 2 — DESBLOQUEADO.** La descarga oficial funciona **con verificación TLS completa**
+  (`src/v2/cadena_confianza.py` + `certs/`, 7 tests en verde). Bajados los tres ámbitos de 2019-11.
+  🔴 **Y el diagnóstico anterior era falso:** `certifi` **sí** trae las raíces de la FNMT. Lo que
+  pasa es que **el servidor del Ministerio manda la cadena incompleta** —omite la intermedia
+  `AC Componentes Informáticos`— y OpenSSL, a diferencia del navegador, no la busca por AIA. La
+  salida no fue *añadir una raíz* sino **completar una cadena cuyo ancla ya estaba avalada**:
+  confianza nueva añadida, ninguna. Detalle en [§7-bis del alcance](v2_alcance.md).
+- ✅ **La especificación del layout viaja DENTRO del zip** (`FICHEROS.doc`). No hay que suponerlo ni
+  buscarlo fuera. **Pendiente: transcribirla a un esquema.**
+- ✅ **`TOTA` ⊂ `MUNI` ⊂ `MESA`**, comprobado por SHA-256 entrada a entrada: el ámbito solo añade
+  ficheros de resultados. **Con bajar `MESA` sobra.**
 - ⏳ **Sin resolver:** quién actúa distinto porque esto exista (es el criterio flojo del proyecto).
 
 ---
@@ -87,7 +94,9 @@ fuentes, no la pregunta.** Cambiándolas, los tres motivos desaparecen por const
 
 ## ESTADO ACTUAL (2026-08-17)
 
-**Línea viva: v2.** Ver arriba. `main` en `deaa81e`, **sin pushear**. Working tree limpio.
+**Línea viva: v2.** Ver arriba. `main` **sin pushear** (5 commits locales).
+
+**Tests de v2:** `python -m pytest src/v2/ -v` (7 en verde; `-m "not red"` para correr sin internet).
 
 **Código de v1 — histórico, no vivo.** `src/join_economico_electoral.py`,
 `src/cobertura_partidos.py` y `src/ingestion/load_euned.py` produjeron los cuatro hallazgos de E0 y
@@ -109,21 +118,20 @@ intactos y verificados. El EFA sigue con solución impropia (Heywood), 5 variabl
 
 ## PRÓXIMO PASO EXACTO
 
-**Desbloquear la descarga de Infoelectoral**: obtener la raíz de la **FNMT-RCM** por un canal
-verificable, añadirla a un bundle propio del repo, y volver a correr
-`python src/v2/descarga_infoelectoral.py`. Hasta que eso funcione **no se ha comprobado el patrón de
-nombre de fichero** y no se da por bueno.
+⚫ ~~*Desbloquear la descarga de Infoelectoral*~~ — **hecho el 17-ago.** Ver el estado de v2 arriba.
 
-🟢 **Atajo verificado:** los paquetes de R `infoelectoral` (Héctor Meleiro) y `pollspain` (Javier
-Álvarez-Liébana) **ya descargan de Infoelectoral** → han resuelto lo de la FNMT. Mirar cómo lo hacen
-antes que buscar la raíz a ciegas.
+**(1) Revisar el trabajo previo ANTES de escribir una línea más de fontanería** — sigue siendo el
+paso con mejor relación coste/beneficio y **no se ha hecho**: el **SEA (Spanish Electoral Archive,
+Harvard Dataverse)** y el dataset `renta` del paquete de R `infoelectoral` (>34.000 filas ya cruzando
+renta INE × sección censal). Puede ahorrar semanas o mostrar que parte ya está hecha; **las dos cosas
+son un buen resultado.**
 
-Después, en este orden: (1) **revisar el SEA (Spanish Electoral Archive, Harvard Dataverse)** y el
-dataset `renta` del paquete `infoelectoral` (>34.000 filas ya cruzando renta INE × sección censal) —
-**antes de escribir una línea de fontanería**: puede ahorrar semanas o mostrar que parte ya está
-hecha; (2) leer la especificación oficial de los ficheros de ancho fijo — **no suponer el layout**;
-(3) escribir **antes de mirar los datos** el umbral operativo que define PANE **y** la regla de
-muestra fija entre escalas.
+**(2) Transcribir el layout a un esquema** desde el `FICHEROS.doc` que ya está extraído en
+`data/external/infoelectoral/especificacion/`. Es un binario OLE2 (Word 97) — hay que sacarle el
+texto. **Se lee, no se supone.**
+
+**(3) Escribir, ANTES de mirar los datos**, el umbral operativo que define PANE **y** la regla de
+muestra fija entre escalas. El preregistro entra en el MVP.
 
 ⚫ ~~*Retomar el EFA*~~ — era el próximo paso desde junio y **ya no lo es**. Ver el bloque congelado.
 

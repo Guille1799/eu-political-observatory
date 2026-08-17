@@ -159,12 +159,75 @@ regionalista.** O sea que apunta contra el objeto del estudio.
 
 | # | Qué | Estado |
 |---|---|---|
-| 1 | 🔴 **La descarga oficial no verifica TLS.** El certificado de Infoelectoral es auténtico pero lo emite la **FNMT-RCM**, que no está en el almacén de raíces de Mozilla → ni en Python ni en `certifi`. **La salida es añadir la raíz, NO desactivar la verificación**: bajar datos oficiales por un canal sin verificar invalidaría la procedencia | 🟢 **Pista:** los paquetes de R `infoelectoral` y `pollspain` **ya descargan de ahí**. Mirar cómo lo resuelven es más corto que buscar la raíz a ciegas |
-| 2 | El **layout** de los ficheros de ancho fijo | Leer la especificación oficial. **Suponer estructura no verificada es lo que mató a v1** |
+| 1 | ~~La descarga oficial no verifica TLS~~ | ✅ **RESUELTO el 2026-08-17** con verificación completa. Y el diagnóstico que había aquí era **falso**: ver §7-bis |
+| 2 | El **layout** de los ficheros de ancho fijo | ✅ **La especificación viaja DENTRO del zip** (`FICHEROS.doc`, 284 KB, en los tres ámbitos). No hay que buscarla fuera ni suponer nada. Extraída a `data/external/infoelectoral/especificacion/`. **Falta transcribirla a un esquema** |
 | 3 | **Códigos incompatibles**: los del Ministerio del Interior **no** son los del INE. Y la correspondencia de secciones censales entre ficheros cartográficos, electorales y padronales *"no siempre coincide"* y *"varía en el tiempo"* (documentado por el proyecto SEA) | Existen tablas de correspondencia mantenidas en el paquete `infoelectoral` |
 | 4 | **Fronteras de sección censal que cambian cada año** | Paradójicamente es *material* para un estudio de MAUP —es el efecto de zonificación puro— pero hay que tratarlo explícitamente |
 | 5 | 🟡 **Volumen**: la API del INE rechaza descargas completas del ADRH por restricción de volumen; el CSV masivo sí funciona pero una tabla pesa ~352 MB | Manejable, pero no es un `read_csv` inocente |
 | 6 | ⚠️ **Trabajo previo que puede reducir el esfuerzo — o parte del espacio**: el **SEA (Spanish Electoral Archive)**, en Harvard Dataverse, fusiona resultados + cartografía + padrón desde mesa hasta CCAA (generales 1979-2019). Y el paquete `infoelectoral` **ya trae un dataset `renta`** con >34.000 filas cruzando renta del INE por sección censal | **Revisarlo antes de escribir una línea de fontanería.** Puede ahorrar semanas — o mostrar que parte de esto ya está hecho |
+
+## 7-bis. El bloqueo de la descarga: resuelto, y el diagnóstico anterior era falso
+
+`[VERIFICADO 2026-08-17, con código que corre]` La descarga oficial funciona **con verificación TLS
+completa**. Pero antes de eso hay una corrección que conviene no tapar, porque el error tenía forma
+de conclusión razonable.
+
+**Lo que decía este documento y el resto del repo:** *"el certificado lo emite la FNMT-RCM, que no
+está en el almacén de raíces de Mozilla → ni en Python ni en `certifi`"*.
+
+**Es falso, y se comprueba en una línea:** `certifi` **sí** trae dos raíces de la FNMT — `AC RAIZ
+FNMT-RCM` y `AC RAIZ FNMT-RCM SERVIDORES SEGUROS`. La CA española lleva años en el programa de
+Mozilla. El síntoma era real; la causa atribuida, no.
+
+**Lo que pasa de verdad** se ve pidiéndole la cadena al servidor:
+
+```
+$ openssl s_client -connect infoelectoral.interior.gob.es:443 -showcerts
+ 0 s:CN=*.interior.gob.es
+   i:C=ES, O=FNMT-RCM, OU=AC Componentes Informáticos
+Verify return code: 21 (unable to verify the first certificate)
+```
+
+**El servidor manda solo el certificado de hoja y omite la intermedia** `AC Componentes
+Informáticos`. Es un fallo de configuración del servidor del Ministerio, no un problema de raíces: el
+ancla ya es de confianza, lo que falta es el eslabón intermedio. Los navegadores lo tapan porque
+bajan solos ese eslabón de la URL que el propio certificado declara en su extensión **AIA**
+(*Authority Information Access*); OpenSSL —y por tanto Python, `requests` y `curl`— **no hacen eso**.
+De ahí que la fuente se abra en el navegador y no desde código.
+
+**La salida, en `src/v2/cadena_confianza.py`:** se baja la intermedia de la URL del AIA, se
+**verifica su firma contra las raíces que ya trae `certifi`**, y se guarda versionada en `certs/`.
+El `SSLContext` sale con `CERT_REQUIRED` + `check_hostname`.
+
+> **Confianza nueva añadida: ninguna.** Es importante que la diferencia se vea, porque lo que decía
+> este documento —*"añadir la raíz de la FNMT al bundle"*— **sí** habría sido añadir un ancla de
+> confianza nueva por decisión propia. Completar una cadena cuyo ancla ya está avalada por Mozilla es
+> una operación estrictamente más débil, y por eso mejor.
+
+**Tres controles, y los tres tienen que pasar** (`src/v2/test_cadena_confianza.py`, 7 tests):
+firma válida contra una raíz de `certifi`, huella SHA-256 fijada, y validez temporal. Hay un test que
+fabrica un impostor **con el subject y el issuer correctos** y comprueba que se rechaza — porque un
+módulo de seguridad validado solo con el caso bueno está sin validar. Y un test de política que lee
+el AST del módulo y falla si aparece cualquier forma de desactivar la verificación.
+
+⚠️ **Una trampa que casi se cuela, anotada para no repetirla:** el contexto TLS **por defecto** de
+Python en Windows sí conecta con Infoelectoral. Es tentador quedarse ahí y declararlo resuelto. Pero
+funciona por un motivo que no es reproducible: Windows tenía la intermedia **cacheada en el almacén
+del usuario** (`CurrentUser\CA`) de alguna visita previa con navegador. En otra máquina, en Linux o
+en CI, ese mismo código falla. **Lo que funciona en la máquina de uno no es lo que funciona.**
+
+🟢 **Y el atajo que había escrito aquí ya no hace falta:** mirar cómo resuelven esto los paquetes de
+R `infoelectoral` y `pollspain` era una pista sensata, pero el problema resultó ser más simple que
+ir a leer código ajeno. Siguen siendo relevantes por el punto 6, no por este.
+
+**Lo que se comprobó de paso, y no estaba escrito:**
+
+- **Los tres ámbitos publicados no son tres conjuntos de datos.** Comparados entrada por entrada con
+  SHA-256: `TOTA` ⊂ `MUNI` ⊂ `MESA`. El ámbito no cambia el catálogo de candidaturas ni de
+  candidatos; solo **añade** ficheros de resultados más finos. **Con bajar `MESA` sobra** — una
+  descarga en vez de tres, y ninguna duda sobre cuál de las tres copias de un catálogo es la buena.
+- **El patrón de nombre de fichero queda comprobado**, no supuesto: `02<año><mes>_<ÁMBITO>.zip`
+  descarga los tres ámbitos de 2019-11.
 
 ## 8. Quién actúa distinto (criterio de impacto) — resuelto, y no donde se suponía
 

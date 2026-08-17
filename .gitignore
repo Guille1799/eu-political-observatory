@@ -10,6 +10,10 @@ __pycache__/
 # Datos crudos — demasiado pesados para GitHub
 data/raw/
 data/processed/
+# Descargas de fuentes externas: las regenera `src/v2/descarga_infoelectoral.py`
+# a partir de la fuente oficial, así que versionarlas solo añadiría peso y una
+# copia que podría quedarse desincronizada del original.
+data/external/
 
 # Cursor y VS Code — configuracion local del editor, no del proyecto
 .cursor/
