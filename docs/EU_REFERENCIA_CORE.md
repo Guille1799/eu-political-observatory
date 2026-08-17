@@ -118,7 +118,26 @@ fuentes, no la pregunta.** Cambiándolas, los tres motivos desaparecen por const
 
 **Línea viva: v2.** Ver arriba. `main` **sin pushear** (5 commits locales).
 
-**Tests de v2:** `python -m pytest src/v2/ -v` (7 en verde; `-m "not red"` para correr sin internet).
+### Tests de v2 — y un aviso, porque el comando obvio falla
+
+```
+python -m pytest src/v2/ -q -m "not red"     # 6 en verde + 1 deseleccionado (necesita internet)
+python -m pytest src/v2/ -q                  # los 7, con red
+```
+
+🔴 **Ojo: hay que correrlos con el Python DEL SISTEMA, no con `venv/`.** El venv del repo **no tiene
+`pytest` instalado**, así que `./venv/Scripts/python.exe -m pytest` devuelve *"No module named pytest"* y
+parece que no hay tests.
+
+**Causa raíz, y no es que faltara instalarlo:** `requirements.txt` es un `pip freeze` completo y
+**`pytest` no estaba declarado en él** pese a que el repo tiene suite de tests y los documenta.
+✅ **Añadido el 17-ago.** Para dejar el venv en línea con el fichero:
+
+```
+./venv/Scripts/python.exe -m pip install -r requirements.txt
+```
+
+*(No se ejecutó desde la sesión: tocar el entorno de otro es suyo, no de quien audita.)*
 
 **Código de v1 — histórico, no vivo.** `src/join_economico_electoral.py`,
 `src/cobertura_partidos.py` y `src/ingestion/load_euned.py` produjeron los cuatro hallazgos de E0 y
