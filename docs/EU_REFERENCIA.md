@@ -1,7 +1,15 @@
 # EU Political Observatory — Referencia Metodológica Completa
 
 > Cargado automáticamente por `get_session_context(project="eu_observatory")`.
-> Contiene metodología ESS completa + estado del proyecto.
+> Contiene la **metodología ESS completa**.
+
+> ⏸️ **AVISO (2026-08-17): esto documenta una línea de trabajo CONGELADA, no la actual.**
+> Todo lo de aquí —selección de variables, EFA, imputación, invarianza, y la clasificación de partidos
+> con POPPA/PopuList— pertenece al pipeline ESS y al diseño europeo. **El pipeline ESS está congelado**
+> (bloqueado en una solución factorial impropia) y **el diseño europeo se retiró** tras ejecutarse.
+> **Sigue siendo válido como metodología; no lo es como estado del proyecto.**
+> 📄 **Línea viva y estado real: [`EU_REFERENCIA_CORE.md`](EU_REFERENCIA_CORE.md) y
+> [`v2_alcance.md`](v2_alcance.md).** No arranques trabajo desde este fichero.
 
 ---
 

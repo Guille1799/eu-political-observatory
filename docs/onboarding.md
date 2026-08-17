@@ -1,7 +1,24 @@
 # EU Political Observatory — Onboarding Guide
 
-## ¿Qué es este proyecto?
-Un dashboard educativo e interactivo que analiza los factores socioeconómicos y emocionales del auge de partidos nacionalistas en 7 países de la UE (España, Francia, Alemania, Italia, Polonia, Hungría, Suecia) entre 2008 y 2025.
+## ¿Qué es este proyecto? *(act. 2026-08-17)*
+
+**Pipelines reproducibles y con procedencia para estudiar política territorial**, montados para que cada
+número se pueda rastrear hasta su fuente y para que **las decisiones de medida se vean en vez de darse
+por supuestas**.
+
+**La línea de trabajo actual (v2) es española y subnacional:** *¿dónde y por qué crece el voto a partidos
+de ámbito no estatal (PANE), y cambia la respuesta según la escala territorial a la que se mire?*
+**La segunda mitad es el producto.** 📄 Alcance completo: [`v2_alcance.md`](v2_alcance.md).
+
+> ⚫ **Esta página decía antes:** *"un dashboard educativo e interactivo… de partidos nacionalistas en 7
+> países de la UE"*. **Las tres cosas han dejado de ser ciertas** y se corrigen aquí en vez de en un
+> índice aparte:
+> - **No hay dashboard**, y es deliberado: un panel donde se cruzan decenas de variables a voluntad es
+>   una máquina de correlaciones espurias. Ver §9 del alcance, *"qué NO hace este proyecto"*.
+> - **No son 7 países**: el diseño europeo se ejecutó y no era viable con sus fuentes. Ahora es España,
+>   que a cambio da escalas mucho más finas.
+> - **No es "partidos nacionalistas"**: esa etiqueta es un juicio ideológico y estaba mal codificada en
+>   las fuentes. El objeto se define por **dónde concurre** un partido.
 
 ---
 
