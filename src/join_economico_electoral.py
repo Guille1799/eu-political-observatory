@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
+[HISTORICO - v1] Este script NO esta en el camino de la linea de trabajo actual.
+
+Se conserva porque es la evidencia de por que el diseno europeo se retiro: lo que
+midio (que la base electoral europea no baja de NUTS2) es uno de los tres motivos
+del veredicto. La linea viva es v2, espanola y subnacional -- ver docs/v2_alcance.md.
+No construir encima de esto sin leer antes esa seccion.
+
 DIA 1 — join EU-NED x ARDECO a los DOS niveles que existen de verdad: NUTS1 y NUTS2.
 
 Qué hace y qué NO hace

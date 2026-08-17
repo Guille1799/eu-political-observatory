@@ -1,4 +1,12 @@
 """
+[HISTORICO - v1] Este script NO esta en el camino de la linea de trabajo actual.
+
+Se conserva porque es la evidencia de por que el diseno europeo se retiro: aqui
+salieron el 22,9% del voto espanol sin veredicto de partido y los joins de
+partyfacts_id que apuntan al partido equivocado. La linea viva es v2, que define el
+objeto desde los propios resultados electorales y no necesita estas clasificaciones
+-- ver docs/v2_alcance.md. No construir encima sin leer antes esa seccion.
+
 DIA 2 — Cobertura de la clasificacion de partidos (riesgo R1).
 
 Que hace y por que

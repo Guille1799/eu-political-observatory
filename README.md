@@ -1,9 +1,14 @@
 # eu-political-observatory
 
-**A reproducible pipeline that integrates independent European political-economic data sources
-into one traceable dataset — to study the rise of nationalist and populist politics across Europe.**
+**Reproducible, provenance-preserving pipelines for studying territorial politics — built so that
+every number can be traced back to its source, and so that the measurement decisions are visible
+rather than assumed.**
 
-## What it does
+> 👉 **The current line of work is sub-national and Spanish**, and it asks whether the answer changes
+> with the scale you measure at. See **[Status](#status)** — the earlier cross-country design was
+> executed, found not viable with its sources, and retired. That is documented, not hidden.
+
+## What the cross-country layer does *(built first; see Status for why it is not the current line)*
 
 - **Integrates independent sources** — regional economics (**ARDECO**), national election results
   (**EU-NED**), party & government data (**ParlGov**), and **ESS** survey microdata — reconciling
@@ -25,13 +30,51 @@ data every time — and without losing track of where each number came from.
 
 ## Status
 
-**Active work in progress.** The data-integration and missing-data foundation is in place. The
-measurement model is **blocked on an improper EFA solution (Heywood case)** — not "being finalised":
-it needs a decision before invariance testing is meaningful ([`R/README.md`](R/README.md)).
+**Active work in progress, and the current line is a Spanish sub-national one.**
 
-The current line of work is deliberately **upstream of that block**: an economic–electoral layer at
-NUTS2/NUTS3 that does not depend on the ESS measurement model. The provenance-aware legibility layer
-sits on top of validated indices, so it waits.
+### Current line: does the answer change with the scale you measure at?
+
+**Question:** where and why does the vote for **non-statewide parties** grow in Spain — and **does the
+answer change with the level of territorial aggregation you use?**
+
+The second half is the point. The same data can tell one story aggregated by municipality and a
+different one by province — the *modifiable areal unit problem*. Most published work on territorial
+voting picks one level, usually because it is the level that happens to be available, and never checks
+whether the conclusion survives changing it. This line checks it across **four real levels**: polling
+station → municipality → province → autonomous community.
+
+Alongside it: a map that **refuses to paint** where the evidence does not support an estimate, and
+says why. Scope and open questions: [`docs/v2_alcance.md`](docs/v2_alcance.md) (Spanish).
+
+### What the previous, cross-country design taught — and why it was retired
+
+An earlier design combined European regional election results, regional economics and academic party
+classifications. **It was executed, and it was not viable with those sources.** Three findings, all
+verified against the actual files:
+
+1. the European election dataset **does not go below NUTS2** — the fine scale the design assumed did
+   not exist in it;
+2. in Spain **22.9% of the vote had no party verdict** from the standard classifications, and it was
+   precisely the non-statewide parties: **coverage was worst exactly where the object of study was**;
+3. the shared party identifier **does not point to the same party across sources** — verified by hand,
+   producing a false positive and a false negative at once.
+
+The sources died, not the question. The current line replaces all three: official Ministry of the
+Interior results (published down to polling-station level since 1977), and an object defined by
+**where a party stands for election** rather than by an interpretive ideological label.
+
+> The v1 code is kept because it is the evidence for the above, but it is **not** on the path of the
+> current line.
+
+### Blocked / paused
+
+- 🔴 **Downloading the official Spanish election source from code is blocked.** Its certificate is
+  genuine but issued by **FNMT-RCM**, the Spanish public-administration CA, which is not in the
+  Mozilla root program and therefore not in Python's or `certifi`'s trust stores. The fix is to add
+  that root — **not** to disable TLS verification, which would void the provenance the pipeline
+  exists to preserve.
+- ⏸️ **The ESS measurement model is paused, not cancelled.** It remains blocked on an improper EFA
+  solution (Heywood case) ([`R/README.md`](R/README.md)). The current line does not depend on it.
 
 ## Stack
 

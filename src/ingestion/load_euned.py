@@ -1,3 +1,14 @@
+"""
+[HISTORICO - v1] Ingesta de la base electoral europea. NO esta en el camino de la
+linea de trabajo actual (v2, espanola y subnacional -- ver docs/v2_alcance.md).
+
+BUG CONOCIDO Y NO ARREGLADO: la regla de clasificacion `nativism>=7` AND `far-right`
+solo ve el 10% del voto y marca 38 partidos. No es una regla conservadora: convierte
+"no medido" en "no nacionalista", que es un error con signo. Se deja documentado en
+vez de arreglado porque este codigo ya no esta en el camino; si alguna vez vuelve a
+usarse, esto es lo primero que hay que tocar.
+"""
+
 import pandas as pd
 import psycopg2
 import os
