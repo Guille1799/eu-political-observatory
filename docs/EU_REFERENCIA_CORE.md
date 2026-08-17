@@ -120,17 +120,18 @@ intactos y verificados. El EFA sigue con solución impropia (Heywood), 5 variabl
 
 ⚫ ~~*Desbloquear la descarga de Infoelectoral*~~ — **hecho el 17-ago.** Ver el estado de v2 arriba.
 
-**(1) Revisar el trabajo previo ANTES de escribir una línea más de fontanería** — sigue siendo el
-paso con mejor relación coste/beneficio y **no se ha hecho**: el **SEA (Spanish Electoral Archive,
-Harvard Dataverse)** y el dataset `renta` del paquete de R `infoelectoral` (>34.000 filas ya cruzando
-renta INE × sección censal). Puede ahorrar semanas o mostrar que parte ya está hecha; **las dos cosas
-son un buen resultado.**
+⚫ ~~*Revisar el trabajo previo (SEA + dataset `renta`)*~~ — **hecho el 17-ago**, ver
+[`docs/v2_trabajo_previo.md`](v2_trabajo_previo.md). **El hueco sigue abierto:** el SEA no cruza renta
+con voto (solo padrón, una convocatoria) y sus mantenedores —Pavía y Pérez, que ya estaban en el
+criterio de impacto— declaran por escrito que integrar la renta del INE sigue pendiente. El dataset
+`renta` **se descarta**: sin año, 207 códigos con dos valores distintos, y falta Álava.
 
-**(2) Transcribir el layout a un esquema** desde el `FICHEROS.doc` que ya está extraído en
+**(1) Transcribir el layout a un esquema** desde el `FICHEROS.doc` que ya está extraído en
 `data/external/infoelectoral/especificacion/`. Es un binario OLE2 (Word 97) — hay que sacarle el
-texto. **Se lee, no se supone.**
+texto. **Se lee, no se supone.** 🟢 Y ahora hay con qué contrastarlo: los lectores `read03`…`read12`
+del paquete `infoelectoral` son una transcripción independiente del mismo layout.
 
-**(3) Escribir, ANTES de mirar los datos**, el umbral operativo que define PANE **y** la regla de
+**(2) Escribir, ANTES de mirar los datos**, el umbral operativo que define PANE **y** la regla de
 muestra fija entre escalas. El preregistro entra en el MVP.
 
 ⚫ ~~*Retomar el EFA*~~ — era el próximo paso desde junio y **ya no lo es**. Ver el bloque congelado.
