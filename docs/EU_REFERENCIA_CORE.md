@@ -59,6 +59,8 @@ Budapest entre ellas— sin saber qué estaba mirando. Consecuencia para el MVP:
 desde el principio** y meter una sección corta sobre el caso europeo, **sin ejecutarlo**.
 
 📄 Alcance completo, antecedentes y quién actúa distinto: [`docs/v2_alcance.md`](v2_alcance.md).
+🔴 **Y su §12 es la lista corta de lo que está SIN VERIFICAR** — seis cosas, con su coste al lado.
+Ninguna bloquea construir; **todas bloquean publicar o presentar apoyándose en ellas.**
 
 ### 🔴 Por qué murió v1, en una línea, para no repetirlo
 El diseño europeo anterior (EU-NED × ARDECO × PopuList/POPPA) se ejecutó en E0 y **no era viable**:

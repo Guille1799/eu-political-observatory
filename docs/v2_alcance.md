@@ -506,3 +506,34 @@ v1 era europeo y comparado. **Se ejecutó**, y no era viable con esas fuentes:
 > El código de v1 (`src/join_economico_electoral.py`, `src/cobertura_partidos.py`,
 > `src/ingestion/load_euned.py`) se conserva porque **es la prueba de todo lo anterior**, pero está
 > fuera del camino. No construir encima sin leer esta sección.
+
+---
+
+## 12. 🔴 LO QUE ESTÁ SIN VERIFICAR — la lista, en un sitio
+
+Cada uno de estos avisos está también en su sección, pero **repartidos por un documento largo se
+pierden**. Esta es la lista corta.
+
+**La regla que los gobierna, y ya ha cobrado dos víctimas:** el 17-ago cayeron dos candidatos al
+comprobarlos — uno porque **ya estaba hecho**, y otro porque **una cita correcta sostenía una inferencia
+falsa**. Y un tercero se salvó por poco: el diagnóstico del certificado (§7-bis) era plausible, estaba
+escrito en cuatro ficheros, y era falso.
+
+> **Comprobar antes de apoyarse. Y antes de presentar, no después.**
+
+| # | Qué está sin verificar | Por qué importa | Coste | §  |
+|---|---|---|---|---|
+| 1 | **¿Ha cruzado alguien SERPAVI con datos electorales?** | Si está ocupado, deja de ser la fuente diferencial y pasa a ser una más | ~20 min | §5.2 |
+| 2 | **¿Hasta qué año llega el Censo Anual** (estudios, edad, nacionalidad) **a sección censal?** | Si no cubre el periodo, **no se puede prometer serie larga** con esas variables — y son las que la literatura dice que pesan más que la renta | ~20 min | §5.2 |
+| 3 | **¿Dónde crece VOX de verdad?** El argumento del riesgo de muestra (§6) supone que crece en el rural diminuto | 🔴 **Es una de las cosas que este trabajo va a MEDIR.** No puede darse por sabida de entrada ni usarse como premisa | Sale del propio análisis | §6 |
+| 4 | **Cerrar la búsqueda de novedad en Dialnet y TESEO a texto completo** | Una tesis o un TFM español podría haber hecho ya el análisis multiescala. **El barrido del 17-ago no los cubrió** | ~1 h | §2.2 |
+| 5 | **El vínculo capitales ↔ maniobra de cohesión** (Varsovia, Budapest) | Está verificado que la maniobra existe y que esas regiones salen en los datos; **no que cada caso concreto sea el mismo** | Cruzar región a región con fechas de revisión de la nomenclatura | §9.3 |
+| 6 | **Las coaliciones de VOX**: en qué convocatorias y territorios concurrió coaligado | Decide qué candidaturas cuentan. **Se escribe antes de mirar los datos** | Sale de los propios ficheros | §5.1 |
+
+⚠️ **Y uno que no es de este repo pero condiciona lo que se cita:** el material de investigación del que
+salió parte de este diseño **no tiene pase verificador independiente** (141 marcas pendientes). Sus
+conclusiones cualitativas orientaron bien; **sus cifras no son citables sin abrir la fuente**.
+
+**Ninguno de estos seis bloquea el trabajo de mañana.** Lo que bloquean es **publicar** o **presentar**
+apoyándose en ellos. La diferencia importa: se puede construir con una incógnita declarada; no se puede
+afirmar con ella.
