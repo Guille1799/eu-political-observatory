@@ -29,6 +29,13 @@ cambia con la escala**, y el sesgo apunta a los municipios diminutos del rural i
 vive el voto PANE. **Obligatorio: fijar la muestra a las unidades presentes en todas las escalas y
 reportar la selección por separado.** Es el mismo error que E0 ya cazó con las capitales.
 
+🟢 **Ensanche europeo, verificado y NO para ahora (§9 del alcance):** la política de cohesión reparte
+fondos por umbral de PIB sobre **regiones NUTS2** (<75 % de la media = el grueso del dinero), y está
+documentado que **Hungría, Polonia y Lituania separaron sus capitales** de sus NUTS2 ganando ventaja
+en el reparto 2021-2027. **E0 ya topó con la huella** —las NUTS2 sin dato eran capitales, Varsovia y
+Budapest entre ellas— sin saber qué estaba mirando. Consecuencia para el MVP: **escribirlo bilingüe
+desde el principio** y meter una sección corta sobre el caso europeo, **sin ejecutarlo**.
+
 📄 Alcance completo, antecedentes y quién actúa distinto: [`docs/v2_alcance.md`](v2_alcance.md).
 
 ### 🔴 Por qué murió v1, en una línea, para no repetirlo

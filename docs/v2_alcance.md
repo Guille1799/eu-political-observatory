@@ -181,7 +181,69 @@ espacial**.
 | **Toni Rodon** (UPF), **Marc Guinjoan** (UAB), **Jordi Muñoz** (UB) | Eligieron nivel municipal teniendo comarcas disponibles, sin justificarlo, y ya detectaron de refilón sensibilidad al tamaño |
 | **Javier Álvarez-Liébana** (`pollspain`) y **Héctor Meleiro** (`infoelectoral`) | Sus paquetes ofrecen elegir el nivel territorial **sin ninguna guía de qué cambia al cambiarlo**. Una viñeta sobre eso es adopción inmediata |
 
-## 9. Qué NO hace este proyecto
+## 9. El ensanche europeo — verificado, y NO es para ahora
+
+Esto **no entra en el MVP**. Se escribe aquí porque decide cómo se redacta el primer corte, y porque
+es la razón de que este trabajo no acabe siendo solo un estudio local.
+
+### 9.1 En Europa, la escala a la que se mide decide quién cobra
+
+`[VERIFICADO 2026-08-17]` La política de cohesión de la UE clasifica **regiones NUTS2** por PIB per
+cápita frente a la media europea, y reparte según el umbral:
+
+| Categoría | Umbral | Consecuencia |
+|---|---|---|
+| Menos desarrollada | **< 75 %** | **El grueso de los fondos** |
+| Transición | 75-90 % | |
+| Más desarrollada | > 90 % | |
+
+Es decir: **dónde cae la frontera de la región determina de qué lado del umbral cae, y por tanto
+cuánto dinero recibe.** El MAUP deja de ser un problema metodológico y pasa a ser un problema de
+reparto.
+
+### 9.2 Y ya se ha explotado a propósito
+
+`[VERIFICADO]` Está documentado que **separar las ciudades capitales de sus regiones NUTS2 dio ventaja
+a algunos Estados miembros** en el reparto de fondos, con modificaciones hechas por **Hungría, Polonia
+y Lituania** que **afectaron a la asignación del periodo 2021-2027**.
+
+### 9.3 🧭 Y el trabajo previo de este repo ya topó con la huella, sin saber qué era
+
+E0 registró esto como una anomalía de cobertura:
+
+> *"Las 22 NUTS2 sin dato de educación son regiones nacidas de revisiones de frontera, sobre todo
+> **capitales** (Varsovia, Budapest, Sajonia). Comparar escalas sin cuadrar muestra atribuiría a la
+> escala la desaparición de la capital."*
+
+**Varsovia es Polonia. Budapest es Hungría.** Dos de los tres países señalados en §9.2. El código topó
+con **la huella en los datos de una maniobra deliberada de reparto** y la anotó como un hueco.
+
+⚠️ El vínculo es **fuerte pero es una hipótesis**: se ha verificado que la maniobra existe y que esas
+regiones aparecen en los datos, no que cada caso concreto sea el mismo. **Antes de afirmarlo, cruzar
+región a región con las fechas de revisión de la nomenclatura.**
+
+### 9.4 Qué implica para el MVP
+
+- **Se escribe el primer corte en bilingüe desde el principio.** Marginal si se hace ya, caro si se
+  hace al final.
+- **Se incluye una sección corta sobre el caso europeo**, apuntando a esto, sin ejecutarlo.
+- **El artefacto 2**, si lo hay, es apuntar el mismo aparato a NUTS2 y a los umbrales de cohesión.
+  Ahí el interlocutor deja de ser una redacción y pasa a ser la Comisión y el Tribunal de Cuentas
+  Europeo. **No antes de tener el primer corte entregado.**
+
+## 9-bis. Descartado tras comprobarlo: el experimento de percepción de mapas
+
+Se consideró añadir un experimento aleatorizado — enseñar los mismos datos a dos niveles de agregación
+y medir si la gente concluye cosas distintas. Habría convertido un hallazgo técnico en uno sobre
+personas, y encima es barato y preregistrable.
+
+🔴 **Está ocupado.** Existe *"Where Maps Lie: Visualization of Perceptual Fallacy in Choropleth Maps at
+Different Levels of Aggregation"* (2022) y trabajo reciente en CHI (2024) sobre cómo cambian las
+conclusiones del lector según tipo y detalle del mapa. **Se descarta.**
+
+Se anota para que no se vuelva a proponer dentro de tres semanas como si fuera una idea nueva.
+
+## 10. Qué NO hace este proyecto
 
 - **No hace dashboard.** Un panel donde se cruzan decenas de variables a voluntad es una máquina de
   correlaciones espurias.
@@ -189,7 +251,7 @@ espacial**.
 - **No predice elecciones.** Esa es una línea distinta y opcional, y solo tendría sentido **después**.
 - **No depende del modelo de medida ESS**, congelado por una solución factorial impropia.
 
-## 10. Por qué murió el diseño anterior (v1), para no repetirlo
+## 11. Por qué murió el diseño anterior (v1), para no repetirlo
 
 v1 era europeo y comparado. **Se ejecutó**, y no era viable con esas fuentes:
 
