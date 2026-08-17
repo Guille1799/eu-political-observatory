@@ -7,12 +7,25 @@
 
 ## 🔝 LO PRIMERO: qué es este proyecto AHORA (v2, decidido el 2026-08-16)
 
-**Pregunta:** ¿dónde y por qué crece el voto a **partidos de ámbito no estatal (PANE)** en España — y
-**cambia la respuesta según la escala territorial a la que mires**?
+**Pregunta:** ¿dónde ha **CRECIDO el voto a VOX** en España entre elecciones — y **cambia la respuesta
+según la escala territorial a la que mires**?
 
 Esa segunda mitad **es el producto**, no un chequeo: el mismo dato puede contar una historia agregado
-por municipios y otra por provincias (*modifiable areal unit problem*). Junto a ella va la **capa de
-honestidad**: un mapa que **se niega a pintar** donde no hay base y lo dice.
+por secciones censales y otra por municipios (*modifiable areal unit problem*). Junto a ella va la
+**capa de honestidad**: un mapa que **se niega a pintar** donde no hay base y lo dice.
+
+🔝 **Dos cambios del 17-ago por la tarde, que hay que respetar** (detalle en §1.1 y §1.2 del alcance):
+- **El objeto es VOX, no PANE.** Agregar Euskadi/Cataluña (renta alta) con Galicia/Canarias (renta baja)
+  **promedia mecanismos contrarios y rompe la variable**. Con un partido único desaparece además todo el
+  problema de clasificación — el que mató a v1. PANE queda como **contraste opcional**, no como saco.
+- **Se mide el CAMBIO entre elecciones, no el nivel en una.** "Auge" es un cambio, y **solo es posible
+  con un partido estable**. Comparar el mismo sitio consigo mismo resta lo que no cambia.
+
+🎯 **Y hay diana con nombre:** Roig, Espinosa & Pavía (2025), *Frontiers in Political Science* — **usan
+las mismas dos fuentes**, concluyen que a VOX lo trajo la **renta media-alta** (no los perdedores),
+justifican la sección censal **por su homogeneidad interna**… **y no mencionan el MAUP ni una vez**.
+Dos de los tres huecos los piden ellos mismos; el tercero es su omisión. **Pavía ya estaba en el
+criterio de impacto por otros dos caminos independientes.**
 
 **Fuentes de v2, ambas verificadas el 17-ago:** electoral, **Infoelectoral** (Mº Interior, desde 1976,
 hasta mesa); socioeconómica, **INE — Atlas de Distribución de Renta de los Hogares (ADRH)**, operación
@@ -25,9 +38,18 @@ Navarra** vía haciendas forales.
 de escaños y ahí la provincia **es** la circunscripción legal.
 
 🔴 **Riesgo que mata el diseño si se ignora:** el ADRH omite unidades de <100 habitantes → **la muestra
-cambia con la escala**, y el sesgo apunta a los municipios diminutos del rural interior, que es donde
-vive el voto PANE. **Obligatorio: fijar la muestra a las unidades presentes en todas las escalas y
+cambia con la escala**, y las que se caen son las diminutas del rural interior — donde el crecimiento de
+VOX no es un residuo. **Obligatorio: fijar la muestra a las unidades presentes en todas las escalas y
 reportar la selección por separado.** Es el mismo error que E0 ya cazó con las capitales.
+
+🆕 **Fuente añadida el 17-ago, verificada: SERPAVI** (Mº Vivienda, precios del alquiler). Publica en
+**los cinco mismos peldaños**, **2011-2023**, descarga libre, >2,5 M de alquileres/año. Da **dos
+convocatorias más** que el Atlas y mide **el coste de vivir ahí**, no lo que se ingresa. ⚠️ Sin
+comprobar si alguien lo ha cruzado con voto.
+
+🔴 **Decisión sin tomar, y contamina la pregunta de escala:** ¿el voto se mide **sobre votos emitidos o
+sobre censo**? La participación varía con el tamaño del municipio, así que elegir mal convierte un
+efecto de participación en un falso efecto de escala. **Lo limpio: las dos.**
 
 🟢 **Ensanche europeo, verificado y NO para ahora (§9 del alcance):** la política de cohesión reparte
 fondos por umbral de PIB sobre **regiones NUTS2** (<75 % de la media = el grueso del dinero), y está
@@ -131,7 +153,8 @@ criterio de impacto— declaran por escrito que integrar la renta del INE sigue 
 texto. **Se lee, no se supone.** 🟢 Y ahora hay con qué contrastarlo: los lectores `read03`…`read12`
 del paquete `infoelectoral` son una transcripción independiente del mismo layout.
 
-**(2) Escribir, ANTES de mirar los datos**, el umbral operativo que define PANE **y** la regla de
+**(2) Escribir, ANTES de mirar los datos**, la regla de qué candidaturas cuentan como VOX cuando
+concurre en coalición · la elección de **denominador** (votos emitidos y/o censo) **y** la regla de
 muestra fija entre escalas. El preregistro entra en el MVP.
 
 ⚫ ~~*Retomar el EFA*~~ — era el próximo paso desde junio y **ya no lo es**. Ver el bloque congelado.

@@ -34,8 +34,16 @@ data every time — and without losing track of where each number came from.
 
 ### Current line: does the answer change with the scale you measure at?
 
-**Question:** where and why does the vote for **non-statewide parties** grow in Spain — and **does the
-answer change with the level of territorial aggregation you use?**
+**Question:** where has the vote for **Vox** *grown* in Spain between elections — and **does the answer
+change with the level of territorial aggregation you use?**
+
+The framing is deliberately narrow. A **single, stable party** removes the classification problem that
+sank the previous design entirely, and makes it possible to model **change** rather than levels: comparing
+a place with itself over time differences away everything about that place that does not change. A
+recent study using **the same two sources** concludes that Vox's early expansion was led by middle- and
+upper-income voters rather than "modernisation losers" — and justifies its choice of spatial unit by the
+internal homogeneity of that unit, **without ever testing how sensitive the result is to that choice**.
+That is the gap this line addresses.
 
 The second half is the point. The same data can tell one story aggregated by municipality and a
 different one by province — the *modifiable areal unit problem*. Most published work on territorial

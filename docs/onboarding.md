@@ -6,9 +6,13 @@
 número se pueda rastrear hasta su fuente y para que **las decisiones de medida se vean en vez de darse
 por supuestas**.
 
-**La línea de trabajo actual (v2) es española y subnacional:** *¿dónde y por qué crece el voto a partidos
-de ámbito no estatal (PANE), y cambia la respuesta según la escala territorial a la que se mire?*
+**La línea de trabajo actual (v2) es española y subnacional:** *¿dónde ha **crecido** el voto a **VOX**
+entre elecciones, y cambia la respuesta según la escala territorial a la que se mire?*
 **La segunda mitad es el producto.** 📄 Alcance completo: [`v2_alcance.md`](v2_alcance.md).
+
+*(El objeto fue brevemente "partidos de ámbito no estatal" y se cambió el 17-ago: agregar territorios
+con posiciones económicas opuestas promedia mecanismos contrarios. Un partido único, además, elimina el
+problema de clasificación. Razonamiento entero en §1.1 del alcance.)*
 
 > ⚫ **Esta página decía antes:** *"un dashboard educativo e interactivo… de partidos nacionalistas en 7
 > países de la UE"*. **Las tres cosas han dejado de ser ciertas** y se corrigen aquí en vez de en un

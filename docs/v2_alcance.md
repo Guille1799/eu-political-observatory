@@ -1,18 +1,78 @@
 # v2 — Alcance: qué es este proyecto y qué no
 
 > **Estado:** vivo · **Decidido:** 2026-08-16 · **Arrancado:** 2026-08-17 (`deaa81e`)
-> **Revisado a fondo el 2026-08-17** con dos barridos de verificación. Varias cosas de la primera
-> versión de este documento eran optimistas de más y están corregidas abajo, marcadas.
-> Sustituye al diseño europeo anterior, que se ejecutó y resultó inviable. Ver §8.
+> **Revisado a fondo el 2026-08-17**, tres veces y en este orden: dos barridos de verificación externa,
+> y una **redefinición del objeto y del diseño** al final del día. Varias cosas de las primeras
+> versiones eran optimistas de más o estaban mal argumentadas; **están corregidas en su sitio y
+> marcadas**, no añadidas encima.
+>
+> 🔝 **Los dos cambios grandes, por si vienes de una versión anterior:** el objeto pasó de *"partidos de
+> ámbito no estatal"* a **VOX** (§1.1), y el diseño pasó de medir el **nivel** en una elección a medir
+> el **cambio** entre elecciones (§1.2). Los dos los propuso G y los dos mejoran el proyecto.
+>
+> Sustituye al diseño europeo anterior, que se ejecutó y resultó inviable. Ver §11.
 
 ---
 
 ## 1. La pregunta
 
-> **¿Dónde y por qué crece el voto a partidos de ámbito no estatal (PANE) en España — y cambia la
-> respuesta según la escala territorial a la que se mire?**
+> **¿Dónde ha CRECIDO el voto a VOX en España entre elecciones — y cambia la respuesta según la escala
+> territorial a la que se mire?**
 
 Las dos mitades no pesan igual. **La segunda es el producto.**
+
+### 1.1 El objeto es VOX, y no "partidos de ámbito no estatal" *(cambiado el 2026-08-17)*
+
+La primera versión de este documento medía el voto a **PANE** (partidos de ámbito no estatal). Se
+cambió, y el motivo es de fondo, no de gusto.
+
+🔴 **Agregar PANE rompe la variable dependiente.** Euskadi y Cataluña están **por encima** de la media
+española de renta; Galicia y Canarias, **por debajo**. Meterlas en el mismo saco y preguntar *"¿se vota
+más nacionalismo donde hay menos renta?"* **promedia mecanismos contrarios que se cancelan**. Y no es
+solo económico: son trayectorias históricas distintas —fueros, Renaixença, Rexurdimento, insularidad—
+que no comparten ni origen ni cronología. Un promedio de fenómenos contrarios no significa nada.
+
+**Y una corrección a lo que este documento decía antes**, porque estaba mal argumentado: se afirmaba
+que "nacionalista" es *"un juicio ideológico discutible"*. **Para el núcleo de partidos es un hecho, no
+una etiqueta externa** — el PNV se declara nacionalista en sus propios estatutos y el BNG lo lleva en el
+nombre. El problema real era otro, y son tres cosas distintas:
+
+1. 🔑 **"Nacionalista" a secas incluye a VOX**, que es nacionalista **español**. La categoría que se
+   quería nombrar es **nacionalismo *periférico***; sin ese apellido, PNV y VOX caen en la misma bolsa.
+2. **Los bordes son grises de verdad**: Coalición Canaria, Teruel Existe, PAR, UPN, Compromís.
+3. **Las coaliciones se mueven** entre convocatorias (CiU → PDeCAT/Junts; coaliciones mixtas con
+   partidos estatales), y enlazar "la misma fuerza política" entre años **es trabajo manual** — que es
+   exactamente lo que hundió a v1.
+
+**Qué gana el diseño con un partido único:**
+
+| | |
+|---|---|
+| **Clasificación** | Desaparece entera. Un partido, un código, sin bordes ni coaliciones que resolver. **El riesgo que mató a v1 se evapora, esta vez del todo** |
+| **Homogeneidad** | Un discurso y una campaña nacional. No se suman cuatro historias distintas |
+| **Cobertura** | Concurre en toda España → hay variación en todo el territorio, no en cuatro esquinas. **Muchas más unidades para la pregunta de escala** |
+| **Diana** | La literatura reciente sobre VOX **es exactamente lo que este trabajo pone a prueba** (§2.2) |
+
+⚫ **PANE queda como CONTRASTE opcional**, no como saco: comparar si el efecto de escala es **mayor en
+un voto muy concentrado territorialmente** que en uno repartido. Segundo resultado casi gratis con la
+misma tubería — **y lo primero que se cae si aprieta el tiempo.**
+
+### 1.2 Se mide el CAMBIO, no el nivel *(cambiado el 2026-08-17)*
+
+**"Auge" es un cambio, no una foto.** La pregunta no es *dónde saca VOX más voto*, sino **dónde ha
+crecido más**.
+
+🔑 **Y esto solo es posible con un partido estable** — VOX existe desde 2013 con las mismas siglas. Con
+PANE no se podía: las marcas se rompen y se fusionan entre convocatorias y nunca sabes si comparas lo
+mismo. **El cambio de objeto desbloqueó el cambio de diseño.**
+
+**Y es metodológicamente más sólido, no solo más cercano a la pregunta.** Comparando sitios entre sí,
+cualquier diferencia puede venir de mil cosas no medidas: historia, industria, estructura de edad,
+cultura política. Comparando **el mismo sitio consigo mismo en dos momentos**, todo lo que no cambia
+**se resta solo** y queda únicamente lo que se movió.
+
+> Es la diferencia entre *"los altos pesan más que los bajos"* y *"esta persona ha engordado"*. La
+> segunda es mucho más difícil de discutir.
 
 ## 2. Por qué la escala es el producto — y qué se puede reclamar de verdad
 
@@ -34,15 +94,58 @@ que **elegir el nivel de agregación es tomar una decisión sustantiva sin decla
   > trabajos lo invocan para justificar que usan la unidad más fina disponible — y ahí se acaba.
   > Aquí está la medida.
 
-### 2.2 Antecedentes que hay que citar de entrada, no esperar a que los saque un revisor
+### 2.2 🔝 LA DIANA — Roig, Espinosa & Pavía (2025)
+
+`[LEÍDO A TEXTO COMPLETO el 2026-08-17, no solo el resumen]`
+**"Who votes for Vox? Socioeconomic profiles and electoral shifts in the region of Madrid"**,
+*Frontiers in Political Science* 7:1717586.
+
+| | |
+|---|---|
+| **Fuentes** | 🔑 **Las mismas dos que este proyecto**: resultados a sección censal (vía **SEA**) + **Atlas de renta del INE (ADRH)** |
+| **Periodo** | 2016 → 2023. Generales de abr-19, nov-19 y jul-23, más autonómicas de Madrid |
+| **Método** | **Inferencia ecológica** con el algoritmo `rslphom` — matrices de transferencia de voto, sin encuesta |
+| **Hallazgo** | **Contraintuitivo:** la entrada y primera expansión de VOX en Madrid la lideraron votantes de renta **media y alta** —desertores del PP y de Ciudadanos—, **no los de renta baja**. Los *"perdedores de la modernización"* solo se incorporan **después del COVID**. → **Desmienten el marco estándar** |
+
+🔑 **Y aquí está la bisagra de todo este proyecto.** Justifican usar la sección censal **por su
+homogeneidad interna** — *"trabajar con unidades espaciales pequeñas ofrece varias ventajas analíticas
+frente a niveles más agregados como los municipios"*. Su método, la inferencia ecológica, **descansa
+entero sobre ese supuesto**: deducir cómo votan las *personas* mirando datos de *zonas* solo funciona si
+la gente de dentro se parece.
+
+> **El MAUP es exactamente lo que rompe ese supuesto. Y no lo mencionan ni una vez.**
+>
+> Su conclusión más llamativa —*"a VOX lo trajo la renta media-alta"*— **nunca se ha sometido a la
+> prueba de cambiar de unidad.**
+
+**Los cuatro huecos — y DOS los piden ellos mismos en su trabajo futuro:**
+
+| Hueco | Origen | ¿Se puede cerrar? |
+|---|---|---|
+| *"Incorporar medidas explícitas de **desigualdad** junto a la renta, para separar sus efectos"* | **Suyo.** Su renta y su desigualdad correlacionaban **0,47** y no pudieron distinguir cuál manda | ✅ El ADRH ya trae **Gini** y **P80/P20**. Es la columna que les faltó |
+| *"Herramientas espaciales que tengan en cuenta las características de las secciones **vecinas**"* | **Suyo** | ✅ Ver §5.5 |
+| **La escala** | 🔑 **Su omisión, no su petición** | ✅ **Es el producto de este trabajo** |
+| **Madrid → España** | Su alcance declarado | ✅ Por defecto |
+
+🔴 **Encuadre obligatorio, y no es cosmético.** Si esto se presenta como *"analizo el voto a VOX"*, es
+replicarles con menos medios y se pierde. **La frase de apertura es siempre la escala:**
+
+> *"Un trabajo de 2025 concluye que a VOX lo trajo la renta media-alta. Su método depende de que las
+> unidades sean homogéneas por dentro. Aquí se comprueba si esa conclusión sobrevive al cambiar de
+> unidad — y se añaden las dos cosas que sus propios autores pidieron."*
+
+### 2.3 Los demás antecedentes, que también hay que citar
 
 | Trabajo | Qué hizo | Qué deja libre |
 |---|---|---|
-| **Maza & Hierro (2022)**, *A polarization approach to Catalonia's independence case*, Economia Politica 39:323-344 | 🔴 **El competidor más cercano.** Tratan el MAUP **explícitamente** sobre voto independentista municipal | Resolvieron la **zonificación** (cómo dividir dentro de la unidad). **Nadie ha hecho la ESCALA** (comparar entre niveles). **Esa distinción es lo que salva la novedad** |
-| *The emergence of the radical right…* (2025, Andalucía, VOX, 778 municipios) | Nombra el MAUP para justificar usar municipio | No compara escalas |
-| Roig, Espinosa & Pavía (2025), *Who votes for Vox?*, Frontiers in Political Science 7 | Sección censal + renta del ADRH | Una sola escala; ni nombra el MAUP |
-| Iglesias-Pascual et al. (2022), Spatial Demography | Durbin espacial, sección censal | Una sola escala |
+| **Maza & Hierro (2022)**, *A polarization approach to Catalonia's independence case*, Economia Politica 39:323-344 | 🔴 **El competidor metodológico más cercano.** Tratan el MAUP **explícitamente** sobre voto independentista municipal | Resolvieron la **zonificación** (cómo dividir dentro de la unidad). **Nadie ha hecho la ESCALA** (comparar entre niveles). **Esa distinción es lo que salva la novedad** |
+| *The emergence of the radical right…* (2025, Andalucía, **VOX**, 778 municipios) | **Nombra el MAUP** para justificar usar municipio | **Y no compara escalas.** Nombrar el problema y no medirlo es el patrón que este trabajo documenta |
+| Iglesias-Pascual et al. (2022), Spatial Demography | Durbin espacial, sección censal, extrema derecha en el sur | Una sola escala |
 | Sánchez-Díaz et al. (2020), *PUEM y enfermedades raras*, Investigaciones Geográficas 74 | 🟢 **MAUP hecho en España de verdad**: provincia/comarca/municipio | Objeto sanitario, **cero datos electorales**. Es una **plantilla metodológica directa** |
+
+> 🧭 **Los tres trabajos recientes sobre VOX eligen un nivel y ninguno comprueba si su conclusión
+> aguanta al cambiarlo.** Uno de ellos incluso nombra el problema. Ese patrón **es** el hallazgo que
+> justifica este proyecto.
 
 ⚠️ **Límites del barrido**, declarados: ScienceDirect devolvió 403 varias veces (3-4 referencias vistas
 por snippet, no a texto completo) y **no se buscó en Dialnet/TESEO a texto completo** — una tesis o un
@@ -77,31 +180,29 @@ procedencia, y la incertidumbre se enseña en vez de resumirse.
 
 ## 5. Decisiones de diseño
 
-### 5.1 El objeto: PANE — y una corrección al entusiasmo inicial
+### 5.1 El objeto: el voto a VOX
 
-**PANE = partido de ámbito no estatal**, definido por su **implantación territorial** (en cuántas
-circunscripciones concurre), no por ideología. Frente a etiquetar un partido como "nacionalista"
-—juicio interpretativo, disputado, y que en las bases académicas dejaba sin veredicto justo a los
-partidos españoles relevantes— la condición de ámbito no estatal **se calcula desde los propios
-resultados electorales**.
+Ver §1.1 para el porqué del cambio. Aquí, lo operativo.
 
-🔴 **PERO: esto disuelve el juicio ideológico, NO el problema de identidad de partido.** La primera
-versión de este documento decía que "los tres motivos desaparecen por construcción". **Era demasiado
-fuerte.** Infoelectoral da **códigos de candidatura que cambian entre convocatorias**, sin
-identificador estable de partido. Concretamente:
+**La variable dependiente es el voto a la candidatura de VOX**, identificada por su código de
+candidatura en cada convocatoria. Es un partido, no una categoría: **no hay nada que clasificar, ni
+bordes que defender, ni coaliciones que resolver.**
 
-- ✅ **Dentro de una convocatoria**, la condición PANE es observable sin ambigüedad: en qué
-  circunscripciones aparece esa candidatura, y se lee del propio fichero.
-- 🔴 **Entre convocatorias**, enlazar "la misma fuerza política" **vuelve a ser trabajo manual** — que
-  es exactamente lo que hundió a v1. Coaliciones que cambian de nombre, marcas que se fusionan.
+⚠️ **Lo único que hay que comprobar, y es mecánico:** VOX ha concurrido en coalición en algunas
+convocatorias y territorios. Hay que decidir **por escrito y antes de mirar** si esas candidaturas
+cuentan, y con qué regla. Es un puñado de casos, no un problema de fondo — pero se declara igual.
 
-**Regla que se adopta:** el análisis principal es **de corte transversal, por convocatoria**, donde el
-problema no existe. Cualquier panel entre años declara el enlace como **decisión documentada y
-falible**, con su tabla de correspondencias publicada. **No se arrastra el problema en silencio.**
+🔴 **DECISIÓN PENDIENTE, y no es menor: ¿voto sobre qué?**
 
-🔴 **Pendiente y con regla:** el umbral operativo exacto que define PANE **se escribe ANTES de mirar
-los datos**. Un umbral elegido después de ver el resultado no es un criterio, es una conclusión
-disfrazada.
+| | Sobre **votos emitidos** | Sobre **censo** |
+|---|---|---|
+| Qué mide | Cuota entre los que fueron a votar | Capacidad de movilizar sobre el total con derecho a voto |
+| Riesgo | Si otros se quedan en casa, VOX "sube" **sin ganar un solo votante** | Mezcla dos cosas: convencer y movilizar |
+
+**Y contamina directamente la pregunta de escala:** la participación **varía sistemáticamente con el
+tamaño del municipio** (en pueblos pequeños se vota más). Si se elige mal, parte del "efecto de escala"
+será **efecto de participación disfrazado**.
+✅ **Lo limpio: calcular las dos y publicar las dos.** Cuesta una columna.
 
 ### 5.2 Las fuentes — verificadas contra la API del INE, no de memoria
 
@@ -123,6 +224,41 @@ cambió la política a mitad de serie** (2013 trae números reales, 2025 ya no).
 los desgloses son mayoritariamente inutilizables y la serie está rota. **La renta del ADRH es la
 variable económica robusta; el paro no.**
 
+#### 🆕 SERPAVI — la fuente que encaja de forma casi absurda `[VERIFICADO 2026-08-17]`
+
+**Sistema Estatal de Referencia del Precio del Alquiler de Vivienda** (Ministerio de Vivienda).
+
+| | |
+|---|---|
+| **Niveles** | 🔑 **sección censal · distrito · municipio · provincia · CCAA** — **exactamente los cinco peldaños de §3** |
+| **Origen** | Datos fiscales reales de alquiler + bases catastrales, explotados por la AEAT |
+| **Volumen / años** | >**2,5 M** de alquileres al año · **2011-2023** |
+| **Acceso** | Descarga libre en tabla, además de visores cartográficos |
+
+**Por qué suma sobre la renta, y son tres cosas distintas:**
+1. **Cubre 2011** en vez de 2015 → **dos convocatorias generales más** para medir crecimiento, que es
+   justo lo que necesita el diseño de §1.2.
+2. **Mide otra cosa.** La renta dice lo que ingresas; el alquiler, **lo que cuesta vivir ahí**. Un
+   barrio puede tener renta media y alquileres asfixiantes. Esa presión de vivienda es un motor
+   conocido del voto de derecha radical y **el Atlas de renta no la capta**.
+3. **Es una tercera señal de origen distinto**, que ayuda a desenredar el lío renta↔desigualdad que
+   Roig et al. declararon no haber podido separar (§2.2).
+
+⚠️ **SIN COMPROBAR: si alguien ya lo ha cruzado con datos electorales.** Es un sistema reciente y Roig
+et al. no lo usan, pero **ausencia en una búsqueda no es prueba**. Comprobación pendiente antes de
+presentarlo como hueco.
+
+#### Y las variables que probablemente hacen más falta que la renta
+
+En la literatura sobre voto a la derecha radical, **la renta no suele ser el predictor más fuerte**:
+suelen serlo el **nivel de estudios**, la **estructura de edad** y el **porcentaje de población
+extranjera**. Un modelo solo con renta se arriesga a un resultado flojo — y a que el primer revisor
+pregunte por qué faltan.
+
+🟢 Están en el **Censo Anual de Población del INE, a sección censal**. ⚠️ **Su cobertura temporal es más
+corta que la del ADRH** (nivel de estudios y actividad, ~2021-2024): **hay que comprobar hasta dónde
+llega antes de prometer una serie larga con ellas.**
+
 ### 5.3 Dos condiciones que no se negocian
 
 1. **El primer corte tiene que valer solo.** Si nada de lo que venga después llega a existir, lo hecho
@@ -130,6 +266,41 @@ variable económica robusta; el paro no.**
    adelante"*, parar.
 2. **La diferenciación va dentro del primer corte.** Un mapa con una regresión es replicable por
    cualquiera en semanas. Lo que no lo es son las cinco escalas y la capa de honestidad.
+
+### 5.4 🔴 El límite honesto: "dónde" NO es "por qué"
+
+La pregunta que motiva esto es *por qué crece VOX*. **El diseño contesta dónde, no por qué**, y conviene
+tenerlo escrito antes de empezar para no cruzar la raya al escribir los resultados.
+
+Aunque salga que VOX creció más donde bajó la renta, **eso admite al menos tres explicaciones
+incompatibles**: que gente empobrecida votara VOX; que en esos sitios se marchara gente que votaba otra
+cosa; o que renta y voto se muevan juntos porque ambos dependen de un tercer factor no medido.
+
+Tiene nombre: **falacia ecológica** — concluir cosas sobre *personas* mirando datos de *zonas*. *"En las
+secciones de menos renta se vota más a VOX"* **no significa** *"los pobres votan VOX"*: puede ser gente
+acomodada viviendo en zonas que se empobrecieron.
+
+🔴 **No se arregla con más datos: es una limitación del tipo de dato.** Lo que se hace es **declararlo**
+y no cruzar la raya. Y de paso es la mejor defensa ante quien quiera leer el resultado en clave
+partidista: si alguien acusa al trabajo de decir que los pobres votan VOX, ya está escrito que eso no se
+puede afirmar con estos datos.
+
+**Lo que sí se puede afirmar** —y es el producto—: *la relación entre economía y voto a VOX es de este
+tamaño, y se mueve así al cambiar la unidad territorial con la que se mide.*
+
+> 🧭 Y esto muerde con fuerza a la diana de §2.2: la **inferencia ecológica** es, literalmente, el
+> intento de saltarse esta limitación. Cuanto más grande es la unidad, menos se sostiene el salto.
+
+### 5.5 Autocorrelación espacial: obligatoria, no opcional
+
+Las unidades vecinas se parecen entre sí. Eso rompe el supuesto de independencia que asumen las
+herramientas estadísticas estándar, y hace que **los márgenes de error salgan más pequeños de lo que
+deberían**: se aparenta más seguridad de la que hay.
+
+Tiene tratamiento conocido y hay que usarlo. **Y aquí importa más que de costumbre por dos motivos:**
+1. **Cuánto se parecen los vecinos también cambia con la escala** — está enredado con la pregunta
+   principal, así que ignorarlo contamina el resultado que se quiere medir.
+2. **Es una de las dos cosas que Roig et al. piden por escrito** en su trabajo futuro (§2.2).
 
 ## 6. 🔴 EL RIESGO QUE MATA EL DISEÑO (no la ejecución)
 
@@ -140,8 +311,12 @@ variable económica robusta; el paro no.**
 > **cinco muestras distintas**, no puedes saber si el coeficiente se movió **por la agregación** o
 > **por qué territorios entraron y salieron**.
 
-**Y el sesgo no es aleatorio: los municipios diminutos del rural interior son justo donde vive el voto
-regionalista.** O sea que apunta contra el objeto del estudio.
+**Y el sesgo no es aleatorio.** Las unidades que se caen son las diminutas del rural interior — y ahí
+**el voto a VOX no es un residuo**: parte de su crecimiento más fuerte está justamente en zonas rurales
+y en municipios pequeños del interior y del sureste. O sea que **la selección apunta contra el objeto**,
+igual que apuntaba cuando el objeto era otro. *(⚠️ Esa afirmación sobre dónde crece VOX es
+`[pendiente-verif]`: se apoya en la descripción general del fenómeno, no en una medición propia. Es
+además **una de las cosas que este trabajo va a medir**, así que no puede darse por sabida de entrada.)*
 
 **Mitigación obligatoria, no opcional:**
 1. **Fijar la muestra** a las unidades presentes en **todas** las escalas.
@@ -231,16 +406,18 @@ ir a leer código ajeno. Siguen siendo relevantes por el punto 6, no por este.
 
 ## 8. Quién actúa distinto (criterio de impacto) — resuelto, y no donde se suponía
 
-**No es la academia de PANE**: sus trabajos usan encuestas individuales del CIS/CEO, así que **no
-eligen nivel de agregación** y el criterio no les aplica. Es **periodismo de datos** y **metodología
-espacial**.
+**No es la academia que estudia estos partidos con encuestas**: sus trabajos usan microdatos
+individuales del CIS/CEO, así que **no eligen nivel de agregación** y el criterio no les aplica. Es
+**periodismo de datos** y **metodología espacial** — y, desde el 17-ago, **los propios autores de la
+diana**.
 
 | Quién | Por qué actuaría distinto |
 |---|---|
-| 🔝 **Raúl Sánchez** y **Victòria Oliveres** (unidad de Datos, eldiario.es) | Publicaron **la misma pregunta a dos escalas con dos días de diferencia**: voto PANE × renta sobre **8.131 municipios** (23-jul-2023) y voto × renta sobre **35.500 secciones censales** (25-jul-2023). El matiz de por qué eso importa está en su propia metodología, **sin cuantificar** |
-| **Kiko Llaneras** (El País) | Renta × voto independentista por sección censal; ya avisa contra la lectura ecológica y la trata a mano. Un Δ por escala le da la magnitud que hoy no tiene |
-| **Borja Andrino** (El País) | Afirma por escrito que *"el voto nacionalista es más fuerte en los municipios pequeños"* — que es literalmente el enunciado que este trabajo pone a prueba |
-| 🔝 **José M. Pavía** y **Virgilio Pérez** (Univ. de València, GIPEyOP) | Su obra entera es transferencia de votos entre unidades areales cambiantes. Es su terreno y no lo han medido para PANE. **Y además mantienen el SEA** `[verificado 17-ago]`, cuyo dataset de combinaciones cruza el voto con el padrón pero **no con la renta** — que su propio artículo declara pendiente de integrar. **El interlocutor y el trabajo previo son la misma gente** |
+| 🔝🔝 **Rosa Roig, Priscila Espinosa y José M. Pavía** — autores de la diana (§2.2) | Su conclusión sobre VOX descansa en un supuesto de homogeneidad interna **que nunca han puesto a prueba cambiando de unidad**. Este trabajo la somete a esa prueba **y les entrega las dos cosas que pidieron** (desigualdad junto a renta; herramientas espaciales). Es lo más cerca que hay de un destinatario que **tiene que responder** |
+| 🔝 **Raúl Sánchez** y **Victòria Oliveres** (unidad de Datos, eldiario.es) | Publicaron **la misma pregunta a dos escalas con dos días de diferencia**: voto × renta sobre **8.131 municipios** (23-jul-2023) y sobre **35.500 secciones censales** (25-jul-2023). El matiz de por qué eso importa está en su propia metodología, **sin cuantificar** |
+| **Kiko Llaneras** (El País) | Renta × voto por sección censal; ya avisa contra la lectura ecológica y la trata a mano. Un Δ por escala le da la magnitud que hoy no tiene |
+| **Borja Andrino** (El País) | Afirma por escrito que *"el voto nacionalista es más fuerte en los municipios pequeños"* — un enunciado sobre tamaño de unidad × voto, que es literalmente lo que este trabajo pone a prueba |
+| 🔝 **José M. Pavía** y **Virgilio Pérez** (Univ. de València, GIPEyOP) | Su obra entera es transferencia de votos entre unidades areales cambiantes. **Y además mantienen el SEA** `[verificado 17-ago]`, cuyo dataset cruza el voto con el padrón pero **no con la renta** — que su propio artículo declara pendiente de integrar. **El interlocutor, el trabajo previo y la diana son la misma gente**, por tres caminos independientes |
 | **Toni Rodon** (UPF), **Marc Guinjoan** (UAB), **Jordi Muñoz** (UB) | Eligieron nivel municipal teniendo comarcas disponibles, sin justificarlo, y ya detectaron de refilón sensibilidad al tamaño |
 | **Javier Álvarez-Liébana** (`pollspain`) y **Héctor Meleiro** (`infoelectoral`) | Sus paquetes ofrecen elegir el nivel territorial **sin ninguna guía de qué cambia al cambiarlo**. Una viñeta sobre eso es adopción inmediata |
 
