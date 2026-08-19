@@ -77,8 +77,27 @@ fuentes, no la pregunta.** Cambiándolas, los tres motivos desaparecen por const
   `AC Componentes Informáticos`— y OpenSSL, a diferencia del navegador, no la busca por AIA. La
   salida no fue *añadir una raíz* sino **completar una cadena cuyo ancla ya estaba avalada**:
   confianza nueva añadida, ninguna. Detalle en [§7-bis del alcance](v2_alcance.md).
-- ✅ **La especificación del layout viaja DENTRO del zip** (`FICHEROS.doc`). No hay que suponerlo ni
-  buscarlo fuera. **Pendiente: transcribirla a un esquema.**
+- ✅ **Día 3 — el layout, LEÍDO desde código.** `src/v2/lector_doc.py` abre el `FICHEROS.doc` (OLE2
+  de Word 97) **en Python puro** y `src/v2/layout_infoelectoral.py` lo convierte en un esquema con
+  los **12 tipos de fichero**. Ninguna posición escrita a mano. **15 tests**, y el que cierra el
+  asunto compara el esquema con los **diez `.dat` reales**: coinciden al byte.
+  🔴 **Y la especificación miente en una frase:** dice `CR+LF` y los ficheros llevan **`LF` a
+  secas**. Creerse esa frase desplaza un byte por línea y corrompe todos los campos a partir del
+  segundo registro, con cifras que siguen pareciendo cifras. Ver §7-ter del alcance.
+  ⚠️ **`antiword` está en esta máquina y NO se usa** — mismo motivo que el TLS: no está en Linux ni
+  en CI.
+- ✅ **Día 4 (19-ago) — mortalidad de secciones medida** (`src/v2/supervivencia_secciones.py`, 10
+  tests). Ver el próximo paso, abajo. **33 tests en verde en total.**
+- ✅ **Modo de trabajo nuevo, decidido el 19-ago:** este proyecto se hace **con G presente**, paso a
+  paso, con pregunta de comprobación bloqueante en cada concepto, y **las mediciones se hacen CON él,
+  no PARA él** (expectativa escrita antes de mirar, código enseñado antes de correr, número crudo
+  antes de la interpretación). Las reglas están en `~/.claude/CLAUDE.md`. **No se baja la calidad; se
+  baja el ritmo.**
+- ✅ **Lenguaje: Python** (§5.6 del alcance). **Idioma: producto bilingüe ES/EN, conversación y docs
+  internos en español** (§9.4).
+- 🔴 **Y el peldaño "distrito" resultó no serlo:** 36.302 secciones · 10.485 distritos · **8.131
+  municipios**, y solo el **13,4 %** de los municipios tiene más de un distrito. En el resto,
+  distrito **es** municipio. O se declara, o el peldaño se retira (§7-ter-bis). **Sin decidir.**
 - ✅ **`TOTA` ⊂ `MUNI` ⊂ `MESA`**, comprobado por SHA-256 entrada a entrada: el ámbito solo añade
   ficheros de resultados. **Con bajar `MESA` sobra.**
 - ⏳ **Sin resolver:** quién actúa distinto porque esto exista (es el criterio flojo del proyecto).
@@ -169,14 +188,31 @@ con voto (solo padrón, una convocatoria) y sus mantenedores —Pavía y Pérez,
 criterio de impacto— declaran por escrito que integrar la renta del INE sigue pendiente. El dataset
 `renta` **se descarta**: sin año, 207 códigos con dos valores distintos, y falta Álava.
 
-**(1) Transcribir el layout a un esquema** desde el `FICHEROS.doc` que ya está extraído en
-`data/external/infoelectoral/especificacion/`. Es un binario OLE2 (Word 97) — hay que sacarle el
-texto. **Se lee, no se supone.** 🟢 Y ahora hay con qué contrastarlo: los lectores `read03`…`read12`
-del paquete `infoelectoral` son una transcripción independiente del mismo layout.
+⚫ ~~*Transcribir el layout a un esquema*~~ — **hecho el 18-ago.** Ver el estado de v2 arriba.
+
+⚫ ~~*Resolver la tensión de §12.7: ¿sobrevive una sección censal entre convocatorias?*~~ — **MEDIDO
+el 19-ago con G. NO mata el diseño**, ver §6-bis del alcance. En resumen: de las 36.302 secciones de
+nov-2019, **35.730 (98,42 %) siguen siendo el mismo sitio** en jul-2023. Rompen la comparación 572
+(1,58 %): 268 muertas y **304 «particiones ocultas»** —conservan el código pero perdieron medio
+cuerpo, y eran **invisibles** para el recuento obvio—. 🟢 Y el problema **vive solo en el peldaño más
+fino**: las piezas de una partición no salen de su distrito, así que municipio, provincia y CCAA
+están limpios. Plan decidido: **A reconstruir (solo si el emparejamiento es único) → C apartar y
+declarar → B subir de peldaño, solo si fallan las dos**.
+🆕 **Y salió un resultado publicable que no estaba en el plan:** nadie ha medido a qué ritmo se
+reescribe la geografía electoral española más fina.
+
+**(1) 🔴 Comprobar si el INE publica cartografía anual de secciones o tabla de correspondencias**
+(§12.8). De ello depende que el plan A se pueda **validar**: la prueba del censo descarta pero no
+confirma —dos trozos de mapa distintos pueden tener la misma gente dentro—. ⚠️ Claude afirmó el
+18-ago que esa información existe **sin comprobarlo**. ~30 min.
 
 **(2) Escribir, ANTES de mirar los datos**, la regla de qué candidaturas cuentan como VOX cuando
 concurre en coalición · la elección de **denominador** (votos emitidos y/o censo) **y** la regla de
 muestra fija entre escalas. El preregistro entra en el MVP.
+🟢 **Y ya se puede hacer sin contaminarse:** el catálogo de candidaturas (fichero `03`, 106
+registros en 2019-11) trae **siglas y denominación, sin un solo voto**. Leer *qué* candidaturas
+existen no es mirar el resultado — el resultado está en los ficheros `06`/`08`/`10`. La regla se
+escribe como **criterio**, y luego se aplica mecánicamente al catálogo.
 
 ⚫ ~~*Retomar el EFA*~~ — era el próximo paso desde junio y **ya no lo es**. Ver el bloque congelado.
 

@@ -302,6 +302,41 @@ Tiene tratamiento conocido y hay que usarlo. **Y aquí importa más que de costu
    principal, así que ignorarlo contamina el resultado que se quiere medir.
 2. **Es una de las dos cosas que Roig et al. piden por escrito** en su trabajo futuro (§2.2).
 
+### 5.6 El lenguaje: Python *(decidido con G, 2026-08-19)*
+
+✅ **El motor de v2 va en Python.** R queda reservado para piezas concretas, si aparecen.
+
+**Y el argumento que decidió NO fue "ya está empezado"** — eso es coste hundido y se descartó
+explícitamente aplicando la regla de *"¿qué construirías si el repo estuviera vacío?"*. Con el repo
+vacío la cosa estaba **reñida**: en R, buena parte del trabajo del día 3 habría sido
+`install.packages("infoelectoral")`, que ya trae lectores de estos ficheros. *(Con dos matices: ese
+paquete es una **transcripción a mano** del mismo documento, o sea justo el tipo de suposición no
+verificada que mató a v1; y el fallo del delimitador (§7-ter) **solo aparece leyendo la fuente**.)*
+
+Lo que decidió, en orden:
+
+1. 🔑 **Escribo yo, lee G.** Su nivel es equivalente en los dos lenguajes —comprensión media-alta,
+   escritura baja—, así que el criterio no es *cuánto cuesta escribir* sino **cuánto cuesta leer**.
+   R tiene idiomas propios que hay que conocer (`<-`, fórmulas, `%>%`, la sintaxis de `data.table`);
+   Python se lee más literal. Con ese perfil, pesa.
+2. **Un idioma, no dos.** Dos entornos, dos gestores de dependencias, dos superficies de rotura en
+   Windows. Para un proyecto de una persona y media esa factura se paga entera y no compra nada.
+3. **La infraestructura fea ya está probada** (cadena TLS, lector de layout, 15 tests contra datos
+   reales). Rehacerla en R obliga a volver a demostrar lo que ya funciona, sin producir nada nuevo.
+4. **Lo que falta está cubierto:** `PySAL` para estadística espacial —lo lidera **Luc Anselin**, el
+   autor del manual canónico de econometría espacial, así que no es una imitación de R sino la misma
+   escuela—, `geopandas` para mapas, `pandas` para tablas.
+   ⚠️ `[pendiente-verif]` La atribución de PySAL a Anselin no se ha comprobado contra fuente; se
+   comprueba antes de que aparezca en ningún texto publicable.
+
+**Válvula de escape, definida ahora para no improvisarla:** si surge una técnica mal resuelta en
+Python, **esa pieza** se hace en R y se comunica con el resto **por fichero plano (CSV)**. Un puente,
+no una fusión. Lo mismo aplica a la viñeta para los paquetes de R, si algún día se escribe (§8.3).
+
+**Lo único que daría la vuelta a esto:** que el destinatario prioritario fueran los paquetes de R.
+No lo es — G eligió académicos (§8), y a un académico le da igual el lenguaje si el método está
+escrito.
+
 ## 6. 🔴 EL RIESGO QUE MATA EL DISEÑO (no la ejecución)
 
 **El ADRH omite las unidades de menos de 100 habitantes.** Consecuencia:
@@ -330,12 +365,92 @@ además **una de las cosas que este trabajo va a medir**, así que no puede dars
 > capital."* **Es el mismo error reapareciendo en un diseño nuevo.** Que se haya visto a tiempo dos
 > veces no significa que se vea sola la tercera.
 
+## 6-bis. 🟢 La mortalidad de secciones: MEDIDA — el diseño aguanta
+
+`[MEDIDO 2026-08-19 con G, código en src/v2/supervivencia_secciones.py, 10 tests]`
+
+**El riesgo de §12.7 —que una sección censal no sobreviva entre convocatorias, y el diseño de §1.2
+compare un sitio con otro sitio— era real y estaba sin medir. Ya está medido. NO mata el diseño.**
+
+### Cómo se midió, y por qué el control es la mitad del método
+
+Se compara la lista de secciones de tres convocatorias, sacada del fichero `09` de cada zip
+(provincia + municipio + distrito + sección). **Dos comparaciones, no una:**
+
+| | Salto | Para qué |
+|---|---|---|
+| **Control** | abr-2019 → nov-2019 (6 meses) | En medio año el INE apenas retoca. **Tiene que salir casi perfecto** |
+| **Real** | nov-2019 → jul-2023 (3 a. 8 m.) | La pregunta |
+
+🔑 **Sin el control, un resultado raro en la comparación real no se puede atribuir**: no sabrías si
+describe el país o describe tu propio error. El control salió **99,92 %**, con 30 muertes y 15
+nacimientos — ni un 100 % sospechoso ni ruido. **El instrumento mide lo que dice medir.**
+
+### Y la medida obvia escondía justo el caso peligroso
+
+La supervivencia de **código** salió **99,26 %** — mucho mejor de lo que esperábamos los dos
+(predicciones escritas antes: G 90 %, Claude 85-95 %). Pero **nacieron 426 secciones y solo murieron
+268**, y esa asimetría tiene una explicación:
+
+> Cuando el INE parte una sección, lo natural es que **una mitad conserve el código del padre** y la
+> otra reciba uno nuevo. Para un recuento de códigos esa sección **"sobrevive"** — cuando en realidad
+> ha perdido medio cuerpo. **El caso limpio se ve; el sucio es invisible.**
+
+Se detecta pidiendo **dos** condiciones a la vez, porque ninguna vale sola: (a) que el censo caiga
+≥30 %, y (b) que en su mismo municipio y distrito **haya nacido** una sección nueva. Solo (a)
+confunde partición con **despoblación real**, que en el interior existe y **no es un problema —es el
+dato que queremos medir**. Solo (b) no dice a quién se partió.
+
+**Umbral del 30 %: elegido con G y ANTES de mirar.** Se reporta también a otros umbrales para que se
+vea que la conclusión no depende de dónde se puso la raya.
+
+### El resultado
+
+| De las 36.302 secciones de nov-2019 | | |
+|---|---|---|
+| **Intactas** — mismo sitio, comparables | **35.730** | **98,42 %** |
+| Particiones ocultas — conservan nombre, no son el mismo sitio | **304** | 0,84 % |
+| Muertas — el código desaparece | 268 | 0,74 % |
+| Solo encogen — despoblación real, **sin problema** | 17 | 0,05 % |
+
+**Rompen la comparación 572 secciones: el 1,58 %.** Sensibilidad al umbral: 374 ocultas a −20 %, 304
+a −30 %, 202 a −40 %, 82 a −50 %. *(Control: 12 ocultas en seis meses — el orden de magnitud correcto
+para un método que no inventa particiones donde no las hay.)*
+
+🟢 **Y una consecuencia que descarga el riesgo casi entero:** las piezas de una partición **se quedan
+dentro de su distrito y su municipio**. O sea que **el problema solo existe en el peldaño más fino**;
+municipio, provincia y CCAA están limpios por construcción.
+
+### Qué se hace con las 572 — decidido con G, en este orden
+
+1. **A · Reconstruir** *(preferido)*: comparar la sección de 2019 con **la suma de sus herederas** en
+   2023. ⚠️ **Solo donde el emparejamiento sea único** (un distrito, una muerte, un nacimiento);
+   donde haya varias candidatas, se va a C.
+2. **C · Apartar y declarar** el resto, **con la lista de cuáles y dónde**. Es la trampa de §6 —
+   descartar lo que se movió— pero ahora es del 1,58 % y **caracterizado**, no un tercio y a ciegas.
+3. **B · Subir de peldaño** (medir el cambio solo desde municipio) **solo si A y C fallan**: salva el
+   diseño **renunciando a la comparación sección↔municipio, que es el producto**.
+
+🔴 **Límite honesto de A, y lo cazó G:** la prueba de que los censos sumen **descarta, no confirma**.
+Dos trozos de mapa distintos pueden tener la misma gente dentro. Si `1ºA+1ºB` suman 1.200 donde había
+3.000, el emparejamiento está mal **con seguridad**; si suman 3.050, puede estar bien **o haber
+cuadrado por casualidad con la madre equivocada**. Confirmarlo de verdad exige **geometría**
+(cartografía anual del INE) o **una tabla oficial de correspondencias** — y ninguna de las dos está
+verificada (§12.8). **Hasta entonces, A es provisional.**
+
+### 🆕 Y de paso, un resultado publicable que no estaba en el plan
+
+**Este número no existía.** Nadie ha publicado a qué ritmo se reescribe la geografía electoral
+española más fina. Roig et al. hacen un salto **más largo** que el nuestro (2016→2023) a nivel de
+sección **y no mencionan haberlo tratado**. Encaja además con la "capa de honestidad" (§4) y con la
+mitigación de §6: reportar la selección como resultado propio, no como nota al pie.
+
 ## 7. Lo demás que está sin resolver
 
 | # | Qué | Estado |
 |---|---|---|
 | 1 | ~~La descarga oficial no verifica TLS~~ | ✅ **RESUELTO el 2026-08-17** con verificación completa. Y el diagnóstico que había aquí era **falso**: ver §7-bis |
-| 2 | El **layout** de los ficheros de ancho fijo | ✅ **La especificación viaja DENTRO del zip** (`FICHEROS.doc`, 284 KB, en los tres ámbitos). No hay que buscarla fuera ni suponer nada. Extraída a `data/external/infoelectoral/especificacion/`. **Falta transcribirla a un esquema** |
+| 2 | El **layout** de los ficheros de ancho fijo | ✅ **RESUELTO el 2026-08-18.** La especificación viaja DENTRO del zip (`FICHEROS.doc`) y ahora se lee **desde código**: `src/v2/layout_infoelectoral.py`. Y al contrastarla con los ficheros reales apareció que **la especificación miente en una frase**: ver §7-ter |
 | 3 | **Códigos incompatibles**: los del Ministerio del Interior **no** son los del INE. Y la correspondencia de secciones censales entre ficheros cartográficos, electorales y padronales *"no siempre coincide"* y *"varía en el tiempo"* (documentado por el proyecto SEA) | Existen tablas de correspondencia mantenidas en el paquete `infoelectoral` |
 | 4 | **Fronteras de sección censal que cambian cada año** | Paradójicamente es *material* para un estudio de MAUP —es el efecto de zonificación puro— pero hay que tratarlo explícitamente |
 | 5 | 🟡 **Volumen**: la API del INE rechaza descargas completas del ADRH por restricción de volumen; el CSV masivo sí funciona pero una tabla pesa ~352 MB | Manejable, pero no es un `read_csv` inocente |
@@ -404,7 +519,68 @@ ir a leer código ajeno. Siguen siendo relevantes por el punto 6, no por este.
 - **El patrón de nombre de fichero queda comprobado**, no supuesto: `02<año><mes>_<ÁMBITO>.zip`
   descarga los tres ámbitos de 2019-11.
 
+## 7-ter. El layout, leído — y la frase de la especificación que es falsa
+
+`[VERIFICADO 2026-08-18, con código que corre y 15 tests]` El layout ya no se supone: se lee.
+`src/v2/lector_doc.py` abre el `FICHEROS.doc` (binario OLE2 de Word 97) **en Python puro**, y
+`src/v2/layout_infoelectoral.py` lo convierte en un esquema con **los 12 tipos de fichero y sus
+campos**. Ninguna posición está escrita a mano en el repo: si el Ministerio cambia la
+especificación en una convocatoria futura, el esquema cambia solo.
+
+🔴 **Y la especificación se equivoca en su primer párrafo.** Dice que los registros van *"con
+delimitador de registro CR+LF"*. **Es falso**: los diez `.dat` de 2019-11 no contienen **ni un
+solo `\r`**. El delimitador es `LF` a secas.
+
+> **No es una pega de estilo.** Un lector que se crea esa frase y descuente dos bytes por registro
+> se desplaza **un byte por línea**, y a partir del segundo registro lee todos los campos corridos
+> — con cifras que **siguen pareciendo cifras**. Es exactamente el modo de fallo silencioso que la
+> regla *"se lee, no se supone"* existe para evitar… salvo que aquí **leer la especificación no
+> bastaba**. Hacía falta contrastarla contra el fichero.
+>
+> 🧭 Es la tercera vez en este proyecto que un enunciado plausible y escrito resulta falso al
+> comprobarlo (los otros dos: el diagnóstico del certificado, §7-bis; y el dataset `renta`, §7.6).
+
+**Lo que sí encaja, y se comprueba en cada test:** los diez ficheros de datos del zip `MESA`
+tienen registros de **exactamente** la longitud que declara la especificación —25, 40, 232, 120,
+233, 33, 172, 33, 101 y 36 bytes—, **todos** sus campos numéricos traen dígitos, y el fichero de
+control `01` declara qué ficheros se adjuntan **coincidiendo con lo que hay dentro del zip**.
+
+⚠️ **`antiword` no se usa aunque está instalado en esta máquina.** Extrae el `.doc` bien, y sirvió
+para contrastar la implementación mientras se escribía — pero es un binario de mingw que no está
+en Linux, ni en CI, ni en la máquina de quien replique esto. **Misma lección que §7-bis: lo que
+funciona en la máquina de uno no es lo que funciona.**
+
+### 7-ter-bis. 🔴 Y el peldaño "distrito" no es un peldaño de verdad
+
+`[MEDIDO 2026-08-18 sobre el fichero 09 de 2019-11]` Al contar las unidades de cada escala:
+
+| Escala | Unidades (generales 2019-11, sin C.E.R.A.) |
+|---|---|
+| Sección censal | **36.302** |
+| Distrito | **10.485** |
+| Municipio | **8.131** |
+
+> 🔑 **Solo 1.091 de los 8.131 municipios (13,4 %) tienen más de un distrito.** En el 86,6 %
+> restante el distrito **es literalmente el municipio**, con otro código.
+
+Consecuencia para §3, y no es cosmética: la escalera **no tiene cinco peldaños comparables**.
+Comparar *distrito* con *municipio* es comparar dos cosas idénticas en 7 de cada 8 unidades, y
+donde se diferencian —las ciudades grandes— la comparación **describe la España urbana y solo
+esa**. O se declara así, o el peldaño se retira. **Sin decidir; se decide con G.**
+
+*(El 8.131 sirve además de control externo: es el mismo número de municipios que usó eldiario.es
+en su análisis de julio de 2023, §8. La lectura del fichero cuadra con una fuente independiente.)*
+
 ## 8. Quién actúa distinto (criterio de impacto) — resuelto, y no donde se suponía
+
+✅ **PRIORIDAD DECIDIDA POR G el 2026-08-19: los académicos primero.** Y no obliga a renunciar a
+nada, porque **el análisis es común a los cuatro destinatarios** —los cuatro quieren el mismo
+número— y lo único que cambia es el envoltorio final. La asimetría que justifica el orden: **de un
+trabajo que aguanta escrutinio académico sale gratis la nota periodística; al revés no.** La única
+consecuencia temprana es el idioma, y por eso se decidió a la vez (§9.4).
+
+⚠️ **Contrapeso, que va escrito para que no se olvide:** *"lo más exigente primero"* es también la
+forma clásica de no terminar nunca. Sigue mandando §5.3.1 — **el primer corte tiene que valer solo.**
 
 **No es la academia que estudia estos partidos con encuestas**: sus trabajos usan microdatos
 individuales del CIS/CEO, así que **no eligen nivel de agregación** y el criterio no les aplica. Es
@@ -464,8 +640,19 @@ región a región con las fechas de revisión de la nomenclatura.**
 
 ### 9.4 Qué implica para el MVP
 
-- **Se escribe el primer corte en bilingüe desde el principio.** Marginal si se hace ya, caro si se
-  hace al final.
+- ✅ **DECIDIDO POR G el 2026-08-19: bilingüe desde ya.** Era una consecuencia razonada; ahora es una
+  decisión tomada. Marginal si se hace desde el principio, caro y mal hecho si se traduce al final.
+  **Reparto exacto**, para que no haya que volver a preguntarlo:
+
+  | Qué | Idioma |
+  |---|---|
+  | El **producto** (primer corte, figuras, texto de resultados) | **Bilingüe ES/EN** |
+  | Los **documentos de diseño internos** (este, la referencia core) | **Español** |
+  | La **conversación de trabajo y las explicaciones a G** | **Español**, siempre |
+  | Términos técnicos sin traducción decente (*MAUP*, *ecological inference*…) | **Inglés**, definidos en español la primera vez que aparecen |
+
+  *(G tiene C1: el inglés no es una barrera, es una cuestión de velocidad de lectura. Lo que se pueda
+  en español, en español.)*
 - **Se incluye una sección corta sobre el caso europeo**, apuntando a esto, sin ejecutarlo.
 - **El artefacto 2**, si lo hay, es apuntar el mismo aparato a NUTS2 y a los umbrales de cohesión.
   Ahí el interlocutor deja de ser una redacción y pasa a ser la Comisión y el Tribunal de Cuentas
@@ -529,11 +716,19 @@ escrito en cuatro ficheros, y era falso.
 | 4 | **Cerrar la búsqueda de novedad en Dialnet y TESEO a texto completo** | Una tesis o un TFM español podría haber hecho ya el análisis multiescala. **El barrido del 17-ago no los cubrió** | ~1 h | §2.2 |
 | 5 | **El vínculo capitales ↔ maniobra de cohesión** (Varsovia, Budapest) | Está verificado que la maniobra existe y que esas regiones salen en los datos; **no que cada caso concreto sea el mismo** | Cruzar región a región con fechas de revisión de la nomenclatura | §9.3 |
 | 6 | **Las coaliciones de VOX**: en qué convocatorias y territorios concurrió coaligado | Decide qué candidaturas cuentan. **Se escribe antes de mirar los datos** | Sale de los propios ficheros | §5.1 |
+| 7 | ~~**¿Sobrevive una sección censal entre dos convocatorias?**~~ | ✅ **MEDIDO el 2026-08-19 → §6-bis. NO mata el diseño.** 98,42 % de las secciones son comparables tal cual; rompen la comparación 572 (1,58 %), de las cuales **304 lo hacían de forma invisible**. Y el problema **vive solo en el peldaño más fino** | — | §6-bis |
+| 8 | 🆕 **¿Publica el INE cartografía anual de secciones y/o una tabla de correspondencias?** | 🔴 **De ello depende que el plan A de §6-bis se pueda validar.** La prueba del censo **descarta pero no confirma**: solo la geometría o una tabla oficial establecen identidad territorial. **Claude afirmó el 18-ago que "el INE publica información sobre cambios de seccionado" SIN comprobarlo** — está sin verificar | ~30 min | §6-bis |
+| 9 | 🆕 **¿Por qué contamos 36.460 secciones en jul-2023 y eldiario.es habla de ~35.500?** | Casi mil de diferencia. Puede ser redondeo suyo, otra fuente (mapa del INE vs fichero electoral) o un filtro. **No se da por resuelto** | ~20 min | §6-bis, §8 |
 
 ⚠️ **Y uno que no es de este repo pero condiciona lo que se cita:** el material de investigación del que
 salió parte de este diseño **no tiene pase verificador independiente** (141 marcas pendientes). Sus
 conclusiones cualitativas orientaron bien; **sus cifras no son citables sin abrir la fuente**.
 
-**Ninguno de estos seis bloquea el trabajo de mañana.** Lo que bloquean es **publicar** o **presentar**
-apoyándose en ellos. La diferencia importa: se puede construir con una incógnita declarada; no se puede
-afirmar con ella.
+**Ninguno de estos bloquea el trabajo de mañana** — salvo, quizá, el 7. Lo que bloquean los otros es
+**publicar** o **presentar** apoyándose en ellos. La diferencia importa: se puede construir con una
+incógnita declarada; no se puede afirmar con ella.
+
+🆕 **El 7 es de otra clase y por eso va aparte:** los seis primeros son cosas que hay que *comprobar
+antes de afirmar*. El 7 es una **tensión entre dos decisiones ya tomadas**, y si sale mal no obliga a
+matizar un párrafo sino a **cambiar el diseño**. Se levantó el 2026-08-18 al transcribir el layout y
+**está sin discutir con G**: aquí solo queda anotado, no resuelto.
