@@ -438,12 +438,79 @@ cuadrado por casualidad con la madre equivocada**. Confirmarlo de verdad exige *
 (cartografía anual del INE) o **una tabla oficial de correspondencias** — y ninguna de las dos está
 verificada (§12.8). **Hasta entonces, A es provisional.**
 
-### 🆕 Y de paso, un resultado publicable que no estaba en el plan
+### ⚠️ ~~Un resultado publicable que no estaba en el plan~~ — DEGRADADO el mismo día
 
-**Este número no existía.** Nadie ha publicado a qué ritmo se reescribe la geografía electoral
-española más fina. Roig et al. hacen un salto **más largo** que el nuestro (2016→2023) a nivel de
-sección **y no mencionan haberlo tratado**. Encaja además con la "capa de honestidad" (§4) y con la
-mitigación de §6: reportar la selección como resultado propio, no como nota al pie.
+**Lo que se escribió por la mañana:** *"Este número no existía. Nadie ha publicado a qué ritmo se
+reescribe la geografía electoral española más fina."*
+
+🔴 **No se sostiene tal cual, y duró cuatro horas.** Al comprobar §12.8 apareció que **Pérez & Pavía
+han calculado la estructura de correspondencias de toda España, año a año, de 2001 a 2023**
+(§6-ter). Con eso en la mano, derivar cuántas secciones cambian por ciclo electoral es trivial.
+
+**Estado corregido: `[sin verificar si es novedoso]`**, no *"es novedoso"*. No se ha leído su artículo
+entero. Sigue en pie que **Roig et al. hacen un salto más largo (2016→2023) a nivel de sección y no
+mencionan haberlo tratado** — pero eso es una omisión suya, no un hueco en la literatura.
+
+🧭 **Y la lección, que vale más que el hallazgo perdido:** la afirmación de novedad se escribió
+**antes** de buscar quién lo había hecho. Es la cuarta vez que algo plausible y escrito resulta
+falso al comprobarlo, y la primera en que el autor del error fue el mismo turno que lo escribió.
+**El orden correcto es buscar primero y afirmar después.**
+
+## 6-ter. 🟢 Cartografía y correspondencias: las dos existen `[VERIFICADO 2026-08-19]`
+
+Comprobación de §12.8, pedida por G. Las dos respuestas son **sí**, y la segunda cambia el plan.
+
+### Cartografía del seccionado — INE, anual, libre
+
+`[verificado contra el propio servidor del INE, no por resumen de búsqueda]`
+
+| | |
+|---|---|
+| **Servicio** | OGC API-Features · WFS · WMS · descarga Shapefile |
+| **Colecciones** | `Secciones_2007` … `Secciones_2025`. **`Secciones_2019` comprobada existente** |
+| **Series** | Seccionado del **Censo Electoral (CE)** y del **Padrón (PA)**, 2007→hoy, más los Censos 2001 y 2011 |
+| **Atributos** | `CUSEC` (código completo), `CPRO`, `CMUN`, `CDIS`, `CSEC`, `CNUT1-3`, geometría |
+| **Coste** | Gratis. Cita obligatoria: «Seccionado cedido por el Instituto Nacional de Estadística» |
+| **Punto de entrada** | `https://www.ine.es/geoserver/ogc/features/v1/collections` |
+
+🔑 **`CUSEC` empalma directamente con lo que leemos del fichero `09`**, así que el cruce está resuelto.
+Y hacía falta igualmente para el mapa de §4 y para los vecinos de §5.5 — no era solo para el plan A.
+
+⚠️ `[pendiente-verif]` **La fecha de referencia de cada capa anual no está comprobada.** El INE dice
+que el seccionado se consolida *"usualmente con referencia al 1 de enero o la fecha de operaciones
+estadísticas relevantes"*. Nuestras elecciones son de **noviembre-2019** y **julio-2023**: hay que
+comprobar a qué fecha corresponde cada capa antes de dar por buena la correspondencia con el
+seccionado electoral del día de la votación.
+
+### La correspondencia entre años: existe, y es mejor que una tabla
+
+**`sc2sc`** — paquete de **R en CRAN** `[verificado: v0.0.1-19, publicado 2026-05-02, cubre 2001-2026]`.
+Autores: **Virgilio Pérez y José M. Pavía**. Artículo:
+*Automatización de la transferencia de datos entre secciones censales y códigos postales a lo largo
+del tiempo. Una aplicación para España* (2024), DOI `10.38191/iirr-jorr.24.057`.
+
+No da un emparejamiento *"esta sección se convirtió en aquella"*. Compara **geométricamente** los
+mapas de dos años y calcula **qué proporción del territorio** de cada sección origen va a cada
+sección destino. *(Su ejemplo del artículo: el 31,3 % de una sección de 2022 venía de una de 2021 y
+el 68,7 % de otra.)* Generan 42 ficheros de correspondencias entre pares de años consecutivos, hacia
+delante y hacia atrás.
+
+> 🔑 **Su ejemplo de demostración ES nuestro problema:** datos electorales de Valencia, **2019 contra
+> 2023**, 590 → 591 secciones, 5 desaparecen y 6 aparecen, y lo describen como *"rupturas en la serie
+> longitudinal de votos que complican las comparaciones"*. **El riesgo de §6-bis queda confirmado por
+> terceros independientes**, y con los mismos años.
+
+### Consecuencias, y son tres
+
+1. 🔄 **El plan A de §6-bis queda superado.** Emparejar hermanas por censo era una aproximación
+   casera; esto es lo mismo hecho bien, con geometría y publicado. **Se adopta `sc2sc` como vía
+   principal**, y el emparejamiento propio pasa a ser, como mucho, un control cruzado.
+2. 🔴 **Cuarto camino independiente que lleva a Pavía** (§8): coautor de la diana, mantenedor del
+   SEA, destinatario, y ahora autor de la herramienta que resuelve nuestro problema. **Deja de ser
+   una coincidencia y pasa a ser un dato sobre el campo**: este nicho lo ocupa un grupo.
+3. ⚠️ **`sc2sc` es R.** Es el **primer uso de la válvula de escape de §5.6**, abierta menos de una
+   hora antes: esa pieza se ejecuta en R y se comunica por CSV. **La decisión de Python aguanta
+   porque la válvula estaba prevista** — pero conviene registrar que hizo falta enseguida.
 
 ## 7. Lo demás que está sin resolver
 
@@ -717,7 +784,9 @@ escrito en cuatro ficheros, y era falso.
 | 5 | **El vínculo capitales ↔ maniobra de cohesión** (Varsovia, Budapest) | Está verificado que la maniobra existe y que esas regiones salen en los datos; **no que cada caso concreto sea el mismo** | Cruzar región a región con fechas de revisión de la nomenclatura | §9.3 |
 | 6 | **Las coaliciones de VOX**: en qué convocatorias y territorios concurrió coaligado | Decide qué candidaturas cuentan. **Se escribe antes de mirar los datos** | Sale de los propios ficheros | §5.1 |
 | 7 | ~~**¿Sobrevive una sección censal entre dos convocatorias?**~~ | ✅ **MEDIDO el 2026-08-19 → §6-bis. NO mata el diseño.** 98,42 % de las secciones son comparables tal cual; rompen la comparación 572 (1,58 %), de las cuales **304 lo hacían de forma invisible**. Y el problema **vive solo en el peldaño más fino** | — | §6-bis |
-| 8 | 🆕 **¿Publica el INE cartografía anual de secciones y/o una tabla de correspondencias?** | 🔴 **De ello depende que el plan A de §6-bis se pueda validar.** La prueba del censo **descarta pero no confirma**: solo la geometría o una tabla oficial establecen identidad territorial. **Claude afirmó el 18-ago que "el INE publica información sobre cambios de seccionado" SIN comprobarlo** — está sin verificar | ~30 min | §6-bis |
+| 8 | ~~**¿Publica el INE cartografía anual de secciones y/o una tabla de correspondencias?**~~ | ✅ **COMPROBADO el 2026-08-19 → §6-ter. Las dos existen.** Cartografía anual del INE 2007-2025, libre, con `CUSEC`. Y `sc2sc` en CRAN (Pérez & Pavía) da correspondencias **geométricas con proporciones**, 2001-2026. **El plan A queda superado por algo mejor** | — | §6-ter |
+| 10 | 🆕 **¿Publican Pérez & Pavía la tasa de cambio del seccionado**, o solo las correspondencias? | Decide si nuestra cifra de §6-bis (304 particiones ocultas, 98,42 % estable) es un resultado o una redundancia. **No se ha leído su artículo entero** | Leer el artículo: ~1 h | §6-bis |
+| 11 | 🆕 **¿A qué fecha corresponde cada capa anual de cartografía del INE?** | El INE consolida *"usualmente a 1 de enero"*, y nuestras elecciones son de nov-2019 y jul-2023. Si las capas no coinciden con el seccionado del día de la votación, la correspondencia se desalinea | ~30 min | §6-ter |
 | 9 | 🆕 **¿Por qué contamos 36.460 secciones en jul-2023 y eldiario.es habla de ~35.500?** | Casi mil de diferencia. Puede ser redondeo suyo, otra fuente (mapa del INE vs fichero electoral) o un filtro. **No se da por resuelto** | ~20 min | §6-bis, §8 |
 
 ⚠️ **Y uno que no es de este repo pero condiciona lo que se cita:** el material de investigación del que

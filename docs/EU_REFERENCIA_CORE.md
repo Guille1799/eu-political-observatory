@@ -201,10 +201,24 @@ declarar → B subir de peldaño, solo si fallan las dos**.
 🆕 **Y salió un resultado publicable que no estaba en el plan:** nadie ha medido a qué ritmo se
 reescribe la geografía electoral española más fina.
 
-**(1) 🔴 Comprobar si el INE publica cartografía anual de secciones o tabla de correspondencias**
-(§12.8). De ello depende que el plan A se pueda **validar**: la prueba del censo descarta pero no
-confirma —dos trozos de mapa distintos pueden tener la misma gente dentro—. ⚠️ Claude afirmó el
-18-ago que esa información existe **sin comprobarlo**. ~30 min.
+⚫ ~~*Comprobar si existe cartografía o tabla de correspondencias*~~ — **COMPROBADO el 19-ago, §6-ter
+del alcance. Existen las dos.** Cartografía del INE `Secciones_2007`…`Secciones_2025`, libre, con
+`CUSEC` que empalma directo con el fichero `09`. Y **`sc2sc`** en CRAN (v0.0.1-19, 2026-05-02, cubre
+2001-2026): correspondencias **geométricas con proporciones de territorio**, no un simple
+emparejamiento. **El plan A propio queda superado** y pasa a control cruzado.
+🔴 **Y dos consecuencias que hay que tener presentes:** (a) `sc2sc` es de **Pérez y Pavía** — cuarto
+camino independiente que lleva a la misma gente, lo que dice algo del campo; (b) es **R**, o sea el
+primer uso de la válvula de escape de §5.6, abierta menos de una hora antes.
+⚠️ **Y una afirmación de la mañana quedó degradada el mismo día:** *"nadie ha medido a qué ritmo se
+reescribe la geografía electoral española"* pasa a **`[sin verificar si es novedoso]`**. Se escribió
+antes de buscar quién lo había hecho. **Buscar primero, afirmar después.**
+
+**(1) Leer el artículo de Pérez & Pavía** (DOI `10.38191/iirr-jorr.24.057`) y comprobar si publican
+la **tasa de cambio** del seccionado o solo las correspondencias (§12.10). Decide si la cifra de
+§6-bis es un resultado propio o una redundancia. ~1 h.
+
+**(1-bis) Comprobar a qué fecha corresponde cada capa anual de cartografía** (§12.11): el INE
+consolida *"usualmente a 1 de enero"* y nuestras elecciones son de nov-2019 y jul-2023. ~30 min.
 
 **(2) Escribir, ANTES de mirar los datos**, la regla de qué candidaturas cuentan como VOX cuando
 concurre en coalición · la elección de **denominador** (votos emitidos y/o censo) **y** la regla de
