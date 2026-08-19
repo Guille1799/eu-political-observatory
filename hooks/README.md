@@ -32,7 +32,7 @@ origen como valor por defecto:
 
 ```bash
 git config hooks.vigilanteRepo "/ruta/a/capa-normativa"
-git config hooks.secretScan    "/ruta/a/secret_scan.py"
+git config hooks.secretScan    "/ruta/a/vigilante_pre_commit.py"
 ```
 
 ## Qué comprueba `pre-commit`

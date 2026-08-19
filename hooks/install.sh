@@ -14,7 +14,7 @@ echo ""
 VIGILANTE_REPO="$(git config --get hooks.vigilanteRepo 2>/dev/null || true)"
 : "${VIGILANTE_REPO:=C:/Users/Guille/proyectos/capa-normativa}"
 SECRET_SCAN="$(git config --get hooks.secretScan 2>/dev/null || true)"
-: "${SECRET_SCAN:=C:/Users/Guille/proyectos/.claude/hooks/secret_scan.py}"
+: "${SECRET_SCAN:=C:/Users/Guille/proyectos/.claude/hooks/vigilante_pre_commit.py}"
 
 if [ -d "$VIGILANTE_REPO/src/capa_normativa/vigilante" ]; then
     echo "✓ vigilante encontrado: $VIGILANTE_REPO"
@@ -29,5 +29,5 @@ if [ -f "$SECRET_SCAN" ]; then
 else
     echo "❌ escáner de credenciales NO encontrado en: $SECRET_SCAN"
     echo "   El Check 3 BLOQUEARÁ todos los commits hasta que exista (es deliberado)."
-    echo "   Para apuntarlo bien:  git config hooks.secretScan \"/ruta/a/secret_scan.py\""
+    echo "   Para apuntarlo bien:  git config hooks.secretScan \"/ruta/a/vigilante_pre_commit.py\""
 fi

@@ -16,14 +16,14 @@ export LANG=C.UTF-8
 # Absolutas y locales de cada máquina, así que NO se codifican aquí: se leen de la
 # config del clon, con el layout de la máquina de origen como valor por defecto.
 #   git config hooks.vigilanteRepo "/ruta/a/capa-normativa"
-#   git config hooks.secretScan    "/ruta/a/secret_scan.py"
+#   git config hooks.secretScan    "/ruta/a/vigilante_pre_commit.py"
 cfg() { git config --get "$1" 2>/dev/null || true; }
 
 VIGILANTE_REPO="$(cfg hooks.vigilanteRepo)"
 : "${VIGILANTE_REPO:=C:/Users/Guille/proyectos/capa-normativa}"
 
 SECRET_SCAN="$(cfg hooks.secretScan)"
-: "${SECRET_SCAN:=C:/Users/Guille/proyectos/.claude/hooks/secret_scan.py}"
+: "${SECRET_SCAN:=C:/Users/Guille/proyectos/.claude/hooks/vigilante_pre_commit.py}"
 
 FAILED=0
 
@@ -121,7 +121,7 @@ if [ ! -f "$SECRET_SCAN" ]; then
     echo "     $SECRET_SCAN"
     echo "   El escaneo NO se ha ejecutado, así que el commit se bloquea (a propósito)."
     echo "   Apúntalo a su ruta en esta máquina:"
-    echo "     git config hooks.secretScan \"/ruta/a/secret_scan.py\""
+    echo "     git config hooks.secretScan \"/ruta/a/vigilante_pre_commit.py\""
     exit 1
 fi
 
