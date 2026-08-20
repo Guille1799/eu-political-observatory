@@ -248,17 +248,50 @@ bordes que defender, ni coaliciones que resolver.**
 convocatorias y territorios. Hay que decidir **por escrito y antes de mirar** si esas candidaturas
 cuentan, y con qué regla. Es un puñado de casos, no un problema de fondo — pero se declara igual.
 
-🔴 **DECISIÓN PENDIENTE, y no es menor: ¿voto sobre qué?**
+#### ✅ REGLA 1 del preregistro — el denominador NO se elige: se descompone `[decidido con G, 2026-08-20]`
 
-| | Sobre **votos emitidos** | Sobre **censo** |
+**Por qué era un problema.** Había dos candidatos y los dos tienen un agujero propio:
+
+| | Sobre **votantes** | Sobre **censo** |
 |---|---|---|
-| Qué mide | Cuota entre los que fueron a votar | Capacidad de movilizar sobre el total con derecho a voto |
-| Riesgo | Si otros se quedan en casa, VOX "sube" **sin ganar un solo votante** | Mezcla dos cosas: convencer y movilizar |
+| Qué mide | Cuota entre los que fueron a votar | Fuerza sobre todos los que podían votar |
+| Su agujero | Si **otros** se quedan en casa, VOX sube **sin ganar un votante** | **Mezcla** convencer con movilizar |
 
-**Y contamina directamente la pregunta de escala:** la participación **varía sistemáticamente con el
-tamaño del municipio** (en pueblos pequeños se vota más). Si se elige mal, parte del "efecto de escala"
-será **efecto de participación disfrazado**.
-✅ **Lo limpio: calcular las dos y publicar las dos.** Cuesta una columna.
+🔴 **Y contamina justo la pregunta de escala:** la participación **varía sistemáticamente con el
+tamaño del municipio** —en los pueblos pequeños se vota más—, y el tamaño de la unidad es lo que
+cambia al cambiar de lupa. Elegir mal **fabrica** un efecto de escala que no existe: se mediría
+participación creyendo medir agregación.
+
+**✅ La salida, propuesta por G el 2026-08-20, y es mejor que "calcular las dos":** las dos medidas
+**no son rivales, son los dos factores de la misma multiplicación**.
+
+```
+   VOX          VOX          votantes
+-------  =  ----------  ×  ----------
+ censo       votantes        censo
+
+(total)     (persuasión)   (movilización)
+```
+
+**Es aritmética, no un modelo.** Así que **no hay que elegir denominador: hay que descomponer**, y se
+reportan **los tres** números. La participación deja de ser un estorbo del que protegerse y pasa a ser
+**una de las dos mitades del resultado**.
+
+> **Ejemplo que fija la idea.** Dos sitios, censo 200, los dos pasan de 15 % a 22,5 % **sobre censo**:
+> el A pasa de 100 a 150 votantes con VOX en 30→45 (**movilizó**, su persuasión no se movió: 30 %); el
+> B mantiene 100 votantes y VOX pasa de 30 a 45 (**convenció**). **Idénticos en la medida total,
+> historias opuestas.** Sin descomponer, indistinguibles.
+
+**Los campos salen del fichero `09`** (posiciones leídas del layout, §7-ter): `Censo del I.N.E.`
+(24-30) · `Votos en blanco` (66-72) · `Votos nulos` (73-79) · `Votos a candidaturas` (80-86). De ahí,
+`votantes = blanco + nulos + candidaturas`.
+
+⚠️ **Dos sub-decisiones que quedan abiertas y hay que cerrar antes de mirar resultados:**
+1. **¿Qué denominador exacto lleva la persuasión** — votantes, votos válidos (blanco + candidaturas),
+   o solo votos a candidaturas? **Criterio propuesto: el mismo que use la diana**, para que los
+   números sean comparables con los suyos. `[pendiente-verif: qué usan Roig et al. y eldiario.es]`
+2. **Hay DOS campos de censo en el fichero**: `Censo del I.N.E.` (24-30) y `Censo de escrutinio`
+   (31-37). Hay que decidir cuál manda y por qué. `[pendiente]`
 
 ### 5.2 Las fuentes — verificadas contra la API del INE, no de memoria
 
