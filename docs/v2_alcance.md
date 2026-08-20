@@ -504,8 +504,13 @@ han calculado la estructura de correspondencias de toda España, año a año, de
 (§6-ter). Con eso en la mano, derivar cuántas secciones cambian por ciclo electoral es trivial.
 
 **Estado corregido: `[sin verificar si es novedoso]`**, no *"es novedoso"*. No se ha leído su artículo
-entero. Sigue en pie que **Roig et al. hacen un salto más largo (2016→2023) a nivel de sección y no
-mencionan haberlo tratado** — pero eso es una omisión suya, no un hueco en la literatura.
+entero.
+
+🔴 **Y una segunda corrección, del 2026-08-20:** aquí se escribió que *"Roig et al. hacen un salto más
+largo (2016→2023) a nivel de sección y no mencionan haberlo tratado"*. **También es falso.** Su
+artículo dice literalmente que *"el proceso inferencial comienza alineando las secciones censales
+entre distintos momentos temporales"*, citando **Pavía & López-Quílez (2013)** y **Pavía & Cantarino
+(2017)**. Lo trataron, con métodos propios. `[verificado 2026-08-20 sobre el texto del artículo]`
 
 🧭 **Y la lección, que vale más que el hallazgo perdido:** la afirmación de novedad se escribió
 **antes** de buscar quién lo había hecho. Es la cuarta vez que algo plausible y escrito resulta
@@ -745,6 +750,41 @@ diana**.
 | **Toni Rodon** (UPF), **Marc Guinjoan** (UAB), **Jordi Muñoz** (UB) | Eligieron nivel municipal teniendo comarcas disponibles, sin justificarlo, y ya detectaron de refilón sensibilidad al tamaño |
 | **Javier Álvarez-Liébana** (`pollspain`) y **Héctor Meleiro** (`infoelectoral`) | Sus paquetes ofrecen elegir el nivel territorial **sin ninguna guía de qué cambia al cambiarlo**. Una viñeta sobre eso es adopción inmediata |
 
+## 8-bis. 🟢 ¿Nos están pisando? Barrido del grupo de Pavía `[2026-08-20]`
+
+Comprobación de §12.12, la del riesgo competitivo. **No hay señal de que hayan hecho la pregunta de
+escala** — y el motivo es más interesante que el resultado.
+
+**Su línea viva 2025-2026 es inferencia ecológica, entera:** *A Bottom-Up Approach for Ecological
+Inference* · *Ecological Inference for Electoral Analysis* · *Estimating Vote Transition Counts* ·
+*EcolRxC* · *From Corrado Gini's Early Contributions to Overdispersion…*
+
+**Y su obra espacial va toda en la misma dirección, que no es la nuestra:**
+
+| Trabajo | Qué resuelve |
+|---|---|
+| Pavía & López-Quílez (2013), *JRSS-A* 176(3):655-678 | Redistribuir votos cuando **redibujan** las unidades → el eje del **tiempo** |
+| Pavía & Cantarino (2017a,b), *Geographical Analysis* 49(2) y *Applied Geography* 86 | Repartir mejor **dentro** de una unidad (mapeo dasimétrico) |
+| `sc2sc` (2024/2026) | Transferir estadísticas **entre años** |
+
+> 🔑 **Todo su aparato sirve para MOVER datos entre unidades. Ninguna pieza pregunta si la respuesta
+> cambia según el TAMAÑO de la unidad.** Tienen las herramientas y no han hecho la pregunta — que es
+> justamente el hueco de §2.1.
+
+⚠️ **Límite del barrido, declarado:** es un repaso de listas de publicación, **no exhaustivo**. No
+cubre preprints, congresos ni trabajo en curso. Es evidencia de ausencia débil, no prueba.
+
+### 🟢 Y algo que juega a favor: ellos mismos declaran la limitación de `sc2sc`
+
+En las conclusiones de su propio artículo escriben que *"al usar únicamente la superficie implicada y
+no considerar cómo se distribuye la población dentro del territorio, algunas imputaciones —
+especialmente los recuentos— podrían mejorarse significativamente"*, y proponen incorporar **técnicas
+dasimétricas con datos catastrales**.
+
+**Es exactamente la objeción del "problema del parque" (§6-ter).** No es una crítica externa ni
+ingenua: **es la limitación que los propios autores declaran**. Refuerza la decisión de usar `sc2sc`
+como detector y no como calculadora, y da una forma cortés de plantearlo.
+
 ## 9. El ensanche europeo — verificado, y NO es para ahora
 
 Esto **no entra en el MVP**. Se escribe aquí porque decide cómo se redacta el primer corte, y porque
@@ -866,6 +906,8 @@ escrito en cuatro ficheros, y era falso.
 | 6 | **Las coaliciones de VOX**: en qué convocatorias y territorios concurrió coaligado | Decide qué candidaturas cuentan. **Se escribe antes de mirar los datos** | Sale de los propios ficheros | §5.1 |
 | 7 | ~~**¿Sobrevive una sección censal entre dos convocatorias?**~~ | ✅ **MEDIDO el 2026-08-19 → §6-bis. NO mata el diseño.** 98,42 % de las secciones son comparables tal cual; rompen la comparación 572 (1,58 %), de las cuales **304 lo hacían de forma invisible**. Y el problema **vive solo en el peldaño más fino** | — | §6-bis |
 | 8 | ~~**¿Publica el INE cartografía anual de secciones y/o una tabla de correspondencias?**~~ | ✅ **COMPROBADO el 2026-08-19 → §6-ter. Las dos existen.** Cartografía anual del INE 2007-2025, libre, con `CUSEC`. Y `sc2sc` en CRAN (Pérez & Pavía) da correspondencias **geométricas con proporciones**, 2001-2026. **El plan A queda superado por algo mejor** | — | §6-ter |
+| 12 | ~~**¿Ha hecho ya el grupo de Pavía la pregunta de ESCALA?**~~ | 🟢 **BARRIDO el 2026-08-20 → §8-bis. No hay señal.** Su línea 2025-2026 es **inferencia ecológica** entera; su obra espacial (Pavía & López-Quílez 2013; Pavía & Cantarino 2017; `sc2sc`) sirve para **mover datos entre unidades**, nunca para preguntar si la respuesta cambia con el tamaño de la unidad. **Tienen las herramientas y no han hecho la pregunta.** ⚠️ Barrido de listas de publicación, no exhaustivo: no cubre preprints ni congresos | — | §8-bis |
+| 13 | 🆕 **Sánchez-García & Llamazares (2025)** — VOX en secciones censales metropolitanas | Citados **dentro** de la diana: hallan que VOX crece en suburbios **con crecimiento de población, renta más baja y más paro** (*left-behind*) — **dirección contraria** a la conclusión de Roig et al. **No verificado de primera mano**, solo por cómo lo citan otros | Localizar y leer: ~1 h | §2.3 |
 | 10 | 🆕 **¿Publican Pérez & Pavía la tasa de cambio del seccionado**, o solo las correspondencias? | Decide si nuestra cifra de §6-bis (304 particiones ocultas, 98,42 % estable) es un resultado o una redundancia. **No se ha leído su artículo entero** | Leer el artículo: ~1 h | §6-bis |
 | 11 | 🆕 **¿A qué fecha corresponde cada capa anual de cartografía del INE?** | El INE consolida *"usualmente a 1 de enero"*, y nuestras elecciones son de nov-2019 y jul-2023. Si las capas no coinciden con el seccionado del día de la votación, la correspondencia se desalinea | ~30 min | §6-ter |
 | 9 | 🆕 **¿Por qué contamos 36.460 secciones en jul-2023 y eldiario.es habla de ~35.500?** | Casi mil de diferencia. Puede ser redondeo suyo, otra fuente (mapa del INE vs fichero electoral) o un filtro. **No se da por resuelto** | ~20 min | §6-bis, §8 |
