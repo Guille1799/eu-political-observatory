@@ -151,6 +151,62 @@ replicarles con menos medios y se pierde. **La frase de apertura es siempre la e
 por snippet, no a texto completo) y **no se buscó en Dialnet/TESEO a texto completo** — una tesis o un
 TFM español podría haberlo hecho. **Antes de publicar, cerrar esa búsqueda.**
 
+### 2.4 🔝 Lo que se mide no es "si cambia el número": es la descomposición DENTRO/ENTRE
+
+*(Formulado el 2026-08-20 explicándoselo a G. Es una mejora del diseño, no una aclaración.)*
+
+**Cambiar de escala no es elegir otras unidades: es FUNDIRLAS.** De 36.302 secciones se pasa a 8.131
+municipios, y esos 28.171 números que faltan no se han perdido — **se han promediado**. Al fundir,
+la variación **dentro** de cada municipio desaparece y solo sobrevive la variación **entre**
+municipios.
+
+🔑 **Y ahí está el mecanismo del MAUP, en una frase:** si la relación renta↔ΔVOX **dentro** de los
+municipios y **entre** municipios van en direcciones distintas, el resultado cambia de magnitud —o
+de signo— sin que ningún dato sea falso.
+
+**Ejemplo de juguete, para tenerlo escrito:** 2 municipios, 4 secciones.
+
+| Municipio | Sección | Renta | Δ VOX | | Municipio | Renta media | Δ medio |
+|---|---|---|---|---|---|---|---|
+| A | A1 | 10 | +20 | | **A** | 20 | +10 |
+| A | A2 | 30 | +0 | | **B** | 40 | **+12** |
+| B | B1 | 30 | +22 | | | | |
+| B | B2 | 50 | +2 | | | | |
+
+*Lupa fina:* dentro de cada municipio, **más renta → menos crecimiento**. *Lupa gruesa:* el municipio
+más rico creció más → **más renta → más crecimiento**. **Mismos datos, titular invertido.**
+
+### Tres consecuencias, y la segunda cambia lo que este trabajo puede reclamar
+
+**1. La pregunta *"¿qué escala es la verdadera?"* está mal planteada.** No hay una. Más fino compra
+homogeneidad y **paga en ruido** (una sección son ~1.500 votantes: 40 personas mueven el porcentaje),
+en **arbitrariedad de frontera** (§6-bis) y **sigue sin llegar a la persona** — el voto es secreto,
+así que el nivel exacto no existe en ningún dato. **La escala correcta la fija la teoría del
+mecanismo, no los datos.** Elegir una sin decir por qué es tomar una decisión de fondo a escondidas.
+
+**2. 🔝 Si el signo se da la vuelta, eso NO es un artefacto: es evidencia de DOS mecanismos a dos
+niveles.** *"Dentro de un pueblo, VOX crece en los barrios de menos renta"* y *"los pueblos donde más
+crece VOX son los de más renta"* **pueden ser ciertas a la vez y no se contradicen** — comparan cosas
+distintas. **El MAUP deja de ser un problema a declarar y pasa a ser un instrumento que separa dos
+afirmaciones que estaban mezcladas.**
+
+**3. Y eso reencuadra el trabajo entero, a mejor.** Deja de ser *"compruebo si vuestra conclusión
+aguanta"* —destructivo, fácil de despachar— y pasa a ser *"vuestra conclusión mezclaba dos
+afirmaciones distintas; aquí están separadas"*. **Constructivo, más publicable y mucho más difícil de
+rechazar.**
+
+🎯 **Y muerde directo a la diana:** *"a VOX lo trajo la renta media-alta"* no dice **más renta que
+quién** — ¿que otros barrios del mismo municipio, o que otros municipios?
+⚠️ `[pendiente-verif]` No se ha releído su artículo para confirmar que no lo especifican. **Antes de
+afirmarlo, comprobarlo** — es exactamente el error que ya se cometió el 19-ago (§6-bis).
+
+⚠️ `[pendiente-diseño]` La técnica estándar para separar dentro/entre son los **modelos multinivel**
+(o meter las medias de grupo como regresor). 🟢 A favor: nuestras cinco escalas son **anidadas de
+verdad** (sección ⊂ distrito ⊂ municipio ⊂ provincia ⊂ CCAA), que es el caso limpio para esa familia
+de modelos. ⚠️ En contra: **no es una técnica nueva**, así que la novedad no puede apoyarse en ella —
+se apoya en aplicarla a esta pregunta, en cinco escalas y con muestra fija. Y **descomposición
+multinivel ≠ MAUP completo**: cubre el efecto de escala, no el de zonificación.
+
 ## 3. La escalera de escalas — CORREGIDA
 
 🔴 **La versión inicial decía "mesa → municipio → provincia → CCAA". Está mal: no hay datos
@@ -502,9 +558,34 @@ delante y hacia atrás.
 
 ### Consecuencias, y son tres
 
-1. 🔄 **El plan A de §6-bis queda superado.** Emparejar hermanas por censo era una aproximación
-   casera; esto es lo mismo hecho bien, con geometría y publicado. **Se adopta `sc2sc` como vía
-   principal**, y el emparejamiento propio pasa a ser, como mucho, un control cruzado.
+1. 🔄 **El plan A de §6-bis queda superado** — emparejar hermanas por censo era una aproximación
+   casera y esto es lo mismo hecho bien, con geometría y publicado.
+   🔴 **Pero NO se adopta `sc2sc` como calculadora.** *(Corregido el 2026-08-20; el 19-ago se escribió
+   aquí "se adopta como vía principal", y estaba mal razonado.)* `sc2sc` reparte **por superficie**,
+   lo que equivale a suponer que la gente está repartida uniformemente por el terreno. **Falso**: si
+   una sección se parte en un parque y unos bloques de pisos, el reparto 50/50 le regala al parque
+   votos que no existen.
+   ⚠️ **Y a nosotros ese error nos hace más daño que a un usuario normal, por cómo está montado el
+   diseño:** medimos **el cambio**, así que un error de estimación **no se ve como ruido, se ve como
+   crecimiento**. En un estudio de niveles un error es ruido; en uno de cambios, es un resultado
+   falso. Además el error **no es aleatorio**: las particiones ocurren donde ha crecido la población
+   —periferias, obra nueva—, un tipo de sitio muy concreto.
+
+   ✅ **Lo que se hace en su lugar, decidido con G:**
+   - **Fusionar hasta cerrar.** Si `S1` se partió en `S1`+`S2`, se comparan como **una sola unidad**
+     en los dos años. No se estima nada: es una suma. Si además entró territorio de un vecino `S3`,
+     **se mete `S3` entero en los dos años**, y así hasta que el trozo esté cerrado —nada entró, nada
+     salió—. **Siempre se llega**; en el peor caso al municipio, que no se mueve.
+     🔑 **La exactitud siempre está disponible. Lo que se paga por ella es resolución.**
+   - **`sc2sc` como DETECTOR, no como calculadora.** Sus proporciones dicen si un caso está limpio
+     (todo el territorio va a un sitio, ratio = 1) o sucio (0,31 / 0,69). O sea: se usa para saber
+     **cuándo no hace falta estimar**. Uso más humilde y mucho más sólido.
+   - **`sc2sc` como prueba de robustez al final:** *"sale lo mismo fusionando y con el método de
+     Pavía"* es más fuerte que elegir uno de los dos.
+
+   ⚠️ **Contrapeso, y no es menor:** fusionar mete, en el peldaño más fino, **unas cuantas unidades
+   más gruesas** — y el tamaño de la unidad **es literalmente la variable que se estudia**. Hay que
+   comprobar que esas 572 no ensucian la comparación entre escalas. `[pendiente-diseño]`
 2. 🔴 **Cuarto camino independiente que lleva a Pavía** (§8): coautor de la diana, mantenedor del
    SEA, destinatario, y ahora autor de la herramienta que resuelve nuestro problema. **Deja de ser
    una coincidencia y pasa a ser un dato sobre el campo**: este nicho lo ocupa un grupo.
