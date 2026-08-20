@@ -244,9 +244,51 @@ Ver §1.1 para el porqué del cambio. Aquí, lo operativo.
 candidatura en cada convocatoria. Es un partido, no una categoría: **no hay nada que clasificar, ni
 bordes que defender, ni coaliciones que resolver.**
 
-⚠️ **Lo único que hay que comprobar, y es mecánico:** VOX ha concurrido en coalición en algunas
-convocatorias y territorios. Hay que decidir **por escrito y antes de mirar** si esas candidaturas
-cuentan, y con qué regla. Es un puñado de casos, no un problema de fondo — pero se declara igual.
+#### ✅ REGLA 2 del preregistro — VOX se identifica por SIGLAS, nunca por código `[2026-08-20]`
+
+🔴 **Corrección primero:** este documento decía *"VOX ha concurrido en coalición en algunas
+convocatorias y territorios"*. **Es falso para generales**, y estaba escrito sin comprobar. Van cinco.
+
+**Lo medido** `[src/v2/catalogo_vox.py, fichero 03 de las cinco generales — catálogo, CERO votos]`:
+
+| Generales | Candidaturas | Mencionan VOX | Siglas | Denominación | Cabecera nacional |
+|---|---|---|---|---|---|
+| dic-2015 | 673 | **31** | `VOX` | `VOX` | 904688 |
+| jun-2016 | 81 | 1 | `VOX` | `VOX` | 000094 |
+| abr-2019 | 95 | 1 | `VOX` | `VOX` | 000117 |
+| nov-2019 | 106 | 1 | `VOX` | `VOX` | 000116 |
+| jul-2023 | 84 | 1 | `VOX` | `VOX` | 000006 |
+
+> **En las cinco, ninguna candidatura con nombre distinto de `VOX`. Concurrió SOLA siempre.** El
+> problema de coaliciones **no llega a activarse** en el diseño de §5.7.
+
+**Y aparecieron dos hechos estructurales que sí cambian el código:**
+
+**1. En 2015 hay UN CÓDIGO POR PROVINCIA, no por partido.** Las generales se votan por
+circunscripción provincial, y en 2015 cada lista provincial llevaba código propio: 673 candidaturas
+agrupadas en **56 cabeceras** (12,0 de media — no 52, porque casi ningún partido concurre en todas).
+VOX tenía **31**: se presentó en 31 provincias. A partir de 2016 el Ministerio pasa a **un código por
+partido** (1,4-1,6 por cabecera; el resto son partidos que van solos en unas provincias y coaligados
+en otras — **VOX no**).
+🔴 **Trampa de implementación:** un lector que busque *"el"* código de VOX funciona en 2016-2023 y
+**falla en 2015**, donde hay 31. La regla recoge **todos** los códigos que casen, nunca uno.
+
+**2. 🔴 Ningún código identifica a VOX entre convocatorias.** Ni el de candidatura ni el de cabecera:
+`904688 · 000094 · 000117 · 000116 · 000006`. Se reasignan en cada elección. **Es el mismo fallo que
+mató a v1** —un identificador de partido que no señala al mismo partido— reapareciendo con otra cara.
+
+**✅ La regla, entonces:**
+1. **Identificación por SIGLAS exactas `VOX`** en el fichero `03` de cada convocatoria, tras recortar
+   espacios. Nunca por código.
+2. De ahí sale **el conjunto de códigos** de esa convocatoria (31 en 2015, 1 en las demás), y con
+   esos códigos se leen los votos en los ficheros de resultados.
+3. **Control cruzado:** todos los códigos casados deben compartir **cabecera nacional**. Si no la
+   comparten, se para y se mira a mano.
+4. **Revisión manual obligatoria** de cualquier candidatura cuya *denominación* contenga `VOX` pero
+   cuyas *siglas* no sean exactamente `VOX` — es donde aparecería una coalición futura.
+5. **Si alguna vez apareciera una coalición:** se cuenta **la candidatura completa** y se **marca la
+   unidad con una bandera** para poder repetir el análisis sin ella. **No se estima el reparto**
+   (inventar) **ni se descarta en silencio** (perder territorio justo donde VOX tuvo que pactar).
 
 #### ✅ REGLA 1 del preregistro — el denominador NO se elige: se descompone `[decidido con G, 2026-08-20]`
 
@@ -425,6 +467,67 @@ no una fusión. Lo mismo aplica a la viñeta para los paquetes de R, si algún d
 **Lo único que daría la vuelta a esto:** que el destinatario prioritario fueran los paquetes de R.
 No lo es — G eligió académicos (§8), y a un académico le da igual el lenguaje si el método está
 escrito.
+
+### 5.7 Qué elecciones entran: SOLO GENERALES *(decidido con G, 2026-08-20)*
+
+🔴 **Esto llevaba desde el principio decidido a escondidas.** Todo el documento daba por supuestas las
+generales —los datos bajados, la justificación de la cobertura del Atlas— **sin una sola línea que lo
+declarara ni que diera el motivo**. Lo cazó G. Es exactamente el tipo de decisión no declarada que el
+preregistro existe para impedir, así que queda escrita.
+
+✅ **Solo elecciones generales.** En la ventana del Atlas de renta hay **cinco**: dic-2015, jun-2016,
+abr-2019, nov-2019 y jul-2023 → **cuatro comparaciones de cambio**.
+
+**El motivo no es comodidad.** La pregunta es si la respuesta cambia **al cambiar de lupa**, y para eso
+hay que mirar **la misma elección** a distintos niveles de agregación. Mezclar tipos de comicio mete
+una segunda cosa que varía a la vez, y ya no se sabe si lo que se mueve es la lupa o el comicio.
+
+| Descartado | Por qué |
+|---|---|
+| **Autonómicas** | Cada comunidad vota en **fechas distintas**. *"VOX creció más en X que en Y"* podría significar solo *"X votó en un año en que VOX iba mejor en toda España"* |
+| **Municipales** | El problema de coaliciones **se dispara** (listas locales), y los municipios de <250 hab. van en **ficheros distintos** (`11`/`12`) |
+| **Europeas** | Circunscripción única, participación muy baja, voto de segundo orden |
+
+⚠️ **LIMITACIÓN DECLARADA, y hay que escribirla en el artículo, no esconderla:** el despegue de VOX
+fue en las **autonómicas de Andalucía de diciembre de 2018** —su primer grupo parlamentario—, y un
+diseño de solo generales **deja ese momento fundacional fuera**.
+
+🟢 **Y una ventaja que apareció al comprobar qué hicieron Roig et al.:** ellos usan generales (2016,
+abr-2019, nov-2019, jul-2023) **y además** autonómicas de Madrid — algo que **pueden** hacer porque su
+ámbito es **una sola comunidad**, donde todos votan el mismo día. Nosotros no. Pero **sus cuatro
+generales están todas dentro de nuestras cinco**, así que los números serán **directamente comparables
+con los suyos**, convocatoria a convocatoria. Para un trabajo que pone a prueba el suyo, eso vale
+mucho.
+
+### 5.8 El ámbito: TODA ESPAÑA, con Madrid como puente *(decidido con G, 2026-08-20)*
+
+Pregunta de G: *"¿no hacemos Madrid entonces?"* — es decir, ¿copiamos el ámbito de la diana o no?
+
+**No. Y el motivo es aritmético** `[medido 2026-08-20 sobre el fichero 09 de nov-2019]`:
+
+| Escala | España | Madrid |
+|---|---|---|
+| Sección | 36.302 | 4.417 |
+| Distrito | 10.485 | 246 |
+| Municipio | 8.131 | 179 |
+| **Provincia** | 52 | **1** |
+| **CCAA** | 19 | **1** |
+
+🔴 **Con Madrid la escalera se rompe:** los dos peldaños de arriba desaparecen —no se comparan
+provincias si solo hay una—, y quedan **tres escalas de cinco**, perdiendo justamente las gruesas,
+que es donde el efecto de fundir muerde más. **Y la escalera es el producto** (§2, §3).
+
+Dos razones menores pero reales: **Madrid es atípica** (muy urbana, renta alta, efecto capital) —
+generalizar desde ahí es la limitación que **Roig et al. declaran de su propio trabajo**—; y
+**"Madrid → España" es uno de los cuatro huecos** que este trabajo cierra (§2.2).
+
+✅ **Pero Madrid se hace DENTRO de España, como puente.** Primero se reproduce su terreno exacto
+—provincia `28`, sus mismas convocatorias— y se comprueba si nuestros números se parecen a los suyos;
+**después** se amplía a España y se enseña qué cambia.
+
+> 🔑 **Valor real, no cortesía:** si nuestros números en Madrid coinciden con los suyos, nadie puede
+> atribuir el resultado nacional a un error de procesamiento nuestro — **ya está demostrado que
+> reproducimos su caso**. Es la validación externa más barata que hay: filtrar por provincia `28`.
 
 ## 6. 🔴 EL RIESGO QUE MATA EL DISEÑO (no la ejecución)
 
