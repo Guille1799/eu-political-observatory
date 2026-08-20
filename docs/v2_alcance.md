@@ -468,6 +468,41 @@ no una fusión. Lo mismo aplica a la viñeta para los paquetes de R, si algún d
 No lo es — G eligió académicos (§8), y a un académico le da igual el lenguaje si el método está
 escrito.
 
+### 5.6-bis La renta entra como NIVEL DE PARTIDA *(decidido con G, 2026-08-20)*
+
+🔴 **Otro hueco que llevaba desde el principio sin declarar, cazado por G.** El documento fijaba que
+la variable de VOX es el **cambio** (§1.2), pero **nunca decía si la renta entra como nivel o como
+cambio**. Son dos preguntas distintas y pueden dar titulares opuestos:
+
+| Municipio | Renta inicial | Δ renta | Δ VOX |
+|---|---|---|---|
+| A | 15.000 (**baja**) | **+1.500** | +8 |
+| B | 15.000 (**baja**) | −500 | +2 |
+| C | 30.000 (alta) | **+1.500** | +1 |
+| D | 30.000 (alta) | −500 | +0 |
+
+*Por nivel:* los de renta baja crecen +5 de media, los de alta +0,5 → **"VOX crece donde la renta es
+baja"**. *Por cambio:* los que suben de renta crecen +4,5, los que bajan +1 → **"VOX crece donde la
+renta sube"**. **Los dos son ciertos.** Uno dice **dónde estás**, el otro **hacia dónde vas** — y un
+sitio puede ser pobre y estar mejorando. *(Mismo patrón que §2.4: dos afirmaciones que parecen
+pelearse porque están mal enunciadas.)*
+
+**✅ Se calculan las tres, y se declara el orden:**
+
+| | Especificación |
+|---|---|
+| **Principal** | Δ VOX contra el **nivel de renta del año de partida** |
+| **Secundaria** | Δ VOX contra el **cambio** de renta |
+| **Tercera** | Las dos juntas → *"pobre y mejorando"* frente a *"pobre y empeorando"* |
+
+🎯 **Por qué el nivel es la principal, y no es preferencia:** Roig et al. agrupan las secciones en
+**cuatro tramos de renta** (<10.000 · 10-15.000 · 15-25.000 · >25.000 €). Su conclusión —*"a VOX lo
+trajo la renta media-alta"*— es **una afirmación sobre el nivel**. Para poner **su** conclusión a
+prueba hay que medir lo que ellos midieron; si no, no se comprueba lo suyo, se hace otra cosa al lado.
+
+⚠️ **El nivel se toma del AÑO DE PARTIDA**, no del final: si se tomara del final, la renta ya habría
+sido afectada por lo ocurrido en medio, y se estaría explicando el cambio con algo que el cambio tocó.
+
 ### 5.7 Qué elecciones entran: SOLO GENERALES *(decidido con G, 2026-08-20)*
 
 🔴 **Esto llevaba desde el principio decidido a escondidas.** Todo el documento daba por supuestas las
@@ -545,11 +580,48 @@ igual que apuntaba cuando el objeto era otro. *(⚠️ Esa afirmación sobre dó
 `[pendiente-verif]`: se apoya en la descripción general del fenómeno, no en una medición propia. Es
 además **una de las cosas que este trabajo va a medir**, así que no puede darse por sabida de entrada.)*
 
-**Mitigación obligatoria, no opcional:**
-1. **Fijar la muestra** a las unidades presentes en **todas** las escalas.
-2. **Reportar por separado** el efecto de selección, como resultado propio.
+#### ✅ REGLA 3 del preregistro — la muestra se fija construyendo TODO desde abajo `[2026-08-20]`
 
-**Si esto no se hace, el estudio no identifica nada.**
+🔴 **El veneno que casi nadie ve.** Al subir de escala, un municipio se puede construir de dos formas
+que **no dan el mismo número**:
+
+| | Cómo | Con una sección sin dato de renta |
+|---|---|---|
+| **A · de abajo arriba** | Sumando sus secciones | **Falta ese trozo**: el municipio analizado no es el municipio real |
+| **B · dato propio del nivel** | El dato municipal que publica el INE | Completo, incluye a todos |
+
+> **Ejemplo:** municipio de 3 secciones — S1 (1.000 hab, 200 votos), S2 (1.000, 200), S3 (**80 hab**,
+> 40 votos, **sin dato de renta** porque el ADRH omite las de <100). Manera A: 400/2.000 = **20 %**.
+> Manera B: 440/2.080 = **21,2 %**. **Mismo municipio, dos cifras.**
+
+🔴 **Mezclarlas destruye el diseño:** analizar las secciones con A y los municipios con B compara **un
+país con agujeros contra un país entero**, y la diferencia entre escalas se confunde con la
+diferencia entre huecos. Y los huecos **no son aleatorios**: son las unidades diminutas del rural.
+
+**✅ La regla: TODAS las escalas se construyen con la manera A, agregando desde la sección, sobre el
+mismo conjunto de secciones.** Decidido con G el 2026-08-20.
+
+🔑 **Por qué esto salva el diseño aunque perdamos secciones.** La pérdida no desaparece: se vuelve
+**idéntica en las cinco escalas**. Y como lo que se mide es **la diferencia entre escalas**, un sesgo
+constante en todas **se resta solo** — el mismo mecanismo por el que medir cambios en vez de niveles
+cancela lo que no varía (§1.2).
+
+**Qué queda dañado, y hay que declararlo:**
+
+| Tipo de afirmación | ¿Aguanta el agujero? |
+|---|---|
+| *"El efecto de la renta es un 40 % más fuerte por secciones que por municipios"* — compara medida nuestra con medida nuestra | ✅ **Sí** |
+| *"VOX creció más donde bajó la renta"* — describe España | ❌ **No**, sin declarar el agujero |
+
+🟢 **Y el agujero se puede medir con exactitud, que es lo que lo hace aceptable:** aunque el INE no
+publique la renta de esas secciones, **sus datos electorales sí los tenemos**. Se puede reportar
+cuántas secciones quedan fuera, cuánto censo suman, **cuántos votos a VOX hay dentro** y dónde están.
+**Eso no es una nota al pie: es la capa de honestidad de §4**, y va como resultado propio.
+
+⚠️ **LO QUE FALTA DE ESTA REGLA, y necesita medición previa:** no sabemos **cuántas** secciones se
+quedan sin renta (¿1 %? ¿15 %?). Hace falta bajar el ADRH y contarlo antes de decidir qué se hace con
+los municipios **parcialmente observados** — si entran incompletos o se excluyen enteros. **Mismo
+principio de siempre: primero el tamaño de la enfermedad.** `[pendiente-medir]`
 
 > 🧭 **Y esto ya había pasado antes.** E0 encontró exactamente la misma forma de trampa: *"los huecos
 > entre escalas no son simétricos y sesgan en una dirección — las regiones sin dato eran sobre todo
