@@ -716,6 +716,48 @@ generalizar desde ahí es la limitación que **Roig et al. declaran de su propio
 > atribuir el resultado nacional a un error de procesamiento nuestro — **ya está demostrado que
 > reproducimos su caso**. Es la validación externa más barata que hay: filtrar por provincia `28`.
 
+### 5.9 La ponderación: PONDERADA por población como principal *(decidido con G, 2026-08-21)*
+
+**Hueco cazado por G**, y no estaba hablado. A escala municipal cada municipio es **una observación**:
+un pueblo de 60 habitantes cuenta lo mismo que Madrid.
+
+| País de juguete | Habitantes | Renta | Δ VOX |
+|---|---|---|---|
+| Madrid | 3.000.000 | alta | +1 |
+| Pueblos A, B, C | 60 cada uno | baja | +9 cada uno |
+
+*Sin ponderar:* tres unidades de renta baja a +9 contra una de renta alta a +1 → **"VOX creció nueve
+veces más donde la renta es baja"**. *Ponderando:* los tres pueblos son 180 personas de 3.000.180
+—el 0,006 %—, media **+1,0** → **"VOX apenas creció y no se ve relación con la renta"**. **Mismos
+datos, conclusiones opuestas, ninguna mal calculada.**
+
+**No es un error: son dos preguntas.** *"¿En los **municipios** de renta baja creció más VOX?"* frente
+a *"¿Las **personas** que viven en zonas de renta baja vieron crecer más a VOX?"* — sitios frente a
+gente. *(Cuarta vez que aparece esta forma: nivel/cambio, dentro/entre, persuasión/movilización, y
+ahora sitios/gente.)*
+
+🔴 **Y lo que nos afecta:** las secciones son todas de tamaño parecido por diseño (~1.500 electores),
+los municipios van de 60 personas a 3 millones. **La diferencia entre ponderar y no ponderar CRECE al
+subir de escala** — así que sin fijarlo, parte de lo que llamaríamos *"efecto de escala"* sería
+**"las unidades se volvieron desiguales de tamaño"**. **Otra forma de fabricar el efecto que medimos**,
+igual que el denominador (§5.1).
+
+**✅ Ponderada por población como principal. Se calculan las dos, en las cinco escalas.** Motivos:
+
+1. Sin ponderar, **el 0,16 % de la población controla el 16,7 % de los datos** a escala municipal
+   (§5.2-bis), y cualquier frase sobre España saldría de ahí.
+2. 🔑 **Ponderar hace las cinco escalas comparables entre sí:** ponderadas, las cinco representan lo
+   mismo —**personas**—; sin ponderar, cada escala representa "unidades", y una unidad **es una cosa
+   distinta en cada peldaño**. **Ponderar quita un confuso; no ponderar lo mete.**
+
+⚠️ **Contraargumento declarado, y no es tontería:** la pregunta del MAUP es **geográfica** —trata de
+unidades del mapa—, y ponderar por población **acerca artificialmente las escalas entre sí**, que es
+justo donde queremos ver diferencias. Por eso la versión sin ponderar **se calcula y se publica
+igual**, y si las dos discrepan, **esa discrepancia es un resultado**.
+
+⚠️ `[pendiente-verif]` Roig et al. estiman sus matrices a partir de **recuentos de votos**, así que
+probablemente estén **ponderadas de hecho**. Sin comprobar.
+
 ## 6. 🔴 EL RIESGO QUE MATA EL DISEÑO (no la ejecución)
 
 **El ADRH omite las unidades de menos de 100 habitantes.** Consecuencia:
