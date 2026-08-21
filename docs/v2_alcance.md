@@ -134,6 +134,61 @@ replicarles con menos medios y se pierde. **La frase de apertura es siempre la e
 > unidades sean homogéneas por dentro. Aquí se comprueba si esa conclusión sobrevive al cambiar de
 > unidad — y se añaden las dos cosas que sus propios autores pidieron."*
 
+### 2.2-bis 🔝 Leída entera la diana `[VERIFICADO 2026-08-21, texto completo]`
+
+Cerrada la tarea §12.18. Se escribieron las apuestas **antes** de leer, y salieron **4 de 5** — lo que
+es un aviso, no un mérito: significa que se estaba **prejuzgando**, y se acertó porque el prejuicio
+era correcto, no porque se supiera.
+
+| | Pregunta | Apuesta | Lo que dice |
+|---|---|---|---|
+| a | ¿Tratan el seccionado cambiante? | citan y siguen | ✅ Una frase: *"el proceso inferencial comienza alineando las secciones censales entre distintos momentos temporales"*. **Ni una cifra** |
+| b | ¿Tasa de cambio del seccionado? | no | ✅ **NO CONSTA** |
+| c | ¿*"Más renta que quién"*? | no lo distinguen | ✅ Cuatro tramos de renta, **sin distinguir dentro/entre** |
+| d | ¿Ponderan? | sí, de hecho | ❌ **NO CONSTA.** Fallo de la apuesta: **no dicen** si ponderan, y las proporciones parecen simples |
+| e | ¿Qué año de renta? | no lo dicen | ✅ **NO CONSTA.** Parece **una sola foto** de renta para 2016-2023, sin explicitarlo |
+
+**🟢 Consecuencia directa para §6-bis:** el hueco sobre la mortalidad del seccionado **sigue abierto**.
+Alinean, citan sus métodos, **y no publican ninguna cifra**. Nuestro 98,42 % / 304 particiones ocultas
+vuelve a ser candidato a resultado propio — `[queda §12.10: si lo publican en OTRO trabajo]`.
+
+#### Y dos cosas que no se buscaban
+
+**1. Confirman el patrón de §2.1 con sus propias palabras:** justifican la sección censal por ser *"la
+unidad espacial más pequeña"*, lo que *"reduce el riesgo de falacia ecológica"* — **y no discuten el
+MAUP en ningún momento**. Invocar la unidad fina como garantía y parar ahí: exactamente lo que este
+trabajo documenta.
+
+**2. Comparan escalas… solo para ambientar:** *"aunque todos los análisis estadísticos se hacen a
+nivel de sección censal, esta sección incluye comparaciones con escalas territoriales más amplias
+—otras comunidades autónomas y el nivel nacional— **para contextualizar**"*. **Sus modelos corren
+siempre a una sola escala.**
+
+#### 🔴 EL TERRENO: por qué NO se entra por ahí
+
+Es tentador entrar por el punto 2 — *"comparáis escalas y no comprobáis vuestro resultado"*. **Es
+terreno débil**, y se pierde en una línea: *"esa comparación era descriptiva, nunca fue una prueba"*.
+Y **tendrían razón**. Quedaría como un *gotcha* y el revisor leería el resto con hostilidad.
+
+> ⚠️ **Y el aviso vale más que el hallazgo:** se eligió ese punto porque era **lo más citable**, que no
+> es lo mismo que **lo más sólido**. *(Error cometido en vivo el 2026-08-21 y corregido en el acto.)*
+> **El terreno se elige por su solidez, no por cómo suena la frase.**
+
+**El terreno fuerte lo escriben ellos mismos, en sus limitaciones:**
+
+> *"Como cualquier método de inferencia ecológica, **la validez de los resultados depende en última
+> instancia de la solidez de los supuestos subyacentes** y sigue sujeta al riesgo de falacia
+> ecológica."*
+
+**Eso no se puede discutir, porque es suyo.** Han declarado que su resultado descansa sobre un
+supuesto —la homogeneidad interna de la unidad— que justifican eligiendo la unidad más fina. **Nadie
+ha medido cuánto se sostiene.** Nosotros sí.
+
+🔑 **La postura del proyecto, en una línea de G:** **no les contradecimos, les completamos.**
+Ellos dejan un supuesto declarado y sin medir; nosotros lo medimos y **de paso entregamos las dos
+cosas que piden por escrito** (desigualdad junto a renta; herramientas espaciales que miran a las
+secciones vecinas). **Eso no es un ataque: es una contribución** — y es mucho más difícil de rechazar.
+
 ### 2.3 Los demás antecedentes, que también hay que citar
 
 | Trabajo | Qué hizo | Qué deja libre |
@@ -1369,7 +1424,7 @@ escrito en cuatro ficheros, y era falso.
 | 15 | ~~**¿De dónde sacamos la población por sección?**~~ | 🟢 **LOCALIZADA el 2026-08-21.** **Padrón continuo por secciones censales: 2004-2022** · **Censo Anual de Población por secciones: 2021-2025**. Juntas cubren la ventana, con solape en 2021-2022. ⚠️ **El solape NO es control de validez** (lo corrigió G): miden cosas distintas —empadronados vs. residentes estimados—, así que sirve para **medir el desajuste** y sobre todo para saber **si depende del tamaño del municipio**, que es lo que decide cuántas unidades quedan en la frontera del umbral. *(Descartado usar los indicadores demográficos del ADRH como detector: la regla en cascada no distingue "soy pequeña" de "mi vecina lo es".)* | — | §5.2-bis |
 | 16 | 🆕 **¿Qué cifra de población usa el INE para aplicar su propio umbral de 100?** | Su metodología habla del **Fichero de Población Continua**. Si usamos otra fuente, **nuestro umbral no reproduce el suyo** y habrá unidades dentro para nosotros y fuera para ellos, o al revés | ~30 min | §5.2-bis |
 | 17 | ~~**¿Qué año de renta se empareja con cada elección?**~~ | ✅ **DECIDIDO el 2026-08-21 → §5.6-bis.** El último año natural **completo anterior** a la elección: nov-2019 → renta 2018, jul-2023 → renta 2022 | — | §5.6-bis |
-| 18 | 🔴🆕 **LEER LA DIANA ENTERA, de una sentada** | Ya son **cinco** cosas concretas pendientes de comprobar contra Roig et al.: (a) si mencionan el problema temporal del seccionado más allá de citar sus métodos; (b) si publican tasa de cambio del seccionado; (c) si dicen *"más renta que quién"* —dentro o entre municipios—; (d) si sus estimaciones están ponderadas de hecho; (e) **qué año de renta emparejan con cada elección**. **A trozos sale caro; de una vez, no** | ~2 h | §2.2 |
+| 18 | ~~**LEER LA DIANA ENTERA**~~ | ✅ **HECHO el 2026-08-21 → §2.2-bis.** 4 de 5 apuestas acertadas (aviso, no mérito). **Sigue abierto el hueco del seccionado**: alinean, citan sus métodos y **no publican cifra**. Y el terreno de entrada **cambia**: no por su párrafo de contexto (débil, rebatible en una línea) sino por **su propio párrafo de limitaciones** (irrebatible, porque es suyo) | — | §2.2-bis |
 | 13 | 🆕 **Sánchez-García & Llamazares (2025)** — VOX en secciones censales metropolitanas | Citados **dentro** de la diana: hallan que VOX crece en suburbios **con crecimiento de población, renta más baja y más paro** (*left-behind*) — **dirección contraria** a la conclusión de Roig et al. **No verificado de primera mano**, solo por cómo lo citan otros | Localizar y leer: ~1 h | §2.3 |
 | 10 | 🆕 **¿Publican Pérez & Pavía la tasa de cambio del seccionado**, o solo las correspondencias? | Decide si nuestra cifra de §6-bis (304 particiones ocultas, 98,42 % estable) es un resultado o una redundancia. **No se ha leído su artículo entero** | Leer el artículo: ~1 h | §6-bis |
 | 11 | 🆕 **¿A qué fecha corresponde cada capa anual de cartografía del INE?** | El INE consolida *"usualmente a 1 de enero"*, y nuestras elecciones son de nov-2019 y jul-2023. Si las capas no coinciden con el seccionado del día de la votación, la correspondencia se desalinea | ~30 min | §6-ter |
