@@ -600,6 +600,30 @@ prueba hay que medir lo que ellos midieron; si no, no se comprueba lo suyo, se h
 ⚠️ **El nivel se toma del AÑO DE PARTIDA**, no del final: si se tomara del final, la renta ya habría
 sido afectada por lo ocurrido en medio, y se estaría explicando el cambio con algo que el cambio tocó.
 
+#### ✅ Y qué año de renta va con cada elección *(decidido con G, 2026-08-21)*
+
+**Regla: la renta del último año natural COMPLETO anterior a la elección.**
+
+| Elección | Renta que se usa |
+|---|---|
+| nov-2019 | **2018** |
+| jul-2023 | **2022** |
+
+**Por qué no la del año electoral**, que era lo aparentemente natural: la renta de 2019 se genera de
+enero a diciembre, y se votó el **10 de noviembre** — casi dos meses de esa renta son **posteriores al
+voto**. Es el mismo principio que el nivel de partida, un escalón más abajo: **no se explica algo con
+información que llegó después**. Si una fábrica cierra en diciembre de 2019, eso entra en "la renta de
+2019" y **no pudo influir en un voto de noviembre**.
+
+⚠️ **Contrapeso honesto:** la renta de los hogares **cambia despacio**, así que 2018 y 2019 se parecen
+mucho y el efecto práctico será pequeño. **La razón para elegir 2018 no es el tamaño del efecto: es
+poder responder** a *"¿por qué usáis renta posterior al voto?"*.
+🟢 **Extra no buscado:** con la principal en nov-2019, la renta de partida (2018) queda **antes del
+cambio de régimen del ADRH** de 2020 (§5.2-bis).
+
+⚠️ `[pendiente-verif]` **Qué año de renta emparejan Roig et al. con cada elección: NO CONSTA** en lo
+leído hasta ahora. Solo consta que usan renta neta media por persona del ADRH. **No se especula.**
+
 ### 5.6-ter La comparación principal: nov-2019 → jul-2023 *(decidido con G, 2026-08-21)*
 
 Las cinco generales dan cuatro comparaciones, y **no son del mismo tipo**, porque en 2015 y 2016 VOX
@@ -1344,7 +1368,8 @@ escrito en cuatro ficheros, y era falso.
 | 14 | 🔴🆕 **¿Ponderamos las unidades por población, o cuenta cada una igual?** | **Cazado por G el 2026-08-21, y no se había hablado nunca.** Los 1.360 municipios diminutos son el **0,16 % de las personas** y el **16,7 % de las observaciones** a escala municipal: sin ponderar, su influencia sobre el resultado es ~100 veces su peso real. 🔑 **Y el problema CAMBIA con la escala** —a nivel de sección las unidades se parecen en tamaño, a nivel de municipio no—, así que se mete dentro de lo que medimos | Decisión de diseño + medir su efecto | §5.2-bis, §2.4 |
 | 15 | ~~**¿De dónde sacamos la población por sección?**~~ | 🟢 **LOCALIZADA el 2026-08-21.** **Padrón continuo por secciones censales: 2004-2022** · **Censo Anual de Población por secciones: 2021-2025**. Juntas cubren la ventana, con solape en 2021-2022. ⚠️ **El solape NO es control de validez** (lo corrigió G): miden cosas distintas —empadronados vs. residentes estimados—, así que sirve para **medir el desajuste** y sobre todo para saber **si depende del tamaño del municipio**, que es lo que decide cuántas unidades quedan en la frontera del umbral. *(Descartado usar los indicadores demográficos del ADRH como detector: la regla en cascada no distingue "soy pequeña" de "mi vecina lo es".)* | — | §5.2-bis |
 | 16 | 🆕 **¿Qué cifra de población usa el INE para aplicar su propio umbral de 100?** | Su metodología habla del **Fichero de Población Continua**. Si usamos otra fuente, **nuestro umbral no reproduce el suyo** y habrá unidades dentro para nosotros y fuera para ellos, o al revés | ~30 min | §5.2-bis |
-| 17 | 🆕 **¿Qué año de renta se empareja con cada elección?** | Sin declarar. La renta de un año se determina a lo largo de ese año; usar la del año electoral significa usar algo **posterior** a la votación. Mismo razonamiento que el "nivel de partida" de §5.6-bis | Decisión | §5.6-bis |
+| 17 | ~~**¿Qué año de renta se empareja con cada elección?**~~ | ✅ **DECIDIDO el 2026-08-21 → §5.6-bis.** El último año natural **completo anterior** a la elección: nov-2019 → renta 2018, jul-2023 → renta 2022 | — | §5.6-bis |
+| 18 | 🔴🆕 **LEER LA DIANA ENTERA, de una sentada** | Ya son **cinco** cosas concretas pendientes de comprobar contra Roig et al.: (a) si mencionan el problema temporal del seccionado más allá de citar sus métodos; (b) si publican tasa de cambio del seccionado; (c) si dicen *"más renta que quién"* —dentro o entre municipios—; (d) si sus estimaciones están ponderadas de hecho; (e) **qué año de renta emparejan con cada elección**. **A trozos sale caro; de una vez, no** | ~2 h | §2.2 |
 | 13 | 🆕 **Sánchez-García & Llamazares (2025)** — VOX en secciones censales metropolitanas | Citados **dentro** de la diana: hallan que VOX crece en suburbios **con crecimiento de población, renta más baja y más paro** (*left-behind*) — **dirección contraria** a la conclusión de Roig et al. **No verificado de primera mano**, solo por cómo lo citan otros | Localizar y leer: ~1 h | §2.3 |
 | 10 | 🆕 **¿Publican Pérez & Pavía la tasa de cambio del seccionado**, o solo las correspondencias? | Decide si nuestra cifra de §6-bis (304 particiones ocultas, 98,42 % estable) es un resultado o una redundancia. **No se ha leído su artículo entero** | Leer el artículo: ~1 h | §6-bis |
 | 11 | 🆕 **¿A qué fecha corresponde cada capa anual de cartografía del INE?** | El INE consolida *"usualmente a 1 de enero"*, y nuestras elecciones son de nov-2019 y jul-2023. Si las capas no coinciden con el seccionado del día de la votación, la correspondencia se desalinea | ~30 min | §6-ter |
