@@ -399,7 +399,44 @@ ningún valor sintético entra; y la serie se vuelve **homogénea** a través de
 2019→2020. Es coherente con la Regla 3: **pérdida idéntica en las cinco escalas y en todos los años,
 luego se cancela al comparar**.
 
-⚠️ `[pendiente]` **Falta la fuente de población por sección** para poder aplicar el umbral.
+⚠️ `[pendiente]` **Falta la fuente de población por sección** para poder aplicar el umbral. Es el
+cuello de botella de todo lo que sigue (§12.15).
+
+##### 🔑 Y no es un agujero de datos: es una FRONTERA LEGAL
+
+Pregunta de G: *"¿no hay otra vía para la renta de esas secciones?"* **No, y el motivo importa.**
+
+En un municipio de 60 habitantes, publicar la renta media **es casi publicar un dato individual**.
+Lo prohíbe el **secreto estadístico** (Ley 12/1989 de la Función Estadística Pública) y encima el
+**secreto tributario**. Por eso el SEPE y la Seguridad Social enmascaran las celdas pequeñas (§5.2) y
+la AEAT publica renta municipal solo por encima de cierto tamaño: **todas topan con la misma pared,
+por la misma razón**.
+
+> **No estamos buscando mal. Estamos pidiendo algo que no se puede publicar.** Deja de tener sentido
+> seguir buscando fuentes alternativas de renta a ese nivel.
+
+*(⚠️ SERPAVI probablemente esté **peor**, no mejor: en un pueblo de 60 habitantes casi no hay
+contratos de alquiler. `[sin comprobar]`)*
+
+##### ✅ Qué se hace con esas unidades — orden decidido con G, 2026-08-21
+
+| | Vía | Estado |
+|---|---|---|
+| **1º** | **D · FUSIONAR.** Agrupar los municipios diminutos de una misma **comarca** en **una sola unidad de análisis**, que juntos sí superan el umbral | **Preferida** |
+| **2º** | **B · El valor del INE, MARCADO.** No como dato bueno: como **medida del sesgo**. Se corre el análisis con y sin, y la diferencia dice cuánto mueve el relleno | **En paralelo, es gratis** |
+| **3º** | **A · Descartar y cuantificar** | **Red de seguridad**, si D y B no salen |
+| ✗ | **C · Otra variable** (valor catastral) | **Descartada**: mide riqueza inmobiliaria, no renta. Sería otra cosa, no comparable |
+
+🔑 **Por qué D es la preferida, y no es gusto:** es **exactamente el mismo principio que la Regla 3**
+con las secciones partidas — *cuando no puedes medir a la resolución que querías, **bajas la
+resolución en vez de inventarte el dato***. Y es lo mismo que hace el INE, con una diferencia
+decisiva: **ellos reparten el valor hacia abajo (y por eso inventan); nosotros subimos la unidad (y
+por eso no)**. Además **la España vaciada se queda dentro del análisis**, que es la respuesta a
+*"habéis quitado justo el territorio del que todo el mundo discute"*.
+
+⚠️ **Lo que necesita cada vía:** D necesita población por unidad **y** una correspondencia
+municipio → comarca. B necesita poder **detectar** qué valores están imputados. Las dos dependen de
+§12.15.
 
 ##### Y tres cosas más que hay que tener en cuenta, anotadas al leer la metodología
 
