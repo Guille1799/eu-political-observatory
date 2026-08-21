@@ -25,53 +25,38 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 
-DECISION = RAIZ / "docs/decisiones/EFA_N_FACTORES.md"
-RESUMEN = RAIZ / "data/processed/ess/spain/spain_efa_summary.txt"
+LINEA = RAIZ / "docs/decisiones/LINEA_ACTUAL.md"
 
 
-def efa_decision():
-    """Prometido el 2026-08-12: «verificar/arreglar la solución EFA — número de factores
-    (paralelo/MAP, no 12), tratar los Heywood». El análisis lleva parado desde MAYO.
+def linea_viva():
+    """El 2026-08-21 G retiró la línea EFA: «efa está descartado ya, hay un proyecto nuevo».
+    La retirada, con su motivo, está en docs/decisiones/EFA_RETIRADO_2026-08-21.md.
 
-    Es forma DECISIÓN: el artefacto es el registro del número de factores y del método que
-    lo eligió. Sin eso, «se arregló» no se puede distinguir de «se dejó igual».
+    ⚠️ Este comprobador existe porque retirar aquellas dos dejaba el tablero VACÍO — y un
+    tablero vacío NO significa «todo hecho»: significa que el Stop hook `promesa_gate.py`
+    falla ABIERTO en este proyecto, o sea que cualquier PRÓXIMO PASO en prosa vuelve a colar.
+    Retirar una promesa deja un agujero, no un hueco limpio. Esto lo tapa.
+
+    Es forma DECISIÓN: pide el NOMBRE de la línea nueva por escrito. Mientras nadie la nombre,
+    este repo no puede prometer nada verificable, y el rojo lo dice en voz alta.
     """
-    if not DECISION.exists():
-        return False, "no existe docs/decisiones/EFA_N_FACTORES.md: el nº de factores no está decidido"
-    t = DECISION.read_text("utf-8", errors="replace")
     import re
-    n = re.search(r"^n_factores:\s*(\d+)\s*$", t, re.M)
-    m = re.search(r"^metodo:\s*(paralelo|MAP|paralelo\+MAP)\s*$", t, re.M)
-    if not (n and m):
-        return False, "el fichero existe pero le falta `n_factores: N` o `metodo: paralelo|MAP`"
-    return True, "n_factores=" + n.group(1) + " por " + m.group(1)
+    if not LINEA.exists():
+        return False, ("no existe docs/decisiones/LINEA_ACTUAL.md: la línea EFA se retiró"
+                       " el 2026-08-21 y la nueva sigue sin nombrar")
+    t = LINEA.read_text("utf-8", errors="replace")
+    m = re.search(r"^linea:\s*(.+\S)\s*$", t, re.M)
+    if not m:
+        return False, "el fichero existe pero no dice `linea: <nombre>`"
+    return True, "línea actual: " + m.group(1)[:60]
 
 
-def efa_rerun():
-    """Y decidirlo no basta: hay que RE-EJECUTAR. Los outputs vivos son del 17 de mayo, o sea
-    de la solución que la propia promesa dice que está mal. Se exige que el resumen sea más
-    NUEVO que la decisión: es la única forma de que «existe el fichero» no valga por sí solo.
-    """
-    if not RESUMEN.exists():
-        return False, "no existe spain_efa_summary.txt"
-    if not DECISION.exists():
-        return False, "no hay decisión con la que comparar (ver efa-decision)"
-    if RESUMEN.stat().st_mtime <= DECISION.stat().st_mtime:
-        import datetime as dt
-        f = dt.date.fromtimestamp(RESUMEN.stat().st_mtime)
-        return False, "el resumen es de " + str(f) + ", ANTERIOR a la decisión: no se re-ejecutó"
-    return True, "re-ejecutado después de decidir"
-
-SIN_MUTACION = {
-    "efa-rerun": "exige que un fichero que YA EXISTE (spain_efa_summary.txt, de mayo) sea mas"
-                 " nuevo; el verificador nunca toca ficheros existentes, y menos en data/.",
-}
+SIN_MUTACION = {}
 ARTEFACTOS = {
-    "efa-decision": [(str(DECISION), "n_factores: 4" + chr(10) + "metodo: paralelo" + chr(10))],
+    "linea-viva": [(str(LINEA), "linea: ejemplo-de-mutacion" + chr(10))],
 }
 COMPROBADORES = {
-    "efa-decision": efa_decision,
-    "efa-rerun": efa_rerun,
+    "linea-viva": linea_viva,
 }
 
 # ── MUTACIÓN: un comprobador en el que se puede confiar es uno que se ha VISTO cambiar ──
