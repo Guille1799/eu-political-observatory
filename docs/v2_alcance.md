@@ -632,6 +632,23 @@ indirecta. Y el **cambio** de renta (medida secundaria) cruza el cambio de régi
 ✅ **Las cuatro comparaciones se calculan y se publican igual.** Lo único que se decide aquí es cuál
 lleva el titular — es decir, **de qué conversación forma parte el trabajo**.
 
+#### Y las dos formas de recorrer la ventana: SE HACEN LAS DOS *(con G, 2026-08-21)*
+
+Pregunta de G: *"¿no dejamos tres años fuera?"* No — pero destapó una decisión sin declarar. Hay
+**dos maneras distintas** de usar cinco convocatorias, y no miden lo mismo:
+
+| | Cómo | Qué mide | |
+|---|---|---|---|
+| **Pares consecutivos** | 2015→2016, 2016→abr-19, abr-19→nov-19, nov-19→2023 | **cada escalón por separado**: cuándo pasó cada movimiento | ✅ |
+| **Base fija en 2016** | 2016→abr-19, 2016→nov-19, 2016→2023 | **el acumulado** desde una referencia | ✅ |
+
+✅ **Se calculan las dos, y el titular es el par nov-2019 → jul-2023.**
+
+🎯 **Por qué la base fija entra igual:** es **la que usan Roig et al.** —todo lo miden contra 2016—,
+así que sin ella no hay comparación directa con sus cifras. ⚠️ Pero arrastra el problema de arriba a
+**todas** sus comparaciones: partir de un VOX marginal hace que el "cambio" sea casi el nivel de
+llegada. **Por eso entra como secundaria y con el aviso escrito, no como titular.**
+
 📌 **Y el recordatorio que hay que tener a mano, porque se confunde:** son **dos** variables con **dos**
 decisiones distintas. **VOX en CAMBIO** (lo que explicamos) contra **renta en NIVEL de partida** (con
 lo que explicamos). En una frase: *"¿creció más VOX en los sitios que **ya eran** pobres?"*.
@@ -1208,6 +1225,38 @@ Se anota para que no se vuelva a proponer dentro de tres semanas como si fuera u
 - **No hace clustering ni tipologías.**
 - **No predice elecciones.** Esa es una línea distinta y opcional, y solo tendría sentido **después**.
 - **No depende del modelo de medida ESS**, congelado por una solución factorial impropia.
+- 🆕 **No hace inferencia ecológica — TODAVÍA.** Ver abajo, porque esta tiene fecha.
+
+### 10.1 🎯 El acto 2: correr SU método a las cinco escalas *(planteado con G, 2026-08-21)*
+
+**De dónde sale.** Pregunta de G: *"si un camino es rebatirlos, ¿no tenemos que hacerlo como ellos?"*
+La regla es correcta y ya la aplicamos sin nombrarla (§5.8, Madrid como puente): **para poner algo a
+prueba hay que poder reproducirlo, y hay que cambiar UNA cosa, no cinco.**
+
+🔴 **Y el inventario honesto dice que en dos cosas grandes NO hacemos lo que ellos:**
+
+| | Roig et al. | Nosotros |
+|---|---|---|
+| Qué se mide | **trasvases de voto** (de dónde vino cada voto) | **cambio neto del %** |
+| Método | **inferencia ecológica**, `rslphom` (paquete `lphom`, de Pavía) | regresión / descomposición |
+
+**Consecuencia inmediata, y hay que escribirla en el artículo:** ❌ **no** podemos rebatir *"los
+votantes de VOX venían del PP y de Ciudadanos"* — no estimamos trasvases. ✅ **Sí** podemos poner a
+prueba *"la probabilidad de votar VOX crece con la renta"*, que es una **asociación** medida sobre
+unidades territoriales. **Y ese es su titular.** El trabajo apunta a **una frase concreta suya**, no a
+su artículo entero.
+
+**El acto 2, entonces:** correr **`rslphom`, su propio algoritmo, a las cinco escalas**.
+
+> 🔑 **Y no sería solo comparar resultados.** La inferencia ecológica **descansa sobre que las unidades
+> sean homogéneas por dentro**, y eso se degrada al agrandar la unidad. Correr su método a lo largo de
+> la escalera **enseñaría cómo se degrada su propio método** — una demostración, no un argumento.
+
+🔴 **Pero NO en el primer corte, y manda §5.3.1:** *"el primer corte tiene que valer solo; en cuanto se
+añada una pieza porque hará falta más adelante, parar"*. `lphom` no es un botón: es una familia de
+métodos con su teoría detrás. Meterlo ahora **duplica el proyecto**, y el riesgo no es que salga mal
+— es que **no salga nada**. Primer corte autosuficiente; esto encima, **si aterriza**.
+*(Sería además el segundo uso de la válvula de escape a R de §5.6.)*
 
 ## 11. Por qué murió el diseño anterior (v1), para no repetirlo
 
