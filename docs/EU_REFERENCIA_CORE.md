@@ -213,20 +213,47 @@ primer uso de la válvula de escape de §5.6, abierta menos de una hora antes.
 reescribe la geografía electoral española"* pasa a **`[sin verificar si es novedoso]`**. Se escribió
 antes de buscar quién lo había hecho. **Buscar primero, afirmar después.**
 
-**(1) Leer el artículo de Pérez & Pavía** (DOI `10.38191/iirr-jorr.24.057`) y comprobar si publican
-la **tasa de cambio** del seccionado o solo las correspondencias (§12.10). Decide si la cifra de
-§6-bis es un resultado propio o una redundancia. ~1 h.
+⚫ ~~*Escribir el preregistro antes de mirar los datos*~~ — ✅ **COMPLETO el 20/21-ago.** Ver abajo.
 
-**(1-bis) Comprobar a qué fecha corresponde cada capa anual de cartografía** (§12.11): el INE
-consolida *"usualmente a 1 de enero"* y nuestras elecciones son de nov-2019 y jul-2023. ~30 min.
+⚫ ~~*Leer la diana entera*~~ — **HECHO el 21-ago**, §2.2-bis del alcance. **El hueco del seccionado
+sigue abierto:** alinean las secciones, citan sus métodos y **no publican ni una cifra**. Y cambió el
+terreno de entrada: **no** por su párrafo de contexto (débil, rebatible en una línea) sino por **su
+propio párrafo de limitaciones**, donde declaran que la validez depende de un supuesto que nadie ha
+medido. 🔑 **La postura del proyecto, en una frase de G: *no les contradecimos, les completamos*.**
 
-**(2) Escribir, ANTES de mirar los datos**, la regla de qué candidaturas cuentan como VOX cuando
-concurre en coalición · la elección de **denominador** (votos emitidos y/o censo) **y** la regla de
-muestra fija entre escalas. El preregistro entra en el MVP.
-🟢 **Y ya se puede hacer sin contaminarse:** el catálogo de candidaturas (fichero `03`, 106
-registros en 2019-11) trae **siglas y denominación, sin un solo voto**. Leer *qué* candidaturas
-existen no es mirar el resultado — el resultado está en los ficheros `06`/`08`/`10`. La regla se
-escribe como **criterio**, y luego se aplica mecánicamente al catálogo.
+### ✅ EL PREREGISTRO, COMPLETO — ninguna decisión tomada después de ver un resultado
+
+| | Decisión | §  |
+|---|---|---|
+| Objeto | **VOX por SIGLAS**, nunca por código (se reasignan cada elección) | 5.1 |
+| Dependiente | **Cambio** del voto, descompuesto en **persuasión × movilización** | 5.1 |
+| Explicativa | Renta como **nivel de partida**, del **año anterior** a la elección | 5.6-bis |
+| Comparación | **nov-2019 → jul-2023** de titular · + pares consecutivos + base fija 2016 | 5.6-ter |
+| Elecciones | **Solo generales** (5 en la ventana del Atlas) | 5.7 |
+| Ámbito | **España**, con **Madrid como puente** de validación | 5.8 |
+| Escalas | Cinco, **todas construidas desde abajo** | 6 |
+| Muestra | Umbral de **100 residentes aplicado por nosotros**, todos los años | 5.2-bis |
+| Pueblos <100 hab | **Fusionar** → marcar → descartar | 5.2-bis |
+| Unidades | **Ponderadas por población** (+ sin ponderar) | 5.9 |
+| Lenguaje / idioma | **Python** · producto bilingüe, conversación en español | 5.6 / 9.4 |
+
+🔴 **Y el hallazgo que más cerca estuvo de arruinarlo todo (§5.2-bis):** desde los datos de 2020 el
+Atlas **no deja huecos: los rellena**, asignando a las secciones pequeñas **el valor de su
+municipio**. Eso pone **a cero por construcción** la variación intramunicipal — o sea, **fabrica el
+resultado "la escala no importa"**, que es justo el que habíamos declarado publicable. Un hueco lo
+ves; **un valor inventado te lo crees**.
+
+## ▶️ PRÓXIMO PASO — ya no es decidir, es EJECUTAR
+
+**(1) Bajar el Padrón por secciones censales** (2004-2022) **y el Censo Anual** (2021-2025) para tener
+la población por sección. Es lo que permite aplicar el umbral de 100. ⚠️ El solape 2021-2022 **no es
+un control de validez** —miden cosas distintas— sino la medida de **cuántas unidades quedan en la
+frontera** según qué fuente (§12.15).
+
+**(2) Bajar el ADRH y contar el agujero real:** cuántas secciones sin renta, cuánto censo suman,
+cuántos votos a VOX hay dentro y dónde están. Eso **es** la capa de honestidad, no una nota al pie.
+
+**(3) Cruzar.** Y solo entonces.
 
 ⚫ ~~*Retomar el EFA*~~ — era el próximo paso desde junio y **ya no lo es**. Ver el bloque congelado.
 
