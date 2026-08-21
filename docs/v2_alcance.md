@@ -355,6 +355,66 @@ cambió la política a mitad de serie** (2013 trae números reales, 2025 ya no).
 los desgloses son mayoritariamente inutilizables y la serie está rota. **La renta del ADRH es la
 variable económica robusta; el paro no.**
 
+#### 🔴 5.2-bis. Lo que el ADRH publica DE VERDAD `[VERIFICADO 2026-08-21 contra la metodología del INE]`
+
+**Corrección, la sexta.** Este documento decía: *"el ADRH omite las unidades de menos de 100
+habitantes"*. **Es cierto solo hasta los datos de 2019.** La regla real son tres, y **cambió a mitad
+de nuestra serie**. Fuente: *Metodología ADRH* (INE, oct-2025) y el documento de trabajo
+*Modelo de asignación de valores de renta media en el ADRH*.
+
+| Qué variable | Años | Qué hace el INE con una unidad de <100 residentes |
+|---|---|---|
+| Renta media por persona / hogar | **2015-2019** | **No publica nada.** Hueco visible |
+| Renta media por persona / hogar | **2020-2023** | 🔴 **Publica SIEMPRE, con valor asignado:** si la sección es pequeña pero su municipio llega al umbral, **le pone el valor del municipio**; si el municipio entero es pequeño, **el promedio de los municipios pequeños de su comarca agraria** |
+| **Gini**, **P80/P20**, fuentes de ingreso, demográficos | **todos** | **No publica** bajo 100 residentes. **Y en cascada:** si UNA sola sección del municipio no llega, **no se publica ninguna sección de ese municipio** |
+
+**Umbrales adicionales** para los indicadores de población bajo umbrales de renta: **≥500** residentes
+por sexo · **≥2.500** por sexo y edad · **≥10.000** por sexo y nacionalidad.
+
+**Tamaño del asunto, con cifras del INE** *(población a 1-ene-2022)*: **más de 1.360 de los 8.131
+municipios** tienen menos de 100 residentes — el **0,16 % de la población**, muy concentrados: en 12
+provincias al menos el 20 % de los municipios está por debajo, y esas 12 reúnen **más del 85 %**.
+
+> 🔑 **Y eso es el riesgo de §6 cuantificado, sin hipótesis:** el mismo agujero pesa **3,7 %** de las
+> secciones (1.360 de 36.302) y **16,7 %** de los municipios (1.360 de 8.131). **Cuatro veces más
+> grande visto con la lupa gruesa.**
+
+##### 🔴 Por qué el dato asignado es PEOR que el hueco — y por qué amenaza el resultado
+
+Asignar a una sección pequeña **el valor de su municipio** pone **a cero, por construcción**, la
+variación **dentro** de ese municipio. Y §2.4 dice que lo que medimos es precisamente cuánta variación
+hay **dentro** frente a **entre**.
+
+> **El error empuja hacia "la escala no importa".** Es decir: **fabrica el resultado nulo** — el mismo
+> que habíamos declarado publicable *"porque un no-cambio también es un resultado"*. Lo es **solo si
+> es verdad**. Publicaríamos que en España la escala no muerde cuando lo que no muerde es el relleno.
+>
+> Un hueco lo ves y lo declaras. **Un valor inventado te lo crees**, porque en la tabla se ve idéntico
+> a uno medido.
+
+##### ✅ La decisión: el umbral lo aplicamos NOSOTROS, a todos los años `[con G, 2026-08-21]`
+
+**Sección con menos de 100 residentes → sin dato, nos lo dé el INE o no.** Arregla dos cosas:
+ningún valor sintético entra; y la serie se vuelve **homogénea** a través del cambio de régimen de
+2019→2020. Es coherente con la Regla 3: **pérdida idéntica en las cinco escalas y en todos los años,
+luego se cancela al comparar**.
+
+⚠️ `[pendiente]` **Falta la fuente de población por sección** para poder aplicar el umbral.
+
+##### Y tres cosas más que hay que tener en cuenta, anotadas al leer la metodología
+
+1. **La renta se refiere a la "población encontrada"**, no a los residentes: solo cuenta a quienes
+   aparecen en los modelos tributarios. En general >98,6 %, pero **el INE avisa de secciones con
+   presencia significativa de población extranjera comunitaria donde falta hasta el 36 %**. 🔴 Sesgo
+   **diferencial por inmigración** — y la inmigración es una variable central en la literatura de VOX.
+2. **Los valores extremos están recortados** (winsorización a los percentiles 0,1 y 99,5, ponderando
+   por población). Las colas de la distribución de renta **no son las reales**.
+3. **Las secciones con renta agregada negativa se excluyen** del cálculo de indicadores.
+
+🆕 **Y un hallazgo potencial que sale de aquí:** **cualquiera que use el Atlas 2015-2023 como una
+serie homogénea está mezclando dos regímenes de tratamiento.** Eso incluye a Roig et al., cuya serie
+va de 2016 a 2023. `[pendiente-verif: si lo mencionan]`
+
 #### 🆕 SERPAVI — la fuente que encaja de forma casi absurda `[VERIFICADO 2026-08-17]`
 
 **Sistema Estatal de Referencia del Precio del Alquiler de Vivienda** (Ministerio de Vivienda).
@@ -1115,6 +1175,8 @@ escrito en cuatro ficheros, y era falso.
 | 7 | ~~**¿Sobrevive una sección censal entre dos convocatorias?**~~ | ✅ **MEDIDO el 2026-08-19 → §6-bis. NO mata el diseño.** 98,42 % de las secciones son comparables tal cual; rompen la comparación 572 (1,58 %), de las cuales **304 lo hacían de forma invisible**. Y el problema **vive solo en el peldaño más fino** | — | §6-bis |
 | 8 | ~~**¿Publica el INE cartografía anual de secciones y/o una tabla de correspondencias?**~~ | ✅ **COMPROBADO el 2026-08-19 → §6-ter. Las dos existen.** Cartografía anual del INE 2007-2025, libre, con `CUSEC`. Y `sc2sc` en CRAN (Pérez & Pavía) da correspondencias **geométricas con proporciones**, 2001-2026. **El plan A queda superado por algo mejor** | — | §6-ter |
 | 12 | ~~**¿Ha hecho ya el grupo de Pavía la pregunta de ESCALA?**~~ | 🟢 **BARRIDO el 2026-08-20 → §8-bis. No hay señal.** Su línea 2025-2026 es **inferencia ecológica** entera; su obra espacial (Pavía & López-Quílez 2013; Pavía & Cantarino 2017; `sc2sc`) sirve para **mover datos entre unidades**, nunca para preguntar si la respuesta cambia con el tamaño de la unidad. **Tienen las herramientas y no han hecho la pregunta.** ⚠️ Barrido de listas de publicación, no exhaustivo: no cubre preprints ni congresos | — | §8-bis |
+| 14 | 🔴🆕 **¿Ponderamos las unidades por población, o cuenta cada una igual?** | **Cazado por G el 2026-08-21, y no se había hablado nunca.** Los 1.360 municipios diminutos son el **0,16 % de las personas** y el **16,7 % de las observaciones** a escala municipal: sin ponderar, su influencia sobre el resultado es ~100 veces su peso real. 🔑 **Y el problema CAMBIA con la escala** —a nivel de sección las unidades se parecen en tamaño, a nivel de municipio no—, así que se mete dentro de lo que medimos | Decisión de diseño + medir su efecto | §5.2-bis, §2.4 |
+| 15 | 🆕 **¿De dónde sacamos la población por sección** para aplicar nosotros el umbral de 100? | Sin ella no se puede ejecutar la decisión de §5.2-bis. Candidatos sin comprobar: indicadores demográficos del propio ADRH, Padrón, Cifras de Población | ~30 min | §5.2-bis |
 | 13 | 🆕 **Sánchez-García & Llamazares (2025)** — VOX en secciones censales metropolitanas | Citados **dentro** de la diana: hallan que VOX crece en suburbios **con crecimiento de población, renta más baja y más paro** (*left-behind*) — **dirección contraria** a la conclusión de Roig et al. **No verificado de primera mano**, solo por cómo lo citan otros | Localizar y leer: ~1 h | §2.3 |
 | 10 | 🆕 **¿Publican Pérez & Pavía la tasa de cambio del seccionado**, o solo las correspondencias? | Decide si nuestra cifra de §6-bis (304 particiones ocultas, 98,42 % estable) es un resultado o una redundancia. **No se ha leído su artículo entero** | Leer el artículo: ~1 h | §6-bis |
 | 11 | 🆕 **¿A qué fecha corresponde cada capa anual de cartografía del INE?** | El INE consolida *"usualmente a 1 de enero"*, y nuestras elecciones son de nov-2019 y jul-2023. Si las capas no coinciden con el seccionado del día de la votación, la correspondencia se desalinea | ~30 min | §6-ter |
