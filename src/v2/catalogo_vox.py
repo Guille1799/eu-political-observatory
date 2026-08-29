@@ -29,6 +29,7 @@ from __future__ import annotations
 
 import sys
 import zipfile
+from collections import Counter
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -56,7 +57,7 @@ def candidaturas(ruta_zip, anio, mes):
     """Devuelve la lista de candidaturas del fichero 03 como diccionarios."""
     f03 = esquema_de_zip(ruta_zip)["03"]
     campos = {
-        "codigo": f03.campo("Código de la candidatura"),
+        "codigo": f03.campo("Código de la candidatura."),
         "siglas": f03.campo("Siglas"),
         "denominacion": f03.campo("Denominación"),
         "cab_prov": f03.campo("nivel provincial"),
@@ -72,6 +73,29 @@ def candidaturas(ruta_zip, anio, mes):
     return filas
 
 
+def separar_cabeceras(filas_objetivo, todas_las_filas):
+    """Separa `filas_objetivo` en candidaturas reales y cabeceras de acumulacion.
+
+    Una cabecera de acumulacion es la fila-resumen a la que otras candidaturas
+    apuntan: su propio codigo aparece como `cab_nac` de OTRA fila de
+    `todas_las_filas`. No basta con `codigo == cab_nac`: una candidatura que
+    concurre SOLA (sin reparto provincial que acumular, el caso normal desde
+    2016) tambien se autoreferencia asi en las tres columnas de cabecera, y no
+    es una cabecera de nada.
+    """
+    referencias = Counter(f["cab_nac"] for f in todas_las_filas)
+
+    def es_cabecera(f):
+        n = referencias[f["codigo"]]
+        if f["cab_nac"] == f["codigo"]:
+            n -= 1  # descuenta la autoreferencia, que no cuenta como "otra fila"
+        return n > 0
+
+    cabeceras = [f for f in filas_objetivo if es_cabecera(f)]
+    candidaturas_reales = [f for f in filas_objetivo if not es_cabecera(f)]
+    return candidaturas_reales, cabeceras
+
+
 def main():
     for anio, mes in GENERALES:
         ruta = zip_de(anio, mes)
@@ -84,18 +108,27 @@ def main():
             f for f in filas
             if AGUJA in f["siglas"].upper() or AGUJA in f["denominacion"].upper()
         ]
-        siglas = sorted({f["siglas"] for f in hits})
-        denoms = sorted({f["denominacion"] for f in hits})
-        cabeceras = sorted({f["cab_nac"] for f in hits})
+        candidaturas_vox, cabeceras_vox = separar_cabeceras(hits, filas)
+        siglas = sorted({f["siglas"] for f in candidaturas_vox})
+        denoms = sorted({f["denominacion"] for f in candidaturas_vox})
+        cab_nac_declaradas = sorted({f["cab_nac"] for f in hits})
         print()
-        print("GENERALES %d-%02d  ·  %d candidaturas en total  ·  %d mencionan %s"
-              % (anio, mes, len(filas), len(hits), AGUJA))
+        print("GENERALES %d-%02d  ·  %d candidaturas en total  ·  %d mencionan %s "
+              "(%d candidaturas + %d cabecera(s) de acumulacion)"
+              % (anio, mes, len(filas), len(hits), AGUJA,
+                 len(candidaturas_vox), len(cabeceras_vox)))
         print("   siglas distintas      : %s" % siglas)
         print("   nombres distintos     : %s" % denoms)
-        print("   cabeceras nacionales  : %s" % cabeceras)
+        print("   cabeceras nacionales  : %s" % cab_nac_declaradas)
+        if cabeceras_vox:
+            print("   cabecera(s) de acumulacion: %s" % ", ".join(
+                "%s (prov=%s auto=%s nac=%s)"
+                % (f["codigo"], f["cab_prov"], f["cab_auto"], f["cab_nac"])
+                for f in cabeceras_vox
+            ))
         # Lo unico que hay que mirar a mano: candidaturas cuyo nombre NO sea
         # exactamente la aguja, que son las candidatas a ser coalicion.
-        raros = [f for f in hits if f["denominacion"].upper() != AGUJA]
+        raros = [f for f in candidaturas_vox if f["denominacion"].upper() != AGUJA]
         if raros:
             print("   >>> %d candidaturas con nombre distinto de %r:" % (len(raros), AGUJA))
             for f in raros:

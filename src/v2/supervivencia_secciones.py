@@ -33,6 +33,19 @@ Las dos medidas, y por que hacen falta las dos
    Solo (a) confunde particion con despoblacion real, que en el interior existe.
    Solo (b) no dice a quien se partio.
 
+3) FUSIONES OCULTAS. El caso SIMETRICO de (2), y el INE lo hace igual de a
+   menudo (docstring del propio INE: "la parte si crece y la fusiona si se
+   vacia"): una seccion absorbe a su vecina, conserva su propio codigo, y para
+   (1) tambien "sobrevive" -- pero el trozo de mapa que hay detras del codigo ya
+   no es el mismo.
+
+   Se detecta con el mismo par de condiciones, en espejo:
+     a) que el censo CREZCA fuerte -- una fusion se lleva de golpe el censo del
+        vecino absorbido; y
+     b) que en su mismo municipio y distrito haya MUERTO una seccion.
+   Solo (a) confunde fusion con crecimiento real (una promocion nueva, un barrio
+   que se llena). Solo (b) no dice quien la absorbio.
+
 El control, que es lo que hace creible todo lo demas
 ----------------------------------------------------
 Todo se calcula DOS veces:
@@ -46,7 +59,7 @@ resultado raro en B no se podria atribuir: mundo o error propio, sin distinguir.
 Umbral
 ------
 UMBRAL_PRINCIPAL = 0.30 (perder el 30% del censo o mas cuenta como caida fuerte).
-Elegido CON G y ANTES de mirar los datos, el 2026-08-19, con este razonamiento:
+Elegido ANTES de mirar los datos, el 2026-08-19, con este razonamiento:
 una particion en dos suele llevarse cerca de la mitad, y un barrio que se vacia de
 verdad rara vez pierde un tercio de sus vecinos en cuatro anios. Es un juicio, no
 una ley -- por eso el resultado se reporta ademas a otros umbrales, para que se
@@ -57,6 +70,7 @@ Uso:  python src/v2/supervivencia_secciones.py     (desde cualquier sitio)
 
 from __future__ import annotations
 
+import json
 import sys
 import zipfile
 from pathlib import Path
@@ -68,6 +82,7 @@ from layout_infoelectoral import esquema_de_zip  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parents[2]
 EXTERNAL = RAIZ / "data" / "external" / "infoelectoral"
+PROCESADO = RAIZ / "data" / "processed" / "v2" / "supervivencia_secciones.json"
 
 CONTROL = ((2019, 4), (2019, 11))
 REAL = ((2019, 11), (2023, 7))
@@ -101,7 +116,7 @@ def censo_por_seccion(ruta_zip, anio, mes):
     """
     esquema = esquema_de_zip(ruta_zip)
     f09 = esquema["09"]
-    prov = f09.campo("de la provincia")
+    prov = f09.campo("Código I.N.E. de la provincia")
     muni = f09.campo("del municipio")
     dist = f09.campo("distrito municipal")
     secc = f09.campo("de la sección")
@@ -144,6 +159,30 @@ def particiones_ocultas(antes, despues, umbral):
     return ocultas, solo_encogen
 
 
+def fusiones_ocultas(antes, despues, umbral):
+    """Secciones que conservan el codigo pero crecen fuerte y tienen hermana muerta.
+
+    Espejo de particiones_ocultas: en vez de partirse, absorben a una vecina.
+    Devuelve (fusiones, solo_crecen). La segunda son las que crecen fuerte SIN que
+    muera nadie a su lado: candidatas a crecimiento real, no a fusion.
+    """
+    sobreviven = antes.keys() & despues.keys()
+    mueren = antes.keys() - despues.keys()
+    distritos_con_hermana_muerta = {s[:3] for s in mueren}
+
+    fusiones, solo_crecen = set(), set()
+    for s in sobreviven:
+        if antes[s] == 0:
+            continue  # sin censo de partida no hay proporcion que calcular
+        if despues[s] < (1 + umbral) * antes[s]:
+            continue
+        if s[:3] in distritos_con_hermana_muerta:
+            fusiones.add(s)
+        else:
+            solo_crecen.add(s)
+    return fusiones, solo_crecen
+
+
 def informe(etiqueta, antes, despues, origen, destino):
     sobreviven = antes.keys() & despues.keys()
     mueren = antes.keys() - despues.keys()
@@ -162,15 +201,36 @@ def informe(etiqueta, antes, despues, origen, destino):
     print("  nacen              : %6d" % len(nacen))
 
     print()
-    print("  particiones ocultas (encoge Y nace hermana en su distrito):")
-    print("    %-8s  %-10s  %-10s  %s" % ("umbral", "ocultas", "solo encogen", "identidad real"))
+    print("  particiones y fusiones ocultas (identidad real = sobreviven - ocultas - fusiones):")
+    print("    %-8s  %-8s  %-8s  %s"
+          % ("umbral", "ocultas", "fusiones", "identidad real"))
+    umbrales_json = {}
     for u in UMBRALES_SENSIBILIDAD:
-        ocultas, solo = particiones_ocultas(antes, despues, u)
-        intactas = len(sobreviven) - len(ocultas)
+        ocultas, solo_encogen = particiones_ocultas(antes, despues, u)
+        fusiones, solo_crecen = fusiones_ocultas(antes, despues, u)
+        intactas = len(sobreviven) - len(ocultas | fusiones)
         marca = "  <-- umbral acordado" if abs(u - UMBRAL_PRINCIPAL) < 1e-9 else ""
-        print("    -%2d%%      %-10d  %-10d  %6d  (%.2f%% de %s)%s"
-              % (100 * u, len(ocultas), len(solo), intactas,
+        print("    -%2d%%      %-8d  %-8d  %6d  (%.2f%% de %s)%s"
+              % (100 * u, len(ocultas), len(fusiones), intactas,
                  100 * intactas / len(antes), origen, marca))
+        umbrales_json[str(u)] = {
+            "ocultas": len(ocultas),
+            "solo_encogen": len(solo_encogen),
+            "fusiones": len(fusiones),
+            "solo_crecen": len(solo_crecen),
+            "identidad_real": intactas,
+        }
+
+    return {
+        "origen": origen,
+        "destino": destino,
+        "secciones_origen": len(antes),
+        "secciones_destino": len(despues),
+        "sobreviven": len(sobreviven),
+        "mueren": len(mueren),
+        "nacen": len(nacen),
+        "umbrales": umbrales_json,
+    }
 
 
 def main():
@@ -186,10 +246,17 @@ def main():
     def eti(c):
         return "%d-%02d" % c
 
-    informe("CONTROL", censos[CONTROL[0]], censos[CONTROL[1]],
-            eti(CONTROL[0]), eti(CONTROL[1]))
-    informe("REAL   ", censos[REAL[0]], censos[REAL[1]],
-            eti(REAL[0]), eti(REAL[1]))
+    resultado = {
+        "CONTROL": informe("CONTROL", censos[CONTROL[0]], censos[CONTROL[1]],
+                            eti(CONTROL[0]), eti(CONTROL[1])),
+        "REAL": informe("REAL   ", censos[REAL[0]], censos[REAL[1]],
+                         eti(REAL[0]), eti(REAL[1])),
+    }
+
+    PROCESADO.parent.mkdir(parents=True, exist_ok=True)
+    PROCESADO.write_text(json.dumps(resultado, indent=2, ensure_ascii=False), encoding="utf-8")
+    print()
+    print("Escrito: %s" % PROCESADO)
     return 0
 
 
