@@ -15,17 +15,26 @@ convocatoria futura, el esquema cambia solo y los tests lo cazan.
 Lo que se comprobo al escribirlo, y no estaba en la especificacion
 -----------------------------------------------------------------
 La especificacion dice, en su primer parrafo, que los registros van "con
-delimitador de registro CR+LF". Es FALSO en los ficheros publicados de 2019-11:
-el delimitador es LF a secas, sin CR. Los .dat no contienen ni un solo `\\r`.
+delimitador de registro CR+LF". Es FALSO en los ficheros publicados de 2019-11
+(y en 2015-12, 2016-06 y 2019-04): el delimitador es LF a secas, sin CR. Pero
+NO es falso siempre -- 2023-07 SI trae CR+LF, y solo en su fichero 04
+(candidaturas): sus 5.099 registros terminan todos en `\\r\\n`, mientras que
+los otros nueve ficheros de ese mismo zip siguen en LF a secas. El delimitador
+no es una propiedad de la convocatoria, es una propiedad de cada fichero.
 
 No es una pega academica. Un lector que confie en esa frase y descuente dos bytes
 por registro se desplaza un byte por linea, y a partir del segundo registro lee
-todos los campos corridos -- con numeros que siguen pareciendo numeros. Es el modo
-de fallo silencioso que el proyecto quiere evitar, y sale de la unica forma en que
-podia salir: contrastando la especificacion contra el fichero real.
+todos los campos corridos -- con numeros que siguen pareciendo numeros. Y un
+lector que en su lugar asuma "siempre LF" porque asi salio en cuatro
+convocatorias comete el mismo error con el signo cambiado el dia que lee el 04
+de 2023-07: cada registro le sobra un byte. Es el modo de fallo silencioso que
+el proyecto quiere evitar, y sale de la unica forma en que podia salir:
+contrastando la especificacion Y el propio fichero contra el fichero real, en
+las cinco convocatorias, no en una.
 
-Por eso `longitud_registro` es la longitud del REGISTRO (sin delimitador), y quien
-lea los ficheros parte por lineas en vez de trocear por posiciones absolutas.
+Por eso `longitud_registro` es la longitud del REGISTRO (sin delimitador), y
+quien lea los ficheros parte por lineas con `lineas_de_registro` -- que acepta
+LF o CR+LF -- en vez de trocear por posiciones absolutas o por `\\n` a pelo.
 
 Uso
 ---
@@ -98,12 +107,30 @@ class EsquemaFichero:
         return self.campos[-1].fin
 
     def campo(self, fragmento):
-        """Primer campo cuya descripcion contiene `fragmento` (sin distinguir mayusculas)."""
-        agujas = fragmento.lower()
-        for c in self.campos:
-            if agujas in c.descripcion.lower():
-                return c
-        raise KeyError("ningun campo de %s menciona %r" % (self.patron, fragmento))
+        """El campo cuya descripcion contiene `fragmento` (sin distinguir mayusculas).
+
+        Revienta si no coincide ninguno, y tambien si coinciden varios: una
+        aguja ambigua resuelta en silencio con "el primero que aparezca" es el
+        mismo riesgo que un hueco entre campos (`_validar_campos`) -- una
+        lectura plausible y equivocada. El caso ambiguo es real, no
+        hipotetico: en el fichero 03, "Codigo de la candidatura" coincide con
+        la candidatura Y con sus tres cabeceras de acumulacion.
+        """
+        aguja = fragmento.lower()
+        coincidencias = [c for c in self.campos if aguja in c.descripcion.lower()]
+        if not coincidencias:
+            raise KeyError("ningun campo de %s menciona %r" % (self.patron, fragmento))
+        if len(coincidencias) > 1:
+            raise EspecificacionIlegible(
+                "%s: %r es ambiguo, coincide con %d campos (%s)"
+                % (
+                    self.patron,
+                    fragmento,
+                    len(coincidencias),
+                    ", ".join("%d-%d" % (c.inicio, c.fin) for c in coincidencias),
+                )
+            )
+        return coincidencias[0]
 
     def nombre_fichero(self, tipo_eleccion, anio, mes):
         """Nombre real del .dat: p.ej. ("02", 2019, 11) -> "03021911.DAT"."""
@@ -222,6 +249,18 @@ def _validar_campos(patron, campos):
                 % (patron, esperado, c.inicio)
             )
         esperado = c.fin + 1
+
+
+def lineas_de_registro(datos):
+    """Trocea `datos` en registros SIN delimitador, sea el delimitador LF o CR+LF.
+
+    La especificacion promete CR+LF; en la practica varia por FICHERO, no solo
+    por convocatoria (ver docstring del modulo). Partir siempre por `\\n` a
+    secas deja un `\\r` colgando al final de cada registro cuando el fichero
+    si trae CR+LF, y ese byte de mas se cuela en cualquier comparacion de
+    longitud. Aqui se quita si esta, y no se asume que tenga que estar.
+    """
+    return [linea[:-1] if linea.endswith(b"\r") else linea for linea in datos.split(b"\n")]
 
 
 def esquema_de_zip(ruta_zip):

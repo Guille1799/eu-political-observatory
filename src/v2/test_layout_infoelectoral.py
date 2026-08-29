@@ -23,18 +23,50 @@ from layout_infoelectoral import (
     Campo,
     EspecificacionIlegible,
     esquema_de_zip,
+    lineas_de_registro,
     parsear_especificacion,
 )
 from lector_doc import DocIlegible, texto_de_doc
 
 RAIZ = Path(__file__).resolve().parents[2]
-RUTA_ZIP = RAIZ / "data" / "external" / "infoelectoral" / "02201911_MESA.zip"
+DIR_INFOELECTORAL = RAIZ / "data" / "external" / "infoelectoral"
+RUTA_ZIP = DIR_INFOELECTORAL / "02201911_MESA.zip"
 
 necesita_descarga = pytest.mark.skipif(
     not RUTA_ZIP.exists(),
     reason="falta %s -- bajalo con: python src/v2/descarga_infoelectoral.py 2019 11"
     % RUTA_ZIP.relative_to(RAIZ),
 )
+
+# Las cinco convocatorias generales del preregistro. El control "al byte" tiene
+# que mirar las cinco, no solo la de 2019-11: 2023-07 es la unica de las cinco
+# que trae CR+LF de verdad, y solo en su fichero 04.
+NOMBRES_MESA_ESPERADOS = [
+    "02201512_MESA.zip",
+    "02201606_MESA.zip",
+    "02201904_MESA.zip",
+    "02201911_MESA.zip",
+    "02202307_MESA.zip",
+]
+
+
+def _parametros_mesa():
+    parametros = []
+    for nombre in NOMBRES_MESA_ESPERADOS:
+        ruta = DIR_INFOELECTORAL / nombre
+        marcas = () if ruta.exists() else (pytest.mark.skip(reason="falta %s" % nombre),)
+        parametros.append(pytest.param(ruta, id=nombre, marks=marcas))
+    return parametros
+
+
+@pytest.fixture(params=_parametros_mesa())
+def ruta_zip_mesa(request):
+    return request.param
+
+
+@pytest.fixture
+def esquema_mesa(ruta_zip_mesa):
+    return esquema_de_zip(ruta_zip_mesa)
 
 
 # --------------------------------------------------------------------------
@@ -132,6 +164,29 @@ def test_un_texto_sin_tablas_no_devuelve_un_esquema_vacio():
         parsear_especificacion("un documento cualquiera sin layout ninguno")
 
 
+AMBIGUA = _tabla(
+    "03xxaamm.DAT",
+    "3.- Fichero de CANDIDATURAS.",
+    [
+        (1, 2, "Num.", 2, "Código de la candidatura."),
+        (3, 8, "Alf.", 6, "Código de la candidatura cabecera de acumulación."),
+    ],
+)
+
+
+def test_una_aguja_ambigua_revienta_en_vez_de_elegir():
+    """campo() no puede resolver en silencio cuando dos campos comparten la aguja.
+
+    Es el caso real, no el hipotetico: en el fichero 03, "Codigo de la
+    candidatura" coincide con la propia candidatura (9-14) Y con sus tres
+    cabeceras de acumulacion (215-220, 221-226, 227-232). Antes de esta
+    correccion, campo() devolvia el primero sin avisar.
+    """
+    esq = parsear_especificacion(AMBIGUA)
+    with pytest.raises(EspecificacionIlegible):
+        esq["03"].campo("Código de la candidatura")
+
+
 def test_un_fichero_que_no_es_doc_no_se_lee_a_medias():
     with pytest.raises(DocIlegible):
         texto_de_doc(b"PK\x03\x04esto es un zip, no un doc")
@@ -168,34 +223,95 @@ def test_los_tres_ambitos_traen_la_misma_especificacion():
         assert otro == esquemas[0]
 
 
-@necesita_descarga
-def test_cada_registro_real_mide_lo_que_dice_la_especificacion(esquema, zip_mesa):
-    """El control que cierra el asunto: especificacion contra fichero, al byte."""
-    comprobados = 0
-    for nombre in sorted(n for n in zip_mesa.namelist() if n.upper().endswith(".DAT")):
-        fichero = esquema[nombre[:2]]
-        lineas = zip_mesa.read(nombre).split(b"\n")
-        assert lineas[-1] == b"", "%s no termina en delimitador" % nombre
-        largos = {len(l) for l in lineas[:-1]}
-        assert largos == {fichero.longitud_registro}, (
-            "%s: registros de %s bytes, la especificacion dice %d"
-            % (nombre, sorted(largos), fichero.longitud_registro)
-        )
-        comprobados += 1
-    assert comprobados == 10, "el zip MESA de un Congreso trae 10 ficheros de datos"
+def test_cada_registro_real_mide_lo_que_dice_la_especificacion(ruta_zip_mesa, esquema_mesa):
+    """El control que cierra el asunto: especificacion contra fichero, al byte.
 
-
-@necesita_descarga
-def test_el_delimitador_es_LF_pese_a_lo_que_dice_la_especificacion(zip_mesa):
-    """La especificacion dice CR+LF en su primer parrafo. Los ficheros llevan LF.
-
-    Este test esta escrito al reves a proposito: fija la realidad medida, no la
-    frase del documento. Si una convocatoria futura publicase de verdad con CR+LF,
-    este test se pone rojo -- que es justo lo que hace falta, porque descontar dos
-    bytes donde hay uno desplaza todos los campos a partir del segundo registro.
+    Parametrizado sobre las cinco convocatorias MESA descargadas: 2023-07 es la
+    que rompia esto cuando el test miraba solo a 2019-11, porque su fichero 04
+    trae CR+LF de verdad (ver `lineas_de_registro`).
     """
-    for nombre in (n for n in zip_mesa.namelist() if n.upper().endswith(".DAT")):
-        assert b"\r" not in zip_mesa.read(nombre), "%s trae CR" % nombre
+    with zipfile.ZipFile(ruta_zip_mesa) as z:
+        comprobados = 0
+        for nombre in sorted(n for n in z.namelist() if n.upper().endswith(".DAT")):
+            fichero = esquema_mesa[nombre[:2]]
+            registros = lineas_de_registro(z.read(nombre))
+            assert registros[-1] == b"", "%s no termina en delimitador" % nombre
+            largos = {len(l) for l in registros[:-1]}
+            assert largos == {fichero.longitud_registro}, (
+                "%s: registros de %s bytes, la especificacion dice %d"
+                % (nombre, sorted(largos), fichero.longitud_registro)
+            )
+            comprobados += 1
+        assert comprobados == 10, "el zip MESA de un Congreso trae 10 ficheros de datos"
+
+
+def test_el_delimitador_es_LF_pese_a_lo_que_dice_la_especificacion(ruta_zip_mesa):
+    """La especificacion dice CR+LF en su primer parrafo. Cuatro convocatorias
+    llevan LF a secas; la quinta (2023-07) SI trae CR+LF, pero solo en su
+    fichero 04 -- y ahi el CR aparece en TODAS sus lineas, nunca a medias.
+
+    Lo que este test fija como invariante real, medida en las cinco
+    convocatorias, no es "nunca hay CR": es que un mismo .DAT no mezcla los dos
+    delimitadores. Una mezcla dentro de un fichero si seria la corrupcion
+    silenciosa que el modulo existe para cazar -- descontar un byte donde a
+    veces hay y a veces no desplaza los campos a partir de ahi.
+    """
+    with zipfile.ZipFile(ruta_zip_mesa) as z:
+        for nombre in (n for n in z.namelist() if n.upper().endswith(".DAT")):
+            lineas = z.read(nombre).split(b"\n")[:-1]
+            con_cr = sum(1 for l in lineas if l.endswith(b"\r"))
+            assert con_cr in (0, len(lineas)), (
+                "%s mezcla delimitadores: %d de %d lineas traen CR"
+                % (nombre, con_cr, len(lineas))
+            )
+
+
+POSICIONES_ESPERADAS = {
+    "09": {
+        "Código I.N.E. de la provincia": (12, 13),
+        "del municipio": (14, 16),
+        "distrito municipal": (17, 18),
+        "de la sección": (19, 22),
+        "Censo del I.N.E": (24, 30),
+    },
+    "03": {
+        "Código de la candidatura.": (9, 14),
+        "Siglas": (15, 64),
+        "Denominación": (65, 214),
+        "nivel provincial": (215, 220),
+        "nivel autonómico": (221, 226),
+        "nivel nacional": (227, 232),
+    },
+}
+
+
+def test_las_agujas_del_pipeline_resuelven_a_estas_posiciones(esquema_mesa):
+    """Las agujas que usan supervivencia_secciones.py y catalogo_vox.py tienen
+    que resolver siempre a estas posiciones, en las cinco convocatorias.
+
+    Fija el contrato que impide reintroducir una aguja ambigua sin darse
+    cuenta: si alguien vuelve a `campo("de la provincia")` en el fichero 09
+    -- que coincide con el campo 12-13 Y con el 17-18 -- este test revienta
+    con EspecificacionIlegible en vez de dejar que campo() elija en silencio.
+    """
+    for codigo, agujas in POSICIONES_ESPERADAS.items():
+        fichero = esquema_mesa[codigo]
+        for aguja, posicion in agujas.items():
+            campo = fichero.campo(aguja)
+            assert (campo.inicio, campo.fin) == posicion, (
+                "%s: %r resolvio a %d-%d, se esperaba %d-%d"
+                % (codigo, aguja, campo.inicio, campo.fin, *posicion)
+            )
+
+
+def test_estan_las_cinco_convocatorias():
+    """Las cinco generales del preregistro tienen que estar descargadas en MESA.
+
+    Sin skip: si falta una, esto tiene que fallar, no callarse -- es justo lo
+    que dejaba pasar el test anterior, cableado a una unica RUTA_ZIP.
+    """
+    nombres = [p.name for p in DIR_INFOELECTORAL.glob("*_MESA.zip")]
+    assert sorted(nombres) == sorted(NOMBRES_MESA_ESPERADOS)
 
 
 @necesita_descarga
