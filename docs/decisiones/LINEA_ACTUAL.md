@@ -1,46 +1,54 @@
-# La línea de trabajo actual de este repo
+# La línea de trabajo actual
 
-linea: v2 — ¿dónde ha CRECIDO el voto a VOX en España entre elecciones, y cambia la respuesta según la escala territorial?
+linea: v2 — ¿dónde ha crecido el voto a VOX en España entre elecciones, y cambia la respuesta según la escala territorial a la que se mire?
 
-## Por qué hace falta decir esto por escrito
+> Decidida el 2026-08-16. Sustituye al diseño europeo, que se ejecutó y resultó inviable
+> (ver [`../v2_alcance.md`](../v2_alcance.md) §11).
+>
+> *(Esa línea de arriba empieza por `linea:` y va sin sangrar a propósito: es la única parte de
+> este documento pensada para leerse también en automático.)*
 
-El 2026-08-21 se retiraron las dos promesas de EFA (`efa-decision`, `efa-rerun`): G dijo
-«efa está descartado ya, hay un proyecto nuevo». El motivo y la retirada están en
-`EFA_RETIRADO_2026-08-21.md`.
+## Por qué esto está escrito y no solo entendido
 
-Pero retirarlas dejaba el tablero **vacío**, y un tablero vacío no significa «todo hecho»:
-significa que el Stop hook `promesa_gate.py` **falla abierto** aquí, o sea que cualquier
-`PRÓXIMO PASO EXACTO` escrito en prosa vuelve a colar en este repo. Este fichero tapa ese
-agujero, y `aceptacion.py linea-viva` lo vigila.
+Un repo puede quedarse describiendo un proyecto que ya no existe sin que nadie lo note: el código
+sigue compilando, los tests siguen verdes, y la única pieza que ha cambiado —a qué se dedica
+esto— no la comprueba nadie. Pasó aquí: durante meses hubo documentos públicos anunciando un
+dashboard de partidos nacionalistas en siete países que ya no se estaba construyendo.
 
-## Qué es v2 (decidida el 2026-08-16, según `docs/EU_REFERENCIA_CORE.md`)
+Así que la línea viva se declara en un sitio, con fecha, y cuando cambia **se dice por qué**.
 
-La segunda mitad de la pregunta **es el producto**, no un chequeo: el mismo dato puede contar
-una historia agregado por secciones censales y otra por municipios — el *modifiable areal unit
-problem* (MAUP). Junto a ella va la **capa de honestidad**: un mapa que se niega a pintar donde
-no hay base, y lo dice.
+## Qué es v2
 
-Dos restricciones que hay que respetar, del 17-ago:
+**La segunda mitad de la pregunta es el producto, no una comprobación.** El mismo dato puede
+contar una historia agregado por secciones censales y otra por municipios — el *modifiable areal
+unit problem* (MAUP). Junto a ella va la **capa de honestidad**: un mapa que se niega a pintar
+donde no hay base, y que dice por qué no pinta.
 
-- **El objeto es VOX, no PANE.** Agregar Euskadi/Cataluña (renta alta) con Galicia/Canarias
-  (renta baja) promedia mecanismos contrarios y rompe la variable. Con un partido único
-  desaparece además el problema de clasificación, que es el que mató a v1.
-- **Se mide el CAMBIO entre elecciones, no el nivel en una.** «Auge» es un cambio, y solo es
-  posible con un partido estable: comparar el mismo sitio consigo mismo resta lo que no cambia.
+Dos restricciones del diseño, ambas del 17-ago:
 
-**Diana con nombre:** Roig, Espinosa & Pavía (2025), *Frontiers in Political Science*. Usan las
-mismas dos fuentes, concluyen que a VOX lo trajo la renta media-alta, justifican la sección
-censal por su homogeneidad interna — y no mencionan el MAUP ni una vez. Dos de los tres huecos
-los piden ellos mismos; el tercero es su omisión.
+- **El objeto es VOX**, no "partidos de ámbito no estatal". Agregar Euskadi y Cataluña (renta
+  alta) con Galicia y Canarias (renta baja) promedia mecanismos contrarios y rompe la variable.
+  Con un partido único desaparece además el problema de clasificación, que es **el que mató a v1**.
+- **Se mide el CAMBIO entre elecciones, no el nivel en una.** "Auge" es un cambio, y medirlo solo
+  es posible con un partido estable: comparar el mismo sitio consigo mismo resta todo lo que de
+  ese sitio no cambia.
 
-**Fuentes:** Infoelectoral (Mº Interior) y el Atlas de distribución de renta de los hogares (INE).
+**Antecedente directo:** Roig, Espinosa & Pavía (2025), *Frontiers in Political Science*. Usan las
+mismas dos fuentes, concluyen que a VOX lo trajo la renta media-alta, y justifican el uso de la
+sección censal por su homogeneidad interna — sin comprobar en ningún momento si el resultado
+sobrevive a cambiar de unidad. Ese hueco es el que ocupa esta línea.
+
+**Fuentes:** Infoelectoral (Ministerio del Interior) y el Atlas de distribución de renta de los
+hogares (INE).
 
 ## Lo que NO es la línea
 
-El **pipeline ESS está CONGELADO**, no borrado. Sus scripts y sus outputs de mayo siguen donde
-están; simplemente ya no describen el trabajo. `data/raw/` sigue siendo read-only absoluto.
+El **pipeline ESS está congelado**, no borrado: sus scripts y sus resultados siguen donde estaban,
+simplemente ya no describen el trabajo en curso. El motivo está en
+[`EFA_RETIRADO_2026-08-21.md`](EFA_RETIRADO_2026-08-21.md). `data/raw/` sigue siendo de solo
+lectura.
 
 ## Cómo se actualiza esto
 
-Cuando la línea cambie otra vez, se reescribe la línea `linea:` **y se dice aquí por qué**. El
-comprobador solo exige que exista y nombre algo; el porqué es para el siguiente que llegue.
+Cuando la línea cambie otra vez, se reescribe la línea `línea:` de arriba **y se explica aquí por
+qué**. Lo primero es lo que se lee; lo segundo es lo que sirve al siguiente que llegue.

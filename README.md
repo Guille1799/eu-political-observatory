@@ -4,89 +4,154 @@
 every number can be traced back to its source, and so that the measurement decisions are visible
 rather than assumed.**
 
-> 👉 **The current line of work is sub-national and Spanish**, and it asks whether the answer changes
-> with the scale you measure at. See **[Status](#status)** — the earlier cross-country design was
-> executed, found not viable with its sources, and retired. That is documented, not hidden.
+---
 
-## What the cross-country layer does *(built first; see Status for why it is not the current line)*
+## The question
 
-- **Integrates independent sources** — regional economics (**ARDECO**), national election results
-  (**EU-NED**), party & government data (**ParlGov**), and **ESS** survey microdata — reconciling
-  entity IDs across them with crosswalk tables, so the same region/party maps correctly and **every
-  record keeps its provenance** through the integration.
-- **Handles missing data honestly** — Little's **MCAR** test + **multiple imputation (m = 20)**,
-  rather than dropping rows or naively filling them.
-- **Builds toward cross-country-comparable measures** — a factor-analytic measurement model with
-  **measurement-invariance** testing, so comparisons between countries are defensible rather than
-  assumed. ⚠️ **Not there yet, and the reason is documented:** an exploratory EFA returned an
-  improper solution (a **Heywood case**), so the measurement model is *not* settled. See
-  [`R/README.md`](R/README.md) for what that means and what it blocks.
+**Where has the vote for Vox *grown* in Spain between elections — and does the answer change with
+the level of territorial aggregation you use?**
 
-## Why
+The second half is the point, not a robustness check appended to the end.
 
-Economic, electoral, party-level and attitudinal signals usually live in incompatible silos. Linking
-them into one traceable dataset lets analysts ask cross-country questions without re-stitching the
-data every time — and without losing track of where each number came from.
+The same data can tell one story aggregated by census tract and a different one aggregated by
+municipality. That is the *modifiable areal unit problem*, and it is old news in geography — but
+most published work on territorial voting still picks one level, usually the level that happened to
+be available, and never checks whether the conclusion survives changing it. This project checks it
+across four real levels: **census tract → municipality → province → autonomous community.**
 
-## Status
+The framing is deliberately narrow, and each narrowing buys something specific:
 
-**Active work in progress, and the current line is a Spanish sub-national one.**
-
-### Current line: does the answer change with the scale you measure at?
-
-**Question:** where has the vote for **Vox** *grown* in Spain between elections — and **does the answer
-change with the level of territorial aggregation you use?**
-
-The framing is deliberately narrow. A **single, stable party** removes the classification problem that
-sank the previous design entirely, and makes it possible to model **change** rather than levels: comparing
-a place with itself over time differences away everything about that place that does not change. A
-recent study using **the same two sources** concludes that Vox's early expansion was led by middle- and
-upper-income voters rather than "modernisation losers" — and justifies its choice of spatial unit by the
-internal homogeneity of that unit, **without ever testing how sensitive the result is to that choice**.
-That is the gap this line addresses.
-
-The second half is the point. The same data can tell one story aggregated by municipality and a
-different one by province — the *modifiable areal unit problem*. Most published work on territorial
-voting picks one level, usually because it is the level that happens to be available, and never checks
-whether the conclusion survives changing it. This line checks it across **four real levels**: polling
-station → municipality → province → autonomous community.
+- **A single, stable party.** No classification step, and therefore no classification error — which
+  matters here more than usual, for reasons the next section gets into.
+- **Change, not levels.** Comparing a place with itself over time differences away everything about
+  that place that does not change. "Growth" is a change; you cannot measure it from one snapshot.
 
 Alongside it: a map that **refuses to paint** where the evidence does not support an estimate, and
-says why. Scope and open questions: [`docs/v2_alcance.md`](docs/v2_alcance.md) (Spanish).
+says why it is refusing.
 
-### What the previous, cross-country design taught — and why it was retired
+**Nearest prior work:** Roig, Espinosa & Pavía (2025), *Frontiers in Political Science*. Same two
+sources, and they conclude that Vox's early expansion was led by middle- and upper-income voters
+rather than "modernisation losers". They justify their choice of spatial unit by that unit's
+internal homogeneity — and never test how sensitive the result is to the choice. That untested step
+is the gap this project occupies. The aim is not to contradict them; it is to find out whether their
+answer holds when the unit moves.
 
-An earlier design combined European regional election results, regional economics and academic party
-classifications. **It was executed, and it was not viable with those sources.** Three findings, all
-verified against the actual files:
+Full design: [`docs/v2_alcance.md`](docs/v2_alcance.md) · Start at [`docs/`](docs/README.md).
 
-1. the European election dataset **does not go below NUTS2** — the fine scale the design assumed did
-   not exist in it;
-2. in Spain **22.9% of the vote had no party verdict** from the standard classifications, and it was
-   precisely the non-statewide parties: **coverage was worst exactly where the object of study was**;
-3. the shared party identifier **does not point to the same party across sources** — verified by hand,
-   producing a false positive and a false negative at once.
+## How it got here
 
-The sources died, not the question. The current line replaces all three: official Ministry of the
-Interior results (published down to polling-station level since 1977), and an object defined by
-**where a party stands for election** rather than by an interpretive ideological label.
+This repository began as something else, and it is worth saying what, because the reason it changed
+is a result in its own right.
 
-> The v1 code is kept because it is the evidence for the above, but it is **not** on the path of the
-> current line.
+The original design was **cross-country**: European regional election results (EU-NED) joined to
+regional economics (ARDECO), with parties classified by academic expert surveys (POPPA, PopuList),
+plus ESS survey microdata. It was **built and executed**. It did not survive contact with its own
+sources, and three findings — each verified against the actual files, not assumed — are why:
 
-### Blocked / paused
+1. **The European election dataset does not go below NUTS2.** The fine spatial scale the whole
+   design rested on did not exist in it.
+2. **In Spain, 22.9% of the vote had no party verdict** from the standard classifications — and it
+   was precisely the non-statewide parties. Coverage was worst exactly where the object of study
+   was.
+3. **The shared party identifier does not point to the same party across sources.** Verified by
+   hand, producing a false positive and a false negative at once.
 
-- 🔴 **Downloading the official Spanish election source from code is blocked.** Its certificate is
-  genuine but issued by **FNMT-RCM**, the Spanish public-administration CA, which is not in the
-  Mozilla root program and therefore not in Python's or `certifi`'s trust stores. The fix is to add
-  that root — **not** to disable TLS verification, which would void the provenance the pipeline
-  exists to preserve.
-- ⏸️ **The ESS measurement model is paused, not cancelled.** It remains blocked on an improper EFA
-  solution (Heywood case) ([`R/README.md`](R/README.md)). The current line does not depend on it.
+So the object was redefined from "an ideological label an expert assigns" to "a single party, named
+by the ballot papers it appears on", and the geography from all of Europe to one country that
+publishes results down to the polling station and has done since 1977.
+
+**The sources died, not the question.** Both designs ask whether territorial economic conditions
+explain a vote, and both care about the scale at which you look. The second one can actually be
+answered with data that exists.
+
+> The v1 code is still here. It is the evidence for the three findings above, and it carries a
+> `[HISTORICO - v1]` banner at the top of each file. It is not on the path of the current work, and
+> nothing should be built on it without first reading why it stopped.
+
+## What is in here
+
+| | |
+|---|---|
+| [`src/v2/`](src/v2/) | The current line. Fixed-width parsing of the official election files, the TLS chain of trust, census-tract survival across redistricting, the Vox catalogue. |
+| [`src/`](src/), [`src/ingestion/`](src/ingestion/) | v1, retired. Kept as evidence; see the banners. |
+| [`R/`](R/README.md) | Missing-data handling and the measurement model — Little's MCAR test, multiple imputation (m = 20), factor analysis. **Frozen**, and honestly so: see below. |
+| [`docs/`](docs/README.md) | Design documents and the decision record. Spanish; the index page explains what each one is. |
+| [`notebooks/`](notebooks/) | Exploration. |
+
+One file worth opening even if you skip the rest:
+[`src/ingestion/parameters.py`](src/ingestion/parameters.py). It documents a single methodological
+cut-off with its provenance — including an explicit written admission that the value has no citation
+behind it, only a project convention, and what was done to reduce the dependence on it.
+
+## Run it
+
+The source data is not in the repository and cannot be: the ESS microdata is access-controlled, and
+the Spanish election files are fetched from the official source at run time. What *does* run from a
+clean clone is the test suite.
+
+```bash
+python -m venv venv
+venv\Scripts\activate           # Windows
+# source venv/bin/activate      # macOS / Linux
+pip install -r requirements.txt
+python -m pytest src -q
+```
+
+Measured on a clean checkout on **2026-08-29** with Python 3.14: **61 passed, 20 skipped.**
+
+The skips are deliberate. Those tests need the official election files, and rather than failing with
+a stack trace, each one names the command that fetches what it is missing:
+
+```
+SKIPPED src/v2/test_layout_infoelectoral.py:210: falta data/external/infoelectoral/02201911_MESA.zip
+        -- bajalo con: python src/v2/descarga_infoelectoral.py 2019 11
+```
+
+Download the files those messages name and the same command runs **81 passed, 0 skipped**.
+
+`requirements.txt` declares what this code imports — not a `pip freeze` of one machine.
+
+The R layer has its own data requirement and is documented separately in
+[`R/README.md`](R/README.md). It needs `misty`, `mice`, `psych`, `GPArotation`, `PKLMtest` and
+`readr` from CRAN. There is no `renv.lock` yet, so those versions are **not** pinned.
+
+## Where it stands
+
+**Working:**
+
+- Parsing the official fixed-width election layout, verified **byte by byte against the
+  specification** across all five general elections in the window — which is how the pipeline found
+  a sentence in the official spec that is simply not true of the files it describes.
+- **Downloading from the official source with TLS verification fully on.** Python could not connect
+  where the browser could. The easy reading — "the Spanish CA is not in Python's trust store" — was
+  checked and is **false**: `certifi` does carry the FNMT roots. The server sends an incomplete
+  chain, omitting an intermediate; browsers hide this by fetching the missing link themselves via
+  the certificate's AIA extension, and OpenSSL does not. The fix supplies the intermediate. Turning
+  verification off would have been one line, and would have quietly voided the provenance this
+  project exists to preserve — so there is a test that reads the module's syntax tree and fails if
+  `verify=False`, `CERT_NONE` or `check_hostname=False` ever appear in it.
+- Measuring how many census tracts survive between elections, **including the ones that survive only
+  in name** — a tract that keeps its code after absorbing its neighbour is not the same tract, and
+  counting it as one would have silently biased the whole design.
+
+**Not done, and not claimed:**
+
+- **There is no published estimate yet.** The plumbing is built and tested; the analysis it exists
+  to support has not been run.
+- **The ESS measurement model is frozen, not finished.** An exploratory factor analysis returned an
+  improper solution — a Heywood case — so the model is not settled, and it is reported as unsettled
+  rather than worked around. The current line does not depend on it.
+  ([`R/README.md`](R/README.md) · [`docs/decisiones/`](docs/decisiones/EFA_RETIRADO_2026-08-21.md))
+- The repository ships no data, and it is not a dashboard. A panel where dozens of variables can be
+  crossed on demand is a machine for producing spurious correlations, and that is a deliberate
+  omission rather than a missing feature.
 
 ## Stack
 
-Python (ingestion → PostgreSQL) · R (imputation, factor analysis, invariance) · reproducible pipeline structure.
+Python for ingestion and analysis, loading into PostgreSQL · R for imputation and factor analysis ·
+pytest throughout. Sources: Ministerio del Interior (Infoelectoral), INE (household income atlas),
+and — for the retired cross-country layer — ARDECO, EU-NED, ParlGov, ESS.
 
-> **Note:** source data is access-controlled (e.g. ESS microdata) and not committed; the pipeline is
-> built to reproduce results from the raw sources.
+## License
+
+MIT — see [`LICENSE`](LICENSE).

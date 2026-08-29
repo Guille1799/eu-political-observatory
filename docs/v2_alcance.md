@@ -1,5 +1,22 @@
 # v2 — Alcance: qué es este proyecto y qué no
 
+> 📖 **Qué estás abriendo, antes de entrar.** Este es el documento de diseño completo, y son
+> **notas de trabajo**: se escribieron mientras se decidía, no después. Eso quiere decir que las
+> correcciones están marcadas **donde estaban los errores**, en vez de reescritas por encima —
+> verás secciones tachadas, apartados `-bis` y avisos de *"esto de aquí arriba era optimista"*.
+> Es a propósito: un documento que solo enseña las conclusiones esconde precisamente la parte
+> que decide si son buenas.
+>
+> Si buscas el resumen y no el proceso, está en el [`README`](../README.md) de la raíz. Si buscas
+> **qué se decidió y por qué**, esto. Está en español, y el porqué de eso está en
+> [`docs/README.md`](README.md).
+>
+> Las secciones más útiles para entender el diseño son la **§1** (la pregunta), la **§2.4** (qué se
+> mide exactamente), la **§5.4** (el límite honesto: *"dónde" no es "por qué"*) y la **§6** (el
+> riesgo que podría matar el diseño, con su medición).
+
+---
+
 > **Estado:** vivo · **Decidido:** 2026-08-16 · **Arrancado:** 2026-08-17 (`deaa81e`)
 > **Revisado a fondo el 2026-08-17**, tres veces y en este orden: dos barridos de verificación externa,
 > y una **redefinición del objeto y del diseño** al final del día. Varias cosas de las primeras
@@ -8,7 +25,7 @@
 >
 > 🔝 **Los dos cambios grandes, por si vienes de una versión anterior:** el objeto pasó de *"partidos de
 > ámbito no estatal"* a **VOX** (§1.1), y el diseño pasó de medir el **nivel** en una elección a medir
-> el **cambio** entre elecciones (§1.2). Los dos los propuso G y los dos mejoran el proyecto.
+> el **cambio** entre elecciones (§1.2). Los dos son correcciones al diseño inicial, y los dos lo mejoran.
 >
 > Sustituye al diseño europeo anterior, que se ejecutó y resultó inviable. Ver §11.
 
@@ -184,7 +201,7 @@ Y **tendrían razón**. Quedaría como un *gotcha* y el revisor leería el resto
 supuesto —la homogeneidad interna de la unidad— que justifican eligiendo la unidad más fina. **Nadie
 ha medido cuánto se sostiene.** Nosotros sí.
 
-🔑 **La postura del proyecto, en una línea de G:** **no les contradecimos, les completamos.**
+🔑 **La postura del proyecto, en una línea:** **no les contradecimos, les completamos.**
 Ellos dejan un supuesto declarado y sin medir; nosotros lo medimos y **de paso entregamos las dos
 cosas que piden por escrito** (desigualdad junto a renta; herramientas espaciales que miran a las
 secciones vecinas). **Eso no es un ataque: es una contribución** — y es mucho más difícil de rechazar.
@@ -208,7 +225,7 @@ TFM español podría haberlo hecho. **Antes de publicar, cerrar esa búsqueda.**
 
 ### 2.4 🔝 Lo que se mide no es "si cambia el número": es la descomposición DENTRO/ENTRE
 
-*(Formulado el 2026-08-20 explicándoselo a G. Es una mejora del diseño, no una aclaración.)*
+*(Formulado el 2026-08-20 al intentar explicarlo desde cero. Es una mejora del diseño, no una aclaración.)*
 
 **Cambiar de escala no es elegir otras unidades: es FUNDIRLAS.** De 36.302 secciones se pasa a 8.131
 municipios, y esos 28.171 números que faltan no se han perdido — **se han promediado**. Al fundir,
@@ -345,7 +362,7 @@ mató a v1** —un identificador de partido que no señala al mismo partido— r
    unidad con una bandera** para poder repetir el análisis sin ella. **No se estima el reparto**
    (inventar) **ni se descarta en silencio** (perder territorio justo donde VOX tuvo que pactar).
 
-#### ✅ REGLA 1 del preregistro — el denominador NO se elige: se descompone `[decidido con G, 2026-08-20]`
+#### ✅ REGLA 1 del preregistro — el denominador NO se elige: se descompone `[decidido el 2026-08-20]`
 
 **Por qué era un problema.** Había dos candidatos y los dos tienen un agujero propio:
 
@@ -359,7 +376,7 @@ tamaño del municipio** —en los pueblos pequeños se vota más—, y el tamañ
 cambia al cambiar de lupa. Elegir mal **fabrica** un efecto de escala que no existe: se mediría
 participación creyendo medir agregación.
 
-**✅ La salida, propuesta por G el 2026-08-20, y es mejor que "calcular las dos":** las dos medidas
+**✅ La salida, decidida el 2026-08-20, y es mejor que "calcular las dos":** las dos medidas
 **no son rivales, son los dos factores de la misma multiplicación**.
 
 ```
@@ -447,7 +464,7 @@ hay **dentro** frente a **entre**.
 > Un hueco lo ves y lo declaras. **Un valor inventado te lo crees**, porque en la tabla se ve idéntico
 > a uno medido.
 
-##### ✅ La decisión: el umbral lo aplicamos NOSOTROS, a todos los años `[con G, 2026-08-21]`
+##### ✅ La decisión: el umbral lo aplicamos NOSOTROS, a todos los años `[decidido el 2026-08-21]`
 
 **Sección con menos de 100 residentes → sin dato, nos lo dé el INE o no.** Arregla dos cosas:
 ningún valor sintético entra; y la serie se vuelve **homogénea** a través del cambio de régimen de
@@ -459,7 +476,7 @@ cuello de botella de todo lo que sigue (§12.15).
 
 ##### 🔑 Y no es un agujero de datos: es una FRONTERA LEGAL
 
-Pregunta de G: *"¿no hay otra vía para la renta de esas secciones?"* **No, y el motivo importa.**
+Pregunta obligada: *"¿no hay otra vía para la renta de esas secciones?"* **No, y el motivo importa.**
 
 En un municipio de 60 habitantes, publicar la renta media **es casi publicar un dato individual**.
 Lo prohíbe el **secreto estadístico** (Ley 12/1989 de la Función Estadística Pública) y encima el
@@ -473,7 +490,7 @@ por la misma razón**.
 *(⚠️ SERPAVI probablemente esté **peor**, no mejor: en un pueblo de 60 habitantes casi no hay
 contratos de alquiler. `[sin comprobar]`)*
 
-##### ✅ Qué se hace con esas unidades — orden decidido con G, 2026-08-21
+##### ✅ Qué se hace con esas unidades — orden decidido el 2026-08-21
 
 | | Vía | Estado |
 |---|---|---|
@@ -585,7 +602,7 @@ Tiene tratamiento conocido y hay que usarlo. **Y aquí importa más que de costu
    principal, así que ignorarlo contamina el resultado que se quiere medir.
 2. **Es una de las dos cosas que Roig et al. piden por escrito** en su trabajo futuro (§2.2).
 
-### 5.6 El lenguaje: Python *(decidido con G, 2026-08-19)*
+### 5.6 El lenguaje: Python *(decidido el 2026-08-19)*
 
 ✅ **El motor de v2 va en Python.** R queda reservado para piezas concretas, si aparecen.
 
@@ -598,10 +615,10 @@ verificada que mató a v1; y el fallo del delimitador (§7-ter) **solo aparece l
 
 Lo que decidió, en orden:
 
-1. 🔑 **Escribo yo, lee G.** Su nivel es equivalente en los dos lenguajes —comprensión media-alta,
-   escritura baja—, así que el criterio no es *cuánto cuesta escribir* sino **cuánto cuesta leer**.
-   R tiene idiomas propios que hay que conocer (`<-`, fórmulas, `%>%`, la sintaxis de `data.table`);
-   Python se lee más literal. Con ese perfil, pesa.
+1. 🔑 **Pesa más leerlo que escribirlo.** Este código se va a releer muchas más veces de las
+   que se escribe, y parte de releerlo es que lo pueda auditar alguien de fuera. R tiene idiomas
+   propios que hay que conocer (`<-`, fórmulas, `%>%`, la sintaxis de `data.table`); Python se lee
+   más literal. Con ese criterio, pesa.
 2. **Un idioma, no dos.** Dos entornos, dos gestores de dependencias, dos superficies de rotura en
    Windows. Para un proyecto de una persona y media esa factura se paga entera y no compra nada.
 3. **La infraestructura fea ya está probada** (cadena TLS, lector de layout, 15 tests contra datos
@@ -617,12 +634,12 @@ Python, **esa pieza** se hace en R y se comunica con el resto **por fichero plan
 no una fusión. Lo mismo aplica a la viñeta para los paquetes de R, si algún día se escribe (§8.3).
 
 **Lo único que daría la vuelta a esto:** que el destinatario prioritario fueran los paquetes de R.
-No lo es — G eligió académicos (§8), y a un académico le da igual el lenguaje si el método está
+No lo es — el destinatario elegido es académico (§8), y a un académico le da igual el lenguaje si el método está
 escrito.
 
-### 5.6-bis La renta entra como NIVEL DE PARTIDA *(decidido con G, 2026-08-20)*
+### 5.6-bis La renta entra como NIVEL DE PARTIDA *(decidido el 2026-08-20)*
 
-🔴 **Otro hueco que llevaba desde el principio sin declarar, cazado por G.** El documento fijaba que
+🔴 **Otro hueco que llevaba desde el principio sin declarar, cazado tarde.** El documento fijaba que
 la variable de VOX es el **cambio** (§1.2), pero **nunca decía si la renta entra como nivel o como
 cambio**. Son dos preguntas distintas y pueden dar titulares opuestos:
 
@@ -655,7 +672,7 @@ prueba hay que medir lo que ellos midieron; si no, no se comprueba lo suyo, se h
 ⚠️ **El nivel se toma del AÑO DE PARTIDA**, no del final: si se tomara del final, la renta ya habría
 sido afectada por lo ocurrido en medio, y se estaría explicando el cambio con algo que el cambio tocó.
 
-#### ✅ Y qué año de renta va con cada elección *(decidido con G, 2026-08-21)*
+#### ✅ Y qué año de renta va con cada elección *(decidido el 2026-08-21)*
 
 **Regla: la renta del último año natural COMPLETO anterior a la elección.**
 
@@ -679,7 +696,7 @@ cambio de régimen del ADRH** de 2020 (§5.2-bis).
 ⚠️ `[pendiente-verif]` **Qué año de renta emparejan Roig et al. con cada elección: NO CONSTA** en lo
 leído hasta ahora. Solo consta que usan renta neta media por persona del ADRH. **No se especula.**
 
-### 5.6-ter La comparación principal: nov-2019 → jul-2023 *(decidido con G, 2026-08-21)*
+### 5.6-ter La comparación principal: nov-2019 → jul-2023 *(decidido el 2026-08-21)*
 
 Las cinco generales dan cuatro comparaciones, y **no son del mismo tipo**, porque en 2015 y 2016 VOX
 era marginal. Hay que declarar cuál va en el titular.
@@ -711,9 +728,9 @@ indirecta. Y el **cambio** de renta (medida secundaria) cruza el cambio de régi
 ✅ **Las cuatro comparaciones se calculan y se publican igual.** Lo único que se decide aquí es cuál
 lleva el titular — es decir, **de qué conversación forma parte el trabajo**.
 
-#### Y las dos formas de recorrer la ventana: SE HACEN LAS DOS *(con G, 2026-08-21)*
+#### Y las dos formas de recorrer la ventana: SE HACEN LAS DOS *(decidido el 2026-08-21)*
 
-Pregunta de G: *"¿no dejamos tres años fuera?"* No — pero destapó una decisión sin declarar. Hay
+Pregunta obligada: *"¿no dejamos tres años fuera?"* No — pero destapó una decisión sin declarar. Hay
 **dos maneras distintas** de usar cinco convocatorias, y no miden lo mismo:
 
 | | Cómo | Qué mide | |
@@ -734,11 +751,11 @@ lo que explicamos). En una frase: *"¿creció más VOX en los sitios que **ya er
 🟢 **Roig et al. hacen lo mismo** —trasvases de voto (cambio) por cuatro tramos de renta (nivel)—, así
 que la estructura es directamente comparable.
 
-### 5.7 Qué elecciones entran: SOLO GENERALES *(decidido con G, 2026-08-20)*
+### 5.7 Qué elecciones entran: SOLO GENERALES *(decidido el 2026-08-20)*
 
 🔴 **Esto llevaba desde el principio decidido a escondidas.** Todo el documento daba por supuestas las
 generales —los datos bajados, la justificación de la cobertura del Atlas— **sin una sola línea que lo
-declarara ni que diera el motivo**. Lo cazó G. Es exactamente el tipo de decisión no declarada que el
+declarara ni que diera el motivo**. Se cazó al revisar. Es exactamente el tipo de decisión no declarada que el
 preregistro existe para impedir, así que queda escrita.
 
 ✅ **Solo elecciones generales.** En la ventana del Atlas de renta hay **cinco**: dic-2015, jun-2016,
@@ -765,9 +782,9 @@ generales están todas dentro de nuestras cinco**, así que los números serán 
 con los suyos**, convocatoria a convocatoria. Para un trabajo que pone a prueba el suyo, eso vale
 mucho.
 
-### 5.8 El ámbito: TODA ESPAÑA, con Madrid como puente *(decidido con G, 2026-08-20)*
+### 5.8 El ámbito: TODA ESPAÑA, con Madrid como puente *(decidido el 2026-08-20)*
 
-Pregunta de G: *"¿no hacemos Madrid entonces?"* — es decir, ¿copiamos el ámbito de la diana o no?
+Pregunta obligada: *"¿no hacemos Madrid entonces?"* — es decir, ¿copiamos el ámbito de la diana o no?
 
 **No. Y el motivo es aritmético** `[medido 2026-08-20 sobre el fichero 09 de nov-2019]`:
 
@@ -795,9 +812,9 @@ generalizar desde ahí es la limitación que **Roig et al. declaran de su propio
 > atribuir el resultado nacional a un error de procesamiento nuestro — **ya está demostrado que
 > reproducimos su caso**. Es la validación externa más barata que hay: filtrar por provincia `28`.
 
-### 5.9 La ponderación: PONDERADA por población como principal *(decidido con G, 2026-08-21)*
+### 5.9 La ponderación: PONDERADA por población como principal *(decidido el 2026-08-21)*
 
-**Hueco cazado por G**, y no estaba hablado. A escala municipal cada municipio es **una observación**:
+**Hueco cazado tarde**, y no estaba hablado. A escala municipal cada municipio es **una observación**:
 un pueblo de 60 habitantes cuenta lo mismo que Madrid.
 
 | País de juguete | Habitantes | Renta | Δ VOX |
@@ -872,7 +889,7 @@ país con agujeros contra un país entero**, y la diferencia entre escalas se co
 diferencia entre huecos. Y los huecos **no son aleatorios**: son las unidades diminutas del rural.
 
 **✅ La regla: TODAS las escalas se construyen con la manera A, agregando desde la sección, sobre el
-mismo conjunto de secciones.** Decidido con G el 2026-08-20.
+mismo conjunto de secciones.** Decidido el 2026-08-20.
 
 🔑 **Por qué esto salva el diseño aunque perdamos secciones.** La pérdida no desaparece: se vuelve
 **idéntica en las cinco escalas**. Y como lo que se mide es **la diferencia entre escalas**, un sesgo
@@ -904,7 +921,7 @@ principio de siempre: primero el tamaño de la enfermedad.** `[pendiente-medir]`
 
 ## 6-bis. 🟢 La mortalidad de secciones: MEDIDA — el diseño aguanta
 
-`[MEDIDO 2026-08-19 con G, código en src/v2/supervivencia_secciones.py, 10 tests]`
+`[MEDIDO 2026-08-19, código en src/v2/supervivencia_secciones.py, 10 tests]`
 
 **El riesgo de §12.7 —que una sección censal no sobreviva entre convocatorias, y el diseño de §1.2
 compare un sitio con otro sitio— era real y estaba sin medir. Ya está medido. NO mata el diseño.**
@@ -925,8 +942,8 @@ nacimientos — ni un 100 % sospechoso ni ruido. **El instrumento mide lo que di
 
 ### Y la medida obvia escondía justo el caso peligroso
 
-La supervivencia de **código** salió **99,26 %** — mucho mejor de lo que esperábamos los dos
-(predicciones escritas antes: G 90 %, Claude 85-95 %). Pero **nacieron 426 secciones y solo murieron
+La supervivencia de **código** salió **99,26 %** — mucho mejor de lo esperado
+(la predicción, escrita **antes** de mirar, era 85-95 %). Pero **nacieron 426 secciones y solo murieron
 268**, y esa asimetría tiene una explicación:
 
 > Cuando el INE parte una sección, lo natural es que **una mitad conserve el código del padre** y la
@@ -938,7 +955,7 @@ Se detecta pidiendo **dos** condiciones a la vez, porque ninguna vale sola: (a) 
 confunde partición con **despoblación real**, que en el interior existe y **no es un problema —es el
 dato que queremos medir**. Solo (b) no dice a quién se partió.
 
-**Umbral del 30 %: elegido con G y ANTES de mirar.** Se reporta también a otros umbrales para que se
+**Umbral del 30 %: elegido ANTES de mirar.** Se reporta también a otros umbrales para que se
 vea que la conclusión no depende de dónde se puso la raya.
 
 ### El resultado
@@ -958,7 +975,7 @@ para un método que no inventa particiones donde no las hay.)*
 dentro de su distrito y su municipio**. O sea que **el problema solo existe en el peldaño más fino**;
 municipio, provincia y CCAA están limpios por construcción.
 
-### Qué se hace con las 572 — decidido con G, en este orden
+### Qué se hace con las 572 — decidido, en este orden
 
 1. **A · Reconstruir** *(preferido)*: comparar la sección de 2019 con **la suma de sus herederas** en
    2023. ⚠️ **Solo donde el emparejamiento sea único** (un distrito, una muerte, un nacimiento);
@@ -968,7 +985,7 @@ municipio, provincia y CCAA están limpios por construcción.
 3. **B · Subir de peldaño** (medir el cambio solo desde municipio) **solo si A y C fallan**: salva el
    diseño **renunciando a la comparación sección↔municipio, que es el producto**.
 
-🔴 **Límite honesto de A, y lo cazó G:** la prueba de que los censos sumen **descarta, no confirma**.
+🔴 **Límite honesto de A, y se cazó al revisar:** la prueba de que los censos sumen **descarta, no confirma**.
 Dos trozos de mapa distintos pueden tener la misma gente dentro. Si `1ºA+1ºB` suman 1.200 donde había
 3.000, el emparejamiento está mal **con seguridad**; si suman 3.050, puede estar bien **o haber
 cuadrado por casualidad con la madre equivocada**. Confirmarlo de verdad exige **geometría**
@@ -1000,7 +1017,7 @@ falso al comprobarlo, y la primera en que el autor del error fue el mismo turno 
 
 ## 6-ter. 🟢 Cartografía y correspondencias: las dos existen `[VERIFICADO 2026-08-19]`
 
-Comprobación de §12.8, pedida por G. Las dos respuestas son **sí**, y la segunda cambia el plan.
+Comprobación de §12.8, pendiente desde §12.8. Las dos respuestas son **sí**, y la segunda cambia el plan.
 
 ### Cartografía del seccionado — INE, anual, libre
 
@@ -1057,7 +1074,7 @@ delante y hacia atrás.
    falso. Además el error **no es aleatorio**: las particiones ocurren donde ha crecido la población
    —periferias, obra nueva—, un tipo de sitio muy concreto.
 
-   ✅ **Lo que se hace en su lugar, decidido con G:**
+   ✅ **Lo que se hace en su lugar, decidido:**
    - **Fusionar hasta cerrar.** Si `S1` se partió en `S1`+`S2`, se comparan como **una sola unidad**
      en los dos años. No se estima nada: es una suma. Si además entró territorio de un vecino `S3`,
      **se mete `S3` entero en los dos años**, y así hasta que el trozo esté cerrado —nada entró, nada
@@ -1200,14 +1217,14 @@ funciona en la máquina de uno no es lo que funciona.**
 Consecuencia para §3, y no es cosmética: la escalera **no tiene cinco peldaños comparables**.
 Comparar *distrito* con *municipio* es comparar dos cosas idénticas en 7 de cada 8 unidades, y
 donde se diferencian —las ciudades grandes— la comparación **describe la España urbana y solo
-esa**. O se declara así, o el peldaño se retira. **Sin decidir; se decide con G.**
+esa**. O se declara así, o el peldaño se retira. **Sin decidir.**
 
 *(El 8.131 sirve además de control externo: es el mismo número de municipios que usó eldiario.es
 en su análisis de julio de 2023, §8. La lectura del fichero cuadra con una fuente independiente.)*
 
 ## 8. Quién actúa distinto (criterio de impacto) — resuelto, y no donde se suponía
 
-✅ **PRIORIDAD DECIDIDA POR G el 2026-08-19: los académicos primero.** Y no obliga a renunciar a
+✅ **PRIORIDAD DECIDIDA el 2026-08-19: los académicos primero.** Y no obliga a renunciar a
 nada, porque **el análisis es común a los cuatro destinatarios** —los cuatro quieren el mismo
 número— y lo único que cambia es el envoltorio final. La asimetría que justifica el orden: **de un
 trabajo que aguanta escrutinio académico sale gratis la nota periodística; al revés no.** La única
@@ -1309,7 +1326,7 @@ región a región con las fechas de revisión de la nomenclatura.**
 
 ### 9.4 Qué implica para el MVP
 
-- ✅ **DECIDIDO POR G el 2026-08-19: bilingüe desde ya.** Era una consecuencia razonada; ahora es una
+- ✅ **DECIDIDO el 2026-08-19: bilingüe desde ya.** Era una consecuencia razonada; ahora es una
   decisión tomada. Marginal si se hace desde el principio, caro y mal hecho si se traduce al final.
   **Reparto exacto**, para que no haya que volver a preguntarlo:
 
@@ -1317,11 +1334,11 @@ región a región con las fechas de revisión de la nomenclatura.**
   |---|---|
   | El **producto** (primer corte, figuras, texto de resultados) | **Bilingüe ES/EN** |
   | Los **documentos de diseño internos** (este, la referencia core) | **Español** |
-  | La **conversación de trabajo y las explicaciones a G** | **Español**, siempre |
+  | Las **notas de trabajo internas** | **Español**, siempre |
   | Términos técnicos sin traducción decente (*MAUP*, *ecological inference*…) | **Inglés**, definidos en español la primera vez que aparecen |
 
-  *(G tiene C1: el inglés no es una barrera, es una cuestión de velocidad de lectura. Lo que se pueda
-  en español, en español.)*
+  *(El inglés no es una barrera para leer, pero sí una cuestión de velocidad. Lo que se pueda en
+  español, en español; el producto, bilingue.)*
 - **Se incluye una sección corta sobre el caso europeo**, apuntando a esto, sin ejecutarlo.
 - **El artefacto 2**, si lo hay, es apuntar el mismo aparato a NUTS2 y a los umbrales de cohesión.
   Ahí el interlocutor deja de ser una redacción y pasa a ser la Comisión y el Tribunal de Cuentas
@@ -1348,9 +1365,9 @@ Se anota para que no se vuelva a proponer dentro de tres semanas como si fuera u
 - **No depende del modelo de medida ESS**, congelado por una solución factorial impropia.
 - 🆕 **No hace inferencia ecológica — TODAVÍA.** Ver abajo, porque esta tiene fecha.
 
-### 10.1 🎯 El acto 2: correr SU método a las cinco escalas *(planteado con G, 2026-08-21)*
+### 10.1 🎯 El acto 2: correr SU método a las cinco escalas *(planteado el 2026-08-21)*
 
-**De dónde sale.** Pregunta de G: *"si un camino es rebatirlos, ¿no tenemos que hacerlo como ellos?"*
+**De dónde sale.** Pregunta obligada: *"si un camino es rebatirlos, ¿no tenemos que hacerlo como ellos?"*
 La regla es correcta y ya la aplicamos sin nombrarla (§5.8, Madrid como puente): **para poner algo a
 prueba hay que poder reproducirlo, y hay que cambiar UNA cosa, no cinco.**
 
@@ -1420,8 +1437,8 @@ escrito en cuatro ficheros, y era falso.
 | 7 | ~~**¿Sobrevive una sección censal entre dos convocatorias?**~~ | ✅ **MEDIDO el 2026-08-19 → §6-bis. NO mata el diseño.** 98,42 % de las secciones son comparables tal cual; rompen la comparación 572 (1,58 %), de las cuales **304 lo hacían de forma invisible**. Y el problema **vive solo en el peldaño más fino** | — | §6-bis |
 | 8 | ~~**¿Publica el INE cartografía anual de secciones y/o una tabla de correspondencias?**~~ | ✅ **COMPROBADO el 2026-08-19 → §6-ter. Las dos existen.** Cartografía anual del INE 2007-2025, libre, con `CUSEC`. Y `sc2sc` en CRAN (Pérez & Pavía) da correspondencias **geométricas con proporciones**, 2001-2026. **El plan A queda superado por algo mejor** | — | §6-ter |
 | 12 | ~~**¿Ha hecho ya el grupo de Pavía la pregunta de ESCALA?**~~ | 🟢 **BARRIDO el 2026-08-20 → §8-bis. No hay señal.** Su línea 2025-2026 es **inferencia ecológica** entera; su obra espacial (Pavía & López-Quílez 2013; Pavía & Cantarino 2017; `sc2sc`) sirve para **mover datos entre unidades**, nunca para preguntar si la respuesta cambia con el tamaño de la unidad. **Tienen las herramientas y no han hecho la pregunta.** ⚠️ Barrido de listas de publicación, no exhaustivo: no cubre preprints ni congresos | — | §8-bis |
-| 14 | 🔴🆕 **¿Ponderamos las unidades por población, o cuenta cada una igual?** | **Cazado por G el 2026-08-21, y no se había hablado nunca.** Los 1.360 municipios diminutos son el **0,16 % de las personas** y el **16,7 % de las observaciones** a escala municipal: sin ponderar, su influencia sobre el resultado es ~100 veces su peso real. 🔑 **Y el problema CAMBIA con la escala** —a nivel de sección las unidades se parecen en tamaño, a nivel de municipio no—, así que se mete dentro de lo que medimos | Decisión de diseño + medir su efecto | §5.2-bis, §2.4 |
-| 15 | ~~**¿De dónde sacamos la población por sección?**~~ | 🟢 **LOCALIZADA el 2026-08-21.** **Padrón continuo por secciones censales: 2004-2022** · **Censo Anual de Población por secciones: 2021-2025**. Juntas cubren la ventana, con solape en 2021-2022. ⚠️ **El solape NO es control de validez** (lo corrigió G): miden cosas distintas —empadronados vs. residentes estimados—, así que sirve para **medir el desajuste** y sobre todo para saber **si depende del tamaño del municipio**, que es lo que decide cuántas unidades quedan en la frontera del umbral. *(Descartado usar los indicadores demográficos del ADRH como detector: la regla en cascada no distingue "soy pequeña" de "mi vecina lo es".)* | — | §5.2-bis |
+| 14 | 🔴🆕 **¿Ponderamos las unidades por población, o cuenta cada una igual?** | **Cazado el 2026-08-21, y no se había hablado nunca.** Los 1.360 municipios diminutos son el **0,16 % de las personas** y el **16,7 % de las observaciones** a escala municipal: sin ponderar, su influencia sobre el resultado es ~100 veces su peso real. 🔑 **Y el problema CAMBIA con la escala** —a nivel de sección las unidades se parecen en tamaño, a nivel de municipio no—, así que se mete dentro de lo que medimos | Decisión de diseño + medir su efecto | §5.2-bis, §2.4 |
+| 15 | ~~**¿De dónde sacamos la población por sección?**~~ | 🟢 **LOCALIZADA el 2026-08-21.** **Padrón continuo por secciones censales: 2004-2022** · **Censo Anual de Población por secciones: 2021-2025**. Juntas cubren la ventana, con solape en 2021-2022. ⚠️ **El solape NO es control de validez** (corregido al revisar): miden cosas distintas —empadronados vs. residentes estimados—, así que sirve para **medir el desajuste** y sobre todo para saber **si depende del tamaño del municipio**, que es lo que decide cuántas unidades quedan en la frontera del umbral. *(Descartado usar los indicadores demográficos del ADRH como detector: la regla en cascada no distingue "soy pequeña" de "mi vecina lo es".)* | — | §5.2-bis |
 | 16 | 🆕 **¿Qué cifra de población usa el INE para aplicar su propio umbral de 100?** | Su metodología habla del **Fichero de Población Continua**. Si usamos otra fuente, **nuestro umbral no reproduce el suyo** y habrá unidades dentro para nosotros y fuera para ellos, o al revés | ~30 min | §5.2-bis |
 | 17 | ~~**¿Qué año de renta se empareja con cada elección?**~~ | ✅ **DECIDIDO el 2026-08-21 → §5.6-bis.** El último año natural **completo anterior** a la elección: nov-2019 → renta 2018, jul-2023 → renta 2022 | — | §5.6-bis |
 | 18 | ~~**LEER LA DIANA ENTERA**~~ | ✅ **HECHO el 2026-08-21 → §2.2-bis.** 4 de 5 apuestas acertadas (aviso, no mérito). **Sigue abierto el hueco del seccionado**: alinean, citan sus métodos y **no publican cifra**. Y el terreno de entrada **cambia**: no por su párrafo de contexto (débil, rebatible en una línea) sino por **su propio párrafo de limitaciones** (irrebatible, porque es suyo) | — | §2.2-bis |
@@ -1441,4 +1458,4 @@ incógnita declarada; no se puede afirmar con ella.
 🆕 **El 7 es de otra clase y por eso va aparte:** los seis primeros son cosas que hay que *comprobar
 antes de afirmar*. El 7 es una **tensión entre dos decisiones ya tomadas**, y si sale mal no obliga a
 matizar un párrafo sino a **cambiar el diseño**. Se levantó el 2026-08-18 al transcribir el layout y
-**está sin discutir con G**: aquí solo queda anotado, no resuelto.
+**está sin discutir**: aquí solo queda anotado, no resuelto.
