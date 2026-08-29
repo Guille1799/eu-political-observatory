@@ -98,25 +98,55 @@ def calculate_nationalist_vote(df_euned, df_poppa, df_populist,
     # Cruzar EU-NED con POPPA via partyfacts_id
     df = df_euned.merge(df_poppa, on='partyfacts_id', how='left')
 
+    # Cruzar con la ventana temporal far-right de PopuList — un partido solo cuenta como
+    # far-right en los años que PopuList declara (farright_start/farright_end); NaN en un
+    # extremo significa "sin límite declarado" en ese lado.
+    df = df.merge(
+        df_populist[['partyfacts_id', 'farright_start', 'farright_end']],
+        on='partyfacts_id', how='left'
+    )
+
     # Lista de partidos far-right del PopuList
     far_right_ids = set(df_populist['partyfacts_id'].tolist())
 
-    # Filtrar partidos nacionalistas — deben cumplir AMBAS condiciones
-    df_nationalist = df[
+    en_ventana = (
+        (df['farright_start'].isna() | (df['year'] >= df['farright_start'])) &
+        (df['farright_end'].isna() | (df['year'] <= df['farright_end']))
+    )
+
+    es_nacionalista = (
         (df['nativism'] >= nativism_threshold) &
-        (df['partyfacts_id'].isin(far_right_ids))
-    ].copy()
+        (df['partyfacts_id'].isin(far_right_ids)) &
+        en_ventana
+    )
 
     # Calcular índice ponderado — voto × nativismo / 10
-    df_nationalist['weighted_vote'] = df_nationalist['vote_share'] * df_nationalist['nativism'] / 10
+    df['weighted_vote'] = df['vote_share'] * df['nativism'] / 10
 
-    # Sumar índice ponderado por región y año
-    df_result = df_nationalist.groupby(
-        ['nuts2', 'regionname', 'country_code', 'year']
-    ).agg(
-        nationalist_vote_share=('vote_share', 'sum'),
-        nationalist_weighted_index=('weighted_vote', 'sum')
+    # Un partido tiene VEREDICTO cuando aparece en POPPA (nativism no nulo): solo entonces
+    # se pudo evaluar la primera condición. Si no aparece, "no cumple" y "no se midió" son
+    # indistinguibles si no se declaran aparte.
+    df['tiene_veredicto'] = df['nativism'].notna()
+
+    grupo = ['nuts2', 'regionname', 'country_code', 'year']
+
+    # La cobertura corre sobre TODA la entrada de EU-NED, no solo sobre los partidos que
+    # acaban siendo nacionalistas — así una región-año sin ningún nacionalista sigue
+    # emitiendo fila, con su cero declarado y su cobertura (en vez de desaparecer).
+    cobertura = df.groupby(grupo).agg(
+        partidos_totales=('partyfacts_id', 'count'),
+        partidos_con_veredicto=('tiene_veredicto', 'sum'),
     ).reset_index()
+
+    df_nationalist = df[es_nacionalista]
+    votos = df_nationalist.groupby(grupo).agg(
+        nationalist_vote_share=('vote_share', 'sum'),
+        nationalist_weighted_index=('weighted_vote', 'sum'),
+    ).reset_index()
+
+    df_result = cobertura.merge(votos, on=grupo, how='left')
+    df_result['nationalist_vote_share'] = df_result['nationalist_vote_share'].fillna(0.0)
+    df_result['nationalist_weighted_index'] = df_result['nationalist_weighted_index'].fillna(0.0)
 
     return df_result
 
@@ -137,24 +167,31 @@ def save_to_postgres(df, table_name):
     # Eliminar tabla si existe
     cursor.execute(f"DROP TABLE IF EXISTS {table_name}")
 
-    # Crear tabla
+    # Crear tabla — incluye la cobertura (cuántos partidos de la región-año tenían
+    # veredicto) para que un cero declarado se distinga de "sin datos" también en Postgres.
     cursor.execute(f"""
         CREATE TABLE {table_name} (
             nuts2_id VARCHAR(10),
             region_name VARCHAR(100),
             country_code VARCHAR(5),
             year INTEGER,
+            partidos_totales INTEGER,
+            partidos_con_veredicto INTEGER,
             nationalist_vote_share FLOAT,
             nationalist_weighted_index FLOAT
         )
     """)
 
+    columnas = ['nuts2', 'regionname', 'country_code', 'year',
+                'partidos_totales', 'partidos_con_veredicto',
+                'nationalist_vote_share', 'nationalist_weighted_index']
     buffer = io.StringIO()
-    df.to_csv(buffer, index=False, header=False)
+    df[columnas].to_csv(buffer, index=False, header=False)
     buffer.seek(0)
 
     cursor.copy_expert(f"""
         COPY {table_name} (nuts2_id, region_name, country_code, year,
+        partidos_totales, partidos_con_veredicto,
         nationalist_vote_share, nationalist_weighted_index)
         FROM STDIN WITH CSV
     """, buffer)
@@ -180,7 +217,7 @@ if __name__ == "__main__":
     print("Calculando índice de voto nacionalista...")
     df_nationalist = calculate_nationalist_vote(df_euned, df_poppa, df_populist)
 
-    print(f"Regiones con voto nacionalista detectadas: {len(df_nationalist)}")
+    print(f"Región-año emitidas (con cero declarado o veredicto): {len(df_nationalist)}")
     print(df_nationalist.head(10))
 
     print("Guardando en PostgreSQL...")

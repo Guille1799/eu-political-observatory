@@ -50,10 +50,13 @@ RAW = Path("data/raw")
 OUT = Path("data/processed")
 
 # ── Parametros metodologicos, todos declarados y todos discutibles ──────────────
-# Umbral de nativismo POPPA. Procedencia: src/ingestion/parameters.py — convencion del
-# proyecto decidida el 2026-05-05 SIN cita bibliografica. Aqui se usa como valor central
-# y se corre sensibilidad alrededor precisamente porque es arbitrario.
-NATIVISM_THRESHOLD = 7.0
+# Umbral de nativismo POPPA. Vive en UN solo sitio (src/ingestion/parameters.py) y se
+# importa aqui en vez de redeclararse: si el valor cambia, cambia alli y este script lo
+# hereda. Ver parameters.py para la procedencia completa (convencion del proyecto
+# decidida el 2026-05-05 SIN cita bibliografica).
+sys.path.insert(0, str(Path(__file__).resolve().parent / "ingestion"))
+from parameters import NATIVISM_THRESHOLD  # noqa: E402
+
 NATIVISM_SENSIBILIDAD = [6.0, 6.5, 7.0, 7.5, 8.0]
 
 # Ano desde el que se asume que PopuList 3.0 cubre su universo de partidos. Se usa para
@@ -521,15 +524,34 @@ def bloque_discrepancias(par, popu, poppa, aud):
 # ═══════════════════════════════════════════════════════════════════════════════
 # 5. PARTIDOS SIN CLASIFICAR CON MAS VOTO
 # ═══════════════════════════════════════════════════════════════════════════════
+def cuota_nacional_por_partido(par: pd.DataFrame) -> pd.Series:
+    """Cuota nacional (% del validvote del pais-eleccion) que cada partido logro en su
+    mejor eleccion.
+
+    El denominador tiene que ser el validvote del pais-eleccion COMPLETO, deduplicado por
+    region: `validvote` esta REPETIDO en cada fila de partido (una copia por region), y
+    sumarlo sobre las filas de UN partido solo cubre las regiones donde ESE partido tiene
+    fila. Es la misma trampa que `build_nuts1` esquiva en join_economico_electoral.py
+    sumando sobre la tabla region-eleccion deduplicada, no sobre la de partido.
+    """
+    vv_pais_anio = (par[["country_code", "region_id", "year", "validvote"]]
+                      .drop_duplicates(subset=["country_code", "region_id", "year"])
+                      .groupby(["country_code", "year"], dropna=False)
+                      .validvote.sum().rename("vv").reset_index())
+    nac = (par.groupby(["country_code", "year", "pf", "nombre", "residual"], dropna=False)
+             .agg(v=("partyvote", "sum")).reset_index()
+             .merge(vv_pais_anio, on=["country_code", "year"], how="left"))
+    nac["cuota"] = 100 * nac.v / nac.vv
+    return (nac.groupby(["country_code", "nombre"], dropna=False)
+               .cuota.max().rename("mejor_cuota_nacional_%"))
+
+
 def bloque_sin_clasificar(par, total_votos, n=30):
     titulo("4. PARTIDOS SIN VEREDICTO CON MAS VOTO (top 30)")
     tot_pais = par.groupby("country_code").partyvote.sum()
 
     sc = par[par.sin_veredicto].copy()
-    # cuota nacional del partido en su mejor eleccion
-    nac = (par.groupby(["country_code", "year", "pf", "nombre", "residual"], dropna=False)
-             .agg(v=("partyvote", "sum"), vv=("validvote", "sum")))
-    nac["cuota"] = 100 * nac.v / nac.vv
+    mejor = cuota_nacional_por_partido(par)
 
     key = ["country_code", "nombre", "residual"]
     agg = (sc.groupby(key, dropna=False)
@@ -541,9 +563,6 @@ def bloque_sin_clasificar(par, total_votos, n=30):
     agg["pct_voto_pais"] = 100 * agg.votos / agg.country_code.map(tot_pais)
     agg["pct_voto_total"] = 100 * agg.votos / total_votos
 
-    mejor = (nac.reset_index()
-               .groupby(["country_code", "nombre"], dropna=False)
-               .cuota.max().rename("mejor_cuota_nacional_%"))
     agg = agg.merge(mejor, on=["country_code", "nombre"], how="left")
     agg["tiene_partyfacts_id"] = agg.pf.notna()
     agg = agg.sort_values("votos", ascending=False)

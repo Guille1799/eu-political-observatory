@@ -85,10 +85,21 @@ def calculate_nationalist_vote_parlgov(df_parlgov, df_poppa, df_populist,
     (procedencia: parameters.py) Y far-right en PopuList.
     """
     df = df_parlgov.merge(df_poppa, on='partyfacts_id', how='left')
+    # Ver la nota equivalente en load_euned.calculate_nationalist_vote: la ventana
+    # farright_start/farright_end de PopuList acota cuándo un partido cuenta como far-right.
+    df = df.merge(
+        df_populist[['partyfacts_id', 'farright_start', 'farright_end']],
+        on='partyfacts_id', how='left'
+    )
     far_right_ids = set(df_populist['partyfacts_id'].tolist())
+    en_ventana = (
+        (df['farright_start'].isna() | (df['year'] >= df['farright_start'])) &
+        (df['farright_end'].isna() | (df['year'] <= df['farright_end']))
+    )
     df_nationalist = df[
         (df['nativism'] >= nativism_threshold) &
-        (df['partyfacts_id'].isin(far_right_ids))
+        (df['partyfacts_id'].isin(far_right_ids)) &
+        en_ventana
     ].copy()
     df_nationalist['weighted_vote'] = df_nationalist['vote_share'] * df_nationalist['nativism'] / 10
     df_result = df_nationalist.groupby(
