@@ -1,4 +1,4 @@
-# Entorno virtual
+# Entorno virtual — cada máquina crea el suyo
 venv/
 
 # Python
@@ -7,17 +7,20 @@ __pycache__/
 *.pyo
 .env
 
-# Datos crudos — demasiado pesados para GitHub
+# Datos. Ninguna de las tres carpetas se versiona, y por motivos distintos:
+#   raw/       — microdatos ESS, de acceso controlado: no se pueden redistribuir.
+#   processed/ — derivados de los anteriores; se regeneran corriendo el pipeline.
+#   external/  — descargas de la fuente oficial, que `src/v2/descarga_infoelectoral.py`
+#                vuelve a traer. Versionarlas solo añadiría peso y una copia que puede
+#                quedarse desincronizada del original.
 data/raw/
 data/processed/
-# Descargas de fuentes externas: las regenera `src/v2/descarga_infoelectoral.py`
-# a partir de la fuente oficial, así que versionarlas solo añadiría peso y una
-# copia que podría quedarse desincronizada del original.
 data/external/
 
-# Cursor y VS Code — configuracion local del editor, no del proyecto
+# Configuración local del editor
 .cursor/
 .vscode/
+.cursorrules
 
 # Sistema operativo
 .DS_Store
@@ -25,20 +28,8 @@ Thumbs.db
 
 # Jupyter
 .ipynb_checkpoints/
-.cursorrules
-obs-fix
-
-# Memoria de trabajo de los subagentes — local de cada maquina, no del proyecto
-.claude/agent-memory/
-
-# Copias generadas por el checkpoint — se regeneran, no versionar
-docs/backups/
-
-# Notas de trabajo locales, no documentacion del proyecto
-CLAUDE.md
-docs/energy-log.md
-docs/claude-conversations/
 
 # Salidas sueltas y binarios generados
 Rplots.pdf
 *.docx
+logs/
