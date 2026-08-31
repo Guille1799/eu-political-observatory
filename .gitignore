@@ -33,3 +33,8 @@ Thumbs.db
 Rplots.pdf
 *.docx
 logs/
+.ralph.local.conf
+
+# Configuracion local y registros de ejecucion de las herramientas de desarrollo. Se generan
+# en la maquina de quien trabaja el repo y no forman parte del proyecto.
+ralph_run_*.log
