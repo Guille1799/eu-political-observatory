@@ -166,7 +166,7 @@ era correcto, no porque se supiera.
 | e | ¿Qué año de renta? | no lo dicen | ✅ **NO CONSTA.** Parece **una sola foto** de renta para 2016-2023, sin explicitarlo |
 
 **🟢 Consecuencia directa para §6-bis:** el hueco sobre la mortalidad del seccionado **sigue abierto**.
-Alinean, citan sus métodos, **y no publican ninguna cifra**. Nuestro 98,42 % / 304 particiones ocultas
+Alinean, citan sus métodos, **y no publican ninguna cifra**. Nuestro 97,77 % / 304 particiones ocultas + 238 fusiones
 vuelve a ser candidato a resultado propio — `[queda §12.10: si lo publican en OTRO trabajo]`.
 
 #### Y dos cosas que no se buscaban
@@ -962,20 +962,30 @@ vea que la conclusión no depende de dónde se puso la raya.
 
 | De las 36.302 secciones de nov-2019 | | |
 |---|---|---|
-| **Intactas** — mismo sitio, comparables | **35.730** | **98,42 %** |
+| **Intactas** — mismo sitio, comparables | **35.492** | **97,77 %** |
 | Particiones ocultas — conservan nombre, no son el mismo sitio | **304** | 0,84 % |
+| Fusiones ocultas — absorben a otra, tampoco son el mismo sitio | **238** | 0,66 % |
 | Muertas — el código desaparece | 268 | 0,74 % |
 | Solo encogen — despoblación real, **sin problema** | 17 | 0,05 % |
 
-**Rompen la comparación 572 secciones: el 1,58 %.** Sensibilidad al umbral: 374 ocultas a −20 %, 304
-a −30 %, 202 a −40 %, 82 a −50 %. *(Control: 12 ocultas en seis meses — el orden de magnitud correcto
+**Rompen la comparación 810 secciones: el 2,23 %.** Sensibilidad al umbral: 910 rompen a −20 %, 810
+a −30 %, 688 a −40 %, 540 a −50 %.
+
+> ⚠️ **Esta cifra decía 572 / 98,42 % hasta el 2026-08-31**, y llevaba semanas equivocada. No por un
+> error de cálculo: por una mejora. El detector aprendió después a ver **fusiones** —una sección que
+> absorbe a otra tampoco es el mismo trozo de mapa— y encontró **238 más**. El código las contaba; el
+> documento no. La diferencia entre las dos cifras es exactamente ese número.
+>
+> 🔑 **Y esa es la lección, no la cifra:** un número escrito a mano en prosa no se entera de que el
+> código ha mejorado. Ahora hay un test que compara esta tabla con
+> `data/processed/v2/supervivencia_secciones.json` y falla si se separan. *(Control: 12 ocultas en seis meses — el orden de magnitud correcto
 para un método que no inventa particiones donde no las hay.)*
 
 🟢 **Y una consecuencia que descarga el riesgo casi entero:** las piezas de una partición **se quedan
 dentro de su distrito y su municipio**. O sea que **el problema solo existe en el peldaño más fino**;
 municipio, provincia y CCAA están limpios por construcción.
 
-### Qué se hace con las 572 — decidido, en este orden
+### Qué se hace con las 810 — decidido, en este orden
 
 1. **A · Reconstruir** *(preferido)*: comparar la sección de 2019 con **la suma de sus herederas** en
    2023. ⚠️ **Solo donde el emparejamiento sea único** (un distrito, una muerte, un nacimiento);
@@ -1088,7 +1098,7 @@ delante y hacia atrás.
 
    ⚠️ **Contrapeso, y no es menor:** fusionar mete, en el peldaño más fino, **unas cuantas unidades
    más gruesas** — y el tamaño de la unidad **es literalmente la variable que se estudia**. Hay que
-   comprobar que esas 572 no ensucian la comparación entre escalas. `[pendiente-diseño]`
+   comprobar que esas 810 no ensucian la comparación entre escalas. `[pendiente-diseño]`
 2. 🔴 **Cuarto camino independiente que lleva a Pavía** (§8): coautor de la diana, mantenedor del
    SEA, destinatario, y ahora autor de la herramienta que resuelve nuestro problema. **Deja de ser
    una coincidencia y pasa a ser un dato sobre el campo**: este nicho lo ocupa un grupo.
@@ -1434,7 +1444,7 @@ escrito en cuatro ficheros, y era falso.
 | 4 | **Cerrar la búsqueda de novedad en Dialnet y TESEO a texto completo** | Una tesis o un TFM español podría haber hecho ya el análisis multiescala. **El barrido del 17-ago no los cubrió** | ~1 h | §2.2 |
 | 5 | **El vínculo capitales ↔ maniobra de cohesión** (Varsovia, Budapest) | Está verificado que la maniobra existe y que esas regiones salen en los datos; **no que cada caso concreto sea el mismo** | Cruzar región a región con fechas de revisión de la nomenclatura | §9.3 |
 | 6 | **Las coaliciones de VOX**: en qué convocatorias y territorios concurrió coaligado | Decide qué candidaturas cuentan. **Se escribe antes de mirar los datos** | Sale de los propios ficheros | §5.1 |
-| 7 | ~~**¿Sobrevive una sección censal entre dos convocatorias?**~~ | ✅ **MEDIDO el 2026-08-19 → §6-bis. NO mata el diseño.** 98,42 % de las secciones son comparables tal cual; rompen la comparación 572 (1,58 %), de las cuales **304 lo hacían de forma invisible**. Y el problema **vive solo en el peldaño más fino** | — | §6-bis |
+| 7 | ~~**¿Sobrevive una sección censal entre dos convocatorias?**~~ | ✅ **MEDIDO el 2026-08-19 → §6-bis. NO mata el diseño.** 97,77 % de las secciones son comparables tal cual; rompen la comparación 810 (2,23 %), de las cuales **542 lo hacían de forma invisible** — 304 particiones y 238 fusiones. Y el problema **vive solo en el peldaño más fino** | — | §6-bis |
 | 8 | ~~**¿Publica el INE cartografía anual de secciones y/o una tabla de correspondencias?**~~ | ✅ **COMPROBADO el 2026-08-19 → §6-ter. Las dos existen.** Cartografía anual del INE 2007-2025, libre, con `CUSEC`. Y `sc2sc` en CRAN (Pérez & Pavía) da correspondencias **geométricas con proporciones**, 2001-2026. **El plan A queda superado por algo mejor** | — | §6-ter |
 | 12 | ~~**¿Ha hecho ya el grupo de Pavía la pregunta de ESCALA?**~~ | 🟢 **BARRIDO el 2026-08-20 → §8-bis. No hay señal.** Su línea 2025-2026 es **inferencia ecológica** entera; su obra espacial (Pavía & López-Quílez 2013; Pavía & Cantarino 2017; `sc2sc`) sirve para **mover datos entre unidades**, nunca para preguntar si la respuesta cambia con el tamaño de la unidad. **Tienen las herramientas y no han hecho la pregunta.** ⚠️ Barrido de listas de publicación, no exhaustivo: no cubre preprints ni congresos | — | §8-bis |
 | 14 | 🔴🆕 **¿Ponderamos las unidades por población, o cuenta cada una igual?** | **Cazado el 2026-08-21, y no se había hablado nunca.** Los 1.360 municipios diminutos son el **0,16 % de las personas** y el **16,7 % de las observaciones** a escala municipal: sin ponderar, su influencia sobre el resultado es ~100 veces su peso real. 🔑 **Y el problema CAMBIA con la escala** —a nivel de sección las unidades se parecen en tamaño, a nivel de municipio no—, así que se mete dentro de lo que medimos | Decisión de diseño + medir su efecto | §5.2-bis, §2.4 |
@@ -1443,7 +1453,7 @@ escrito en cuatro ficheros, y era falso.
 | 17 | ~~**¿Qué año de renta se empareja con cada elección?**~~ | ✅ **DECIDIDO el 2026-08-21 → §5.6-bis.** El último año natural **completo anterior** a la elección: nov-2019 → renta 2018, jul-2023 → renta 2022 | — | §5.6-bis |
 | 18 | ~~**LEER LA DIANA ENTERA**~~ | ✅ **HECHO el 2026-08-21 → §2.2-bis.** 4 de 5 apuestas acertadas (aviso, no mérito). **Sigue abierto el hueco del seccionado**: alinean, citan sus métodos y **no publican cifra**. Y el terreno de entrada **cambia**: no por su párrafo de contexto (débil, rebatible en una línea) sino por **su propio párrafo de limitaciones** (irrebatible, porque es suyo) | — | §2.2-bis |
 | 13 | 🆕 **Sánchez-García & Llamazares (2025)** — VOX en secciones censales metropolitanas | Citados **dentro** de la diana: hallan que VOX crece en suburbios **con crecimiento de población, renta más baja y más paro** (*left-behind*) — **dirección contraria** a la conclusión de Roig et al. **No verificado de primera mano**, solo por cómo lo citan otros | Localizar y leer: ~1 h | §2.3 |
-| 10 | 🆕 **¿Publican Pérez & Pavía la tasa de cambio del seccionado**, o solo las correspondencias? | Decide si nuestra cifra de §6-bis (304 particiones ocultas, 98,42 % estable) es un resultado o una redundancia. **No se ha leído su artículo entero** | Leer el artículo: ~1 h | §6-bis |
+| 10 | 🆕 **¿Publican Pérez & Pavía la tasa de cambio del seccionado**, o solo las correspondencias? | Decide si nuestra cifra de §6-bis (304 particiones ocultas + 238 fusiones, 97,77 % estable) es un resultado o una redundancia. **No se ha leído su artículo entero** | Leer el artículo: ~1 h | §6-bis |
 | 11 | 🆕 **¿A qué fecha corresponde cada capa anual de cartografía del INE?** | El INE consolida *"usualmente a 1 de enero"*, y nuestras elecciones son de nov-2019 y jul-2023. Si las capas no coinciden con el seccionado del día de la votación, la correspondencia se desalinea | ~30 min | §6-ter |
 | 9 | 🆕 **¿Por qué contamos 36.460 secciones en jul-2023 y eldiario.es habla de ~35.500?** | Casi mil de diferencia. Puede ser redondeo suyo, otra fuente (mapa del INE vs fichero electoral) o un filtro. **No se da por resuelto** | ~20 min | §6-bis, §8 |
 

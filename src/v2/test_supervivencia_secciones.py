@@ -170,6 +170,11 @@ def test_una_fusion_tambien_rompe_la_identidad():
 FUSIONES_ESPERADAS = {0.20: 268, 0.30: 238, 0.40: 218, 0.50: 190}
 
 
+# Se SALTA si faltan los ficheros, no falla.
+# Un clon limpio no los trae -- estan en .gitignore por tamaño -- y este test venia
+# fallando en rojo por eso. Un rojo dice "esto esta mal"; lo que pasa aqui es "no se
+# pudo comprobar", que es una tercera cosa y la suite ya sabe decirla en otros sitios.
+@necesita_las_tres
 def test_las_fusiones_reales_de_2019_a_2023_se_cuentan():
     """Cifras pinchadas sobre los .DAT reales de 2019-11 y 2023-07."""
     antes = censo_por_seccion(EXTERNAL / "02201911_MESA.zip", 2019, 11)
@@ -236,6 +241,11 @@ def _suma_censo(esquema, ruta_zip, codigo_fichero, anio, mes, filtro):
     return total
 
 
+# Se SALTA si faltan los ficheros, no falla.
+# Un clon limpio no los trae -- estan en .gitignore por tamaño -- y este test venia
+# fallando en rojo por eso. Un rojo dice "esto esta mal"; lo que pasa aqui es "no se
+# pudo comprobar", que es una tercera cosa y la suite ya sabe decirla en otros sitios.
+@necesita_las_tres
 def test_censo_por_seccion_cuadra_con_el_total_nacional():
     """El territorial (09, filtrado) mas el C.E.R.A. (09, lo excluido) cuadra con el 07.
 
