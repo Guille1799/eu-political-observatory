@@ -85,31 +85,37 @@ behind it, only a project convention, and what was done to reduce the dependence
 
 ## Run it
 
-The source data is not in the repository and cannot be: the ESS microdata is access-controlled, and
-the Spanish election files are fetched from the official source at run time. What *does* run from a
-clean clone is the test suite.
+The Spanish election files this project reads **are in the repository**: 24.9 MB of unmodified
+downloads from the Ministry of the Interior, with attribution and terms of reuse in
+[`data/external/infoelectoral/README.md`](data/external/infoelectoral/README.md). The ESS microdata
+is not, and cannot be — it is access-controlled.
 
 ```bash
 python -m venv venv
 venv\Scripts\activate           # Windows
 # source venv/bin/activate      # macOS / Linux
 pip install -r requirements.txt
-python -m pytest src -q
+python src/v2/supervivencia_secciones.py   # writes the JSON that five tests compare against
+python -m pytest src -m "not red" -q
 ```
 
-Measured on a clean checkout on **2026-08-29** with Python 3.14: **61 passed, 20 skipped.**
+Measured on a **clean clone** on 2026-09-15 with Python 3.14: **85 passed, 1 deselected, 0
+skipped** — the same result as on the author's machine, which is the whole point.
 
-The skips are deliberate. Those tests need the official election files, and rather than failing with
-a stack trace, each one names the command that fetches what it is missing:
+`-m "not red"` leaves out the single test that opens a real TLS connection to the Ministry's
+server. It is excluded by default because that server is intermittent: it timed out on 2026-09-14.
+A suite that goes red for reasons outside this repository is a suite people learn to ignore. Run it
+on its own with `pytest src -m red`.
 
-```
-SKIPPED src/v2/test_layout_infoelectoral.py:210: falta data/external/infoelectoral/02201911_MESA.zip
-        -- bajalo con: python src/v2/descarga_infoelectoral.py 2019 11
-```
-
-Download the files those messages name and the same command runs **81 passed, 0 skipped**.
+Until 2026-09-15 this section reported **61 passed, 20 skipped**, measured on 2026-08-29 when the
+suite was smaller. Re-measured on a genuinely clean clone before the data was added, the same
+command gave **49 passed, 27 skipped and 9 errors** — not because the code was broken, but because
+the tests could not find the files they read. Shipping the data is what closed that gap, and
+[the CI](.github/workflows/tests.yml) now runs the suite on every push, so this number cannot
+quietly drift again.
 
 `requirements.txt` declares what this code imports — not a `pip freeze` of one machine.
+`requirements-test.txt` is the narrower set the CI installs: what the tests actually need.
 
 The R layer has its own data requirement and is documented separately in
 [`R/README.md`](R/README.md). It needs `misty`, `mice`, `psych`, `GPArotation`, `PKLMtest` and
@@ -142,7 +148,8 @@ The R layer has its own data requirement and is documented separately in
   improper solution — a Heywood case — so the model is not settled, and it is reported as unsettled
   rather than worked around. The current line does not depend on it.
   ([`R/README.md`](R/README.md) · [`docs/decisiones/`](docs/decisiones/EFA_RETIRADO_2026-08-21.md))
-- The repository ships no data, and it is not a dashboard. A panel where dozens of variables can be
+- The repository ships the raw election files it needs to verify itself, but no survey
+  microdata, and it is not a dashboard. A panel where dozens of variables can be
   crossed on demand is a machine for producing spurious correlations, and that is a deliberate
   omission rather than a missing feature.
 
@@ -151,6 +158,10 @@ The R layer has its own data requirement and is documented separately in
 Python for ingestion and analysis, loading into PostgreSQL · R for imputation and factor analysis ·
 pytest throughout. Sources: Ministerio del Interior (Infoelectoral), INE (household income atlas),
 and — for the retired cross-country layer — ARDECO, EU-NED, ParlGov, ESS.
+
+*Origen de los datos: Ministerio del Interior.* The Ministry does not participate in, sponsor or
+endorse this project. Terms of reuse:
+[`data/external/infoelectoral/README.md`](data/external/infoelectoral/README.md).
 
 ## License
 

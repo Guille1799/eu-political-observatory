@@ -15,7 +15,20 @@ __pycache__/
 #                quedarse desincronizada del original.
 data/raw/
 data/processed/
-data/external/
+
+# data/external/ queda fuera POR DEFECTO, pero los ficheros crudos del Ministerio del Interior
+# SI se versionan: sin ellos 37 de los 86 tests no pueden comprobar nada en un clon limpio
+# (medido el 2026-09-14: 49 pasan, 27 se saltan y 9 revientan al no encontrarlos). Son 24,9 MB
+# y su reutilizacion esta autorizada -- ver data/external/infoelectoral/README.md.
+#
+# La regla abre SOLO lo acordado, en vez de abrir la carpeta entera: si manana aparece ahi otro
+# fichero, seguira fuera hasta que alguien lo declare. `especificacion/` se queda fuera a
+# proposito: son extractos de los .doc/.rtf que ya viajan DENTRO de cada zip.
+data/external/*
+!data/external/infoelectoral/
+data/external/infoelectoral/*
+!data/external/infoelectoral/*.zip
+!data/external/infoelectoral/README.md
 
 # Configuración local del editor
 .cursor/

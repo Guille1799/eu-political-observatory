@@ -1,0 +1,85 @@
+# Runs the test suite on every push and pull request.
+#
+# Why this exists: until 2026-09-15 nothing ran these tests automatically — no CI, no hook. They
+# only ran when someone typed `pytest`. The only thing that used to run them was an acceptance
+# board that died on 2026-09-01 and went unnoticed for two weeks.
+#
+# `-m "not red"` skips the single test that opens a real TLS connection to infoelectoral.es. It is
+# excluded on purpose: that server is intermittent (it timed out on 2026-09-14), and a guard that
+# goes red for reasons outside this repository is a guard that gets ignored. Run it locally with
+# `pytest src/ -m red`.
+
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# A new push supersedes the run in flight for the same ref.
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+          cache: pip
+          cache-dependency-path: requirements-test.txt
+
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-test.txt
+
+      # The raw Ministry files are versioned (see data/external/infoelectoral/README.md), so the
+      # suite has real data to read. Without them 37 of the 86 tests cannot check anything.
+      - name: Check the electoral data is present and unaltered
+        run: |
+          python - <<'EOF'
+          import hashlib, sys
+          from pathlib import Path
+
+          ESPERADO = {
+              "02201512_MESA.zip": "d99e08485e3a96d3dde369978b965e02a2e86d32675d3689e24cda3e50b64896",
+              "02201606_MESA.zip": "d41c21244a5810fe596bac18352fd9820ab197662ee744de87b7db08e507a5ce",
+              "02201904_MESA.zip": "92f2ff6c1c9a6504d6d3647fa365c64a3502d36e15440364aa94f478e7d40764",
+              "02201911_MESA.zip": "e7b621f295d7bf79b794941d4f11e7bcf7bd971ecbd6eb21dd4269d59926e441",
+              "02201911_MUNI.zip": "1be96a39f89be8545470b423bb1c24afb399520e6ba632890c04373c2da971d3",
+              "02201911_TOTA.zip": "3c0c97250e876560767663a3770d7f7acc52037934dfa312bae020deb7029a2b",
+              "02202307_MESA.zip": "e78fc231326a03cf67bbec87b7100ea0c8c46859daa1b2a631c06daaaf1717f8",
+          }
+          d = Path("data/external/infoelectoral")
+          fallos = []
+          for nombre, esperado in sorted(ESPERADO.items()):
+              f = d / nombre
+              if not f.exists():
+                  fallos.append(f"{nombre}: MISSING")
+                  continue
+              real = hashlib.sha256(f.read_bytes()).hexdigest()
+              if real != esperado:
+                  fallos.append(f"{nombre}: ALTERED (got {real})")
+              else:
+                  print(f"ok  {nombre}")
+          if fallos:
+              print("\nThe reuse terms require these files to stay unmodified:")
+              print("\n".join("  " + x for x in fallos))
+              sys.exit(1)
+          EOF
+
+      # Five tests in test_doc_vs_datos.py compare the published document against the computed
+      # figures, and need the JSON that this script writes. It is derived, so it is not versioned;
+      # regenerating it takes about a second and keeps the CI from skipping those five.
+      - name: Generate derived artefacts
+        run: python src/v2/supervivencia_secciones.py
+
+      - name: Run the suite
+        run: pytest src/ -m "not red" -q --no-header -rs

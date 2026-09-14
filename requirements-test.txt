@@ -1,0 +1,21 @@
+# What the test suite actually needs, and nothing else.
+#
+# Not `requirements.txt`: that one also pulls JupyterLab, scipy, scikit-learn, seaborn,
+# matplotlib and pyreadstat, which belong to the notebooks and the R layer and which no test
+# imports. Installing them in CI would mean a red build every time one of those wheels fails to
+# resolve — and a guard that cries wolf gets switched off. A red build here has to mean
+# "the code is broken", nothing else.
+#
+# Derived on 2026-09-15 from the third-party imports of everything under `src/`.
+# Versions match `requirements.txt`; if you bump one there, bump it here.
+
+pandas==3.0.2
+numpy==2.4.4
+python-dotenv==1.2.2
+psycopg2-binary==2.9.12
+
+# src/v2/cadena_confianza.py verifies the FNMT-RCM chain instead of disabling TLS checks.
+certifi==2026.4.22
+cryptography>=42
+
+pytest==9.0.2
