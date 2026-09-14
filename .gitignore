@@ -35,6 +35,19 @@ Rplots.pdf
 logs/
 .ralph.local.conf
 
-# Configuracion local y registros de ejecucion de las herramientas de desarrollo. Se generan
-# en la maquina de quien trabaja el repo y no forman parte del proyecto.
+# Registros de las tandas del bucle autonomo. Se CONSERVAN en disco —son la unica cronica de
+# lo que hizo cada noche— pero no se versionan: los genera el arnes, no el proyecto. Sin esto
+# el worktree sale "sucio" en cada tanda y la guarda de limpieza de ralph_diario.sh dispara un
+# `git reset --hard` que ademas no los borra, porque a los ficheros sin seguir no les afecta.
 ralph_run_*.log
+
+# La cola del bucle autonomo y su diario. Se ESCONDEN, no se borran: el arnes los lee y este repo
+# es publico (decision de 415c47d, 2026-08-29: «despejar lo que ve quien abre el repo»).
+#
+# Y estan AQUI y no en .git/info/exclude a proposito, que es lo que cambio el 2026-09-14: un
+# exclude local no se versiona, asi que no existe en un clon — la proteccion valia en UNA maquina.
+# Es la misma forma que los hooks de .git/hooks, que un clon nuevo no trae. `capa-normativa`, el
+# otro repo publico de la casa, ya lo tenia asi; esto solo lo iguala. Lo vigila
+# `aceptacion.py ningun-ledger-depende-de-una-exclusion-local` en mcp_smart_context.
+PENDIENTES.md
+PROGRESS.md
