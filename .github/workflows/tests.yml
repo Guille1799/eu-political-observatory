@@ -23,15 +23,45 @@ concurrency:
 
 jobs:
   pytest:
-    runs-on: ubuntu-latest
+    name: pytest (py${{ matrix.python }} · ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 15
 
-    steps:
-      - uses: actions/checkout@v4
+    # bash everywhere, including Windows, where the default shell is PowerShell and the heredoc
+    # below would not parse. GitHub's Windows runners ship Git Bash, so this is free.
+    defaults:
+      run:
+        shell: bash
 
-      - uses: actions/setup-python@v5
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        # Neither version is decorative, and neither was chosen by taste:
+        #   · 3.11 — the real floor, derived on 2026-09-15 from the pins in requirements-test.txt.
+        #     `pandas==3.0.2` and `numpy==2.4.4` both declare `requires-python >=3.11`, so 3.11 is
+        #     the oldest interpreter on which this repository can be installed at all. Testing it
+        #     is what turns "it should work" into something measured.
+        #   · 3.14 — where the work actually happens. Without it the CI could be green while the
+        #     real working environment breaks.
+        # 3.10 is deliberately absent: pandas refuses to install there, so a job on 3.10 would go
+        # red for a reason that has nothing to do with this code.
+        python: ["3.11", "3.14"]
+        include:
+          # Windows is not another version of the matrix — it answers a different question, so it
+          # goes in `include` instead of multiplying the grid. It matters here because the work is
+          # done on Windows and this repository has a history of absolute `C:/Users/<name>` paths
+          # leaking into files. On a runner the user is not called the same, so any hardcoded home
+          # path breaks immediately instead of waiting for someone to notice.
+          - os: windows-latest
+            python: "3.14"
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
         with:
-          python-version: '3.14'
+          python-version: ${{ matrix.python }}
           cache: pip
           cache-dependency-path: requirements-test.txt
 
