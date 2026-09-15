@@ -411,7 +411,7 @@ reportan **los tres** números. La participación deja de ser un estorbo del que
 
 | Capa | Fuente | Nivel más fino | Años | Estado |
 |---|---|---|---|---|
-| Electoral | **Infoelectoral** (Mº Interior) | mesa (con distrito y sección) | 1976→ | 🔴 descarga bloqueada, ver §7 |
+| Electoral | **Infoelectoral** (Mº Interior) | mesa (con distrito y sección) | 1976→ | ✅ descargada y verificada, ver §7-bis · los ficheros viajan en el repo desde el 2026-09-15 |
 | Socioeconómica | **INE — Atlas de Distribución de Renta de los Hogares (ADRH)**, operación 353 | **sección censal** | **2015-2023** | ✅ verificado |
 
 **Qué da el ADRH** `[verificado vía API]`: renta neta y bruta media por persona y por hogar, media y
