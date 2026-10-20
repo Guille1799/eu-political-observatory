@@ -1,5 +1,20 @@
 # eu-political-observatory
 
+**What it is:** A research project on where the vote for Vox has grown in Spain between elections, and
+whether the answer changes depending on the scale you look at: polling station, town, province or region.
+
+**How it works:** It downloads the official results from the Ministry of the Interior and reads them using
+the format description that comes inside the download itself. It follows polling-station boundaries that
+change from one election to the next, and keeps track of where every number came from.
+
+**Status:** paused (reviewed 2026-10-20; next review 2026-11-20). No results published yet.
+
+**How to run:** `python -m venv venv`, `pip install -r requirements.txt`, then `python -m pytest src -m "not red" -q`.
+
+**Notebook:** private, outside this repo. Design decisions are in `docs/decisiones/`.
+
+**What it demonstrates:** A pipeline where every number can be traced back to the official file it came from.
+
 **Reproducible, provenance-preserving pipelines for studying territorial politics — built so that
 every number can be traced back to its source, and so that the measurement decisions are visible
 rather than assumed.**
