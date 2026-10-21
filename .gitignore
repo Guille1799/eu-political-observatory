@@ -64,3 +64,16 @@ ralph_run_*.log
 # `aceptacion.py ningun-ledger-depende-de-una-exclusion-local` en mcp_smart_context.
 PENDIENTES.md
 PROGRESS.md
+
+# La maquinaria de trabajo de esta maquina (Claude Code, sus hooks y sus notas). No es el proyecto: es con lo que se
+# trabaja en el. Hasta el 2026-10-21 se ignoraba solo en .git/info/exclude, que no viaja con el repo; aqui viaja.
+/.claude/
+/.skills/
+/hooks/
+/CLAUDE.md
+/docs/EU_REFERENCIA.md
+/docs/EU_REFERENCIA_CORE.md
+/docs/onboarding.md
+/docs/energy-log.md
+/docs/claude-conversations/
+/docs/backups/
