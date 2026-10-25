@@ -109,15 +109,6 @@ def test_violaciones_linea_base_no_abortan(elec2):
     J.check_vote_arithmetic(elec2)
 
 
-# --- claves ---
-def test_clave_duplicada(elec2):
-    d = pd.concat([elec2, elec2.head(1)], ignore_index=True)
-    key = ["country_nuts", "nuts2_id", "year", "type", "party_abbreviation"]
-    dup = d.duplicated(subset=key, keep=False)
-    with pytest.raises(AssertionError):
-        J.AUDIT.hard(not dup.any(), f"{int(dup.sum())} filas duplicadas")
-
-
 # --- agregación a NUTS1 ---
 def test_partyvote_con_nan_rompe_nuts1(elec2):
     d = elec2.copy()
@@ -130,22 +121,51 @@ def test_agregacion_nuts1_sobre_dato_real(elec2):
     J.build_nuts1(elec2)
 
 
-# --- códigos NUTS ---
-def test_codigo_nuts_longitud_incoherente(panel):
-    p = panel.copy()
-    p.loc[p.index[0], "region_id"] = "XXXXX"
-    derived = p["region_id"].str.len() - 2
-    mis = p[p["nuts_level"].notna() & (p["nuts_level"] != derived)]
-    with pytest.raises(AssertionError):
-        J.AUDIT.hard(len(mis) == 0, f"{len(mis)} codigos con longitud != nivel+2")
+# --- códigos y claves de EU-NED, a través de `load_euned()` ---
+# Las aserciones duras viven DENTRO de `load_euned()`. Los tests anteriores recalculaban la condición en el
+# propio test y llamaban a `AUDIT.hard` ellos mismos: probaban `AUDIT.hard`, no el pipeline, y seguían en verde
+# aunque se borrase la aserción de producción. Aquí el CSV sintético se escribe donde `load_euned()` lo lee.
+@pytest.fixture
+def euned_en_disco(tmp_path, monkeypatch):
+    def cargar(filas: pd.DataFrame) -> pd.DataFrame:
+        csv = filas.rename(columns={"nuts2_id": "nuts2"}).drop(columns=["country_nuts", "nuts1_id"])
+        for nombre in ("joint", "national"):
+            csv.to_csv(tmp_path / f"{nombre}.csv", index=False)
+        monkeypatch.setattr(J, "EUNED_JOINT", tmp_path / "joint.csv")
+        monkeypatch.setattr(J, "EUNED_NATIONAL", tmp_path / "national.csv")
+        return J.load_euned()
+
+    return cargar
 
 
-def test_prefijo_pais_malo(elec2):
-    d = elec2.copy()
-    d.loc[d.index[0], "nuts2_id"] = "ZZ11"
-    bad = d.loc[d["nuts2_id"].str[:2] != d["country_nuts"]]
-    with pytest.raises(AssertionError):
-        J.AUDIT.hard(len(bad) == 0, f"{len(bad)} filas con prefijo de pais malo")
+def test_load_euned_acepta_el_dato_sano(euned_en_disco, elec2):
+    assert len(euned_en_disco(elec2)) == len(elec2)
+
+
+def _con_la_clave_repetida(d: pd.DataFrame) -> pd.DataFrame:
+    return pd.concat([d, d.head(1)], ignore_index=True)
+
+
+def _con_el_codigo(codigo: str):
+    def corrompe(d: pd.DataFrame) -> pd.DataFrame:
+        d = d.copy()
+        d.loc[d.index[0], "nuts2_id"] = codigo
+        return d
+
+    return corrompe
+
+
+@pytest.mark.parametrize(
+    "corrompe, mensaje",
+    [
+        pytest.param(_con_la_clave_repetida, "filas duplicadas", id="clave-duplicada"),
+        pytest.param(_con_el_codigo("XXXXX"), "longitud != 4", id="codigo-NUTS2-de-5-caracteres"),
+        pytest.param(_con_el_codigo("ZZ11"), "prefijo de pais", id="prefijo-que-no-es-el-del-pais"),
+    ],
+)
+def test_load_euned_se_para_con_dato_corrupto(euned_en_disco, elec2, corrompe, mensaje):
+    with pytest.raises(AssertionError, match=mensaje):
+        euned_en_disco(corrompe(elec2))
 
 
 # --- merge ---
